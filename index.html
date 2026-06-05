@@ -25,6 +25,8 @@
     <!-- Your custom CSS -->
 
     <link rel="stylesheet" href="style.css">
+  <!-- Add this line - it's MISSING from your head -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
 <style>
    /* Custom Cursor Integration */
@@ -149,6 +151,7 @@
     }
 }
 </style>
+  
    
 </head>
 
@@ -513,11 +516,6 @@
 
 <!-- EmailJS Configuration and Contact Form Handler -->
 <script>
-    // EmailJS Configuration
-    (function() {
-        emailjs.init("QA0QL3SJlJH2VL0y3");
-    })();
-
     // Contact Form Submit Handler - Sends email automatically
     document.getElementById('patuContactForm').addEventListener('submit', async function(event) {
         event.preventDefault();
