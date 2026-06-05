@@ -2964,18 +2964,6 @@ window.advisoryDB = advisoryDB;
 window.specificCropAdvice = specificCropAdvice;
 window.cropDiseaseDatabase = cropDiseaseDatabase;
 window.healthyCropsDB = healthyCropsDB;
-
-// Ensure Chatbot loads with correct language on first load
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof AOS !== 'undefined') AOS.refresh();
-    
-    // Set default language if none selected
-    if (!currentLanguage) {
-        currentLanguage = 'en';
-        translatePage();
-        updateLangHeader();
-    }
-});
  // ========== LANGUAGE MODAL FUNCTIONS ==========
 window.toggleLangDropdown = function() {
     const modal = document.getElementById('langModal');
