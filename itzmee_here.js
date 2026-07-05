@@ -1,3 +1,133 @@
+// ========== COMPLETE DEV TOOLS & SOURCE PROTECTION ==========
+
+// 1. Disable Right Click
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// 2. Disable Drag and Drop
+document.addEventListener('dragstart', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// 3. Disable Text Selection
+document.body.style.userSelect = 'none';
+document.body.style.webkitUserSelect = 'none';
+document.body.style.msUserSelect = 'none';
+
+// 4. Disable Image Dragging (including dynamically added images)
+const disableDragging = function() {
+  const images = document.querySelectorAll('img');
+  images.forEach(img => {
+    img.setAttribute('draggable', 'false');
+  });
+};
+disableDragging();
+new MutationObserver(disableDragging).observe(document.body, { childList: true, subtree: true });
+
+// 5. Disable ALL Keyboard Shortcuts
+document.addEventListener('keydown', function(e) {
+  // F12
+  if (e.key === 'F12') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+I (Inspect)
+  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+J (Console)
+  if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+C (Inspect Element)
+  if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+U (View Source)
+  if (e.ctrlKey && e.key === 'u') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+S (Save)
+  if (e.ctrlKey && e.key === 's') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+P (Print)
+  if (e.ctrlKey && e.key === 'p') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+K (Firefox Console)
+  if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+E (Firefox Inspector)
+  if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+M (Firefox Responsive)
+  if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+P (Firefox Command)
+  if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+    e.preventDefault();
+    return false;
+  }
+});
+
+// 6. Detect Dev Tools via Debugger
+let devToolsOpen = false;
+
+function detectDevTools() {
+  const start = performance.now();
+  debugger;
+  const end = performance.now();
+  
+  if (end - start > 100) {
+    if (!devToolsOpen) {
+      devToolsOpen = true;
+      // Clear page and show warning
+      document.body.innerHTML = `
+        <div style="text-align:center; padding:50px; min-height:100vh; background:#1a1a2e; color:white; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+          <h1 style="font-size:3rem;">🔒 Access Denied</h1>
+          <p style="font-size:1.2rem; margin-top:1rem;">Developer Tools are not allowed on this site.</p>
+          <p>Please close Dev Tools and refresh the page.</p>
+        </div>
+      `;
+      document.body.style.margin = '0';
+      document.body.style.padding = '0';
+    }
+    return true;
+  }
+  devToolsOpen = false;
+  return false;
+}
+
+// Run immediately
+detectDevTools();
+
+// Keep checking every second
+setInterval(detectDevTools, 1000);
+
+// 9. Block view-source: URL
+if (window.location.protocol === 'view-source:') {
+  window.location.href = 'about:blank';
+}
+
+console.log('Protection Active');
+
+
 (function(){
     // ==================== SWIPER INITIALIZATION ====================
     const swiper = new Swiper('.mySwiper', {
@@ -506,6 +636,166 @@ translations = {
     };
     
     // ==================== DASHBOARD FUNCTIONS ====================
+    // ==================== CROP CALENDAR FEATURE ====================
+    // Pure client-side (no backend/API needed). Farmer picks a crop + sowing
+    // date, we compute a stage-by-stage timeline from day-offsets derived
+    // from the existing specificCropAdvice guides, store it in localStorage,
+    // and always show "what to do this week" based on today's date.
+    const cropDurations = {
+        "Wheat (Gehu)": [
+            { day: 0, stage: "Sowing", action: "Sow treated seed, 100-125 kg/ha, 20-22.5 cm row spacing." },
+            { day: 21, stage: "Crown Root Initiation", action: "First irrigation is critical now - do not delay." },
+            { day: 45, stage: "Tillering", action: "Second irrigation + top-dress remaining nitrogen." },
+            { day: 65, stage: "Flowering", action: "Irrigate; watch for yellow rust in humid weather." },
+            { day: 100, stage: "Grain Filling", action: "Maintain moisture; avoid water stress now." },
+            { day: 130, stage: "Harvest Window", action: "Harvest when grain moisture is 12-14%." }
+        ],
+        "Rice (Dhan/Chawal)": [
+            { day: 0, stage: "Nursery", action: "Sow nursery bed; soak seed in salt water first." },
+            { day: 28, stage: "Transplanting", action: "Transplant 25-30 day old seedlings, 20x15 cm spacing." },
+            { day: 45, stage: "Tillering", action: "Maintain 5 cm standing water; apply zinc sulphate." },
+            { day: 70, stage: "Panicle Initiation", action: "Watch for stem borer and leaf folder." },
+            { day: 95, stage: "Flowering", action: "Keep consistent water level; avoid drought stress." },
+            { day: 130, stage: "Harvest Window", action: "Drain field; harvest when 80% grains turn golden." }
+        ],
+        "Maize (Makka/Bhutta)": [
+            { day: 0, stage: "Sowing", action: "Sow treated seed, 60x25 cm spacing." },
+            { day: 25, stage: "Knee-High Stage", action: "Earth up soil around plants; first top-dress urea." },
+            { day: 45, stage: "Tasseling", action: "Ensure irrigation; this is a critical water stage." },
+            { day: 55, stage: "Silking", action: "Irrigate again; watch for fall armyworm." },
+            { day: 100, stage: "Harvest Window", action: "Harvest when husk turns brown and dry." }
+        ],
+        "Cotton (Kapas)": [
+            { day: 0, stage: "Sowing", action: "Sow treated seed, 90x60 cm spacing (hybrids)." },
+            { day: 30, stage: "Squaring", action: "Install pheromone traps for pink bollworm now." },
+            { day: 60, stage: "Flowering", action: "Irrigate; monitor sucking pests." },
+            { day: 90, stage: "Boll Formation", action: "Continue pest watch; avoid water stress." },
+            { day: 150, stage: "Harvest Window", action: "First picking when bolls open fully; 3-4 pickings, 7-10 days apart." }
+        ],
+        "Potato (Aloo)": [
+            { day: 0, stage: "Planting", action: "Plant treated tubers, 60x20 cm spacing." },
+            { day: 25, stage: "Earthing Up", action: "Earth up soil around plants." },
+            { day: 45, stage: "Tuber Formation", action: "Maintain consistent irrigation; watch for late blight." },
+            { day: 75, stage: "Bulking", action: "Continue irrigation; avoid waterlogging." },
+            { day: 95, stage: "Harvest Window", action: "Stop irrigation 15 days before harvest; dig when vines dry." }
+        ],
+        "Onion (Pyaz)": [
+            { day: 0, stage: "Nursery", action: "Sow nursery bed." },
+            { day: 42, stage: "Transplanting", action: "Transplant 6-8 week old seedlings, 15x10 cm spacing." },
+            { day: 70, stage: "Bulb Development", action: "Apply sulphur; maintain regular irrigation." },
+            { day: 110, stage: "Maturity", action: "Stop irrigation as tops start falling over." },
+            { day: 130, stage: "Harvest Window", action: "Harvest when 50% tops fall; cure in field 5-7 days." }
+        ],
+        "Tomato (Tamatar)": [
+            { day: 0, stage: "Nursery", action: "Sow nursery bed." },
+            { day: 28, stage: "Transplanting", action: "Transplant 25-30 day seedlings, 75x45 cm spacing." },
+            { day: 45, stage: "Staking", action: "Provide bamboo support; start drip irrigation every 2-3 days." },
+            { day: 60, stage: "Flowering", action: "Apply boron and calcium nitrate to prevent blossom end rot." },
+            { day: 80, stage: "Harvest Window", action: "First harvest around 65-80 days after transplanting." }
+        ],
+        "Sugarcane (Ganna)": [
+            { day: 0, stage: "Planting", action: "Plant treated setts (2-3 eye pieces), 90x60 cm spacing." },
+            { day: 60, stage: "Tillering", action: "First irrigation cycle; keep every 10-15 days." },
+            { day: 120, stage: "Earthing Up", action: "Earth up around the base of plants." },
+            { day: 240, stage: "Grand Growth", action: "Continue regular irrigation and nutrient top-dressing." },
+            { day: 330, stage: "Harvest Window", action: "Harvest 10-12 months after planting." }
+        ],
+        "Mustard (Sarson)": [
+            { day: 0, stage: "Sowing", action: "Sow treated seed, 45x15 cm spacing." },
+            { day: 25, stage: "Vegetative Growth", action: "First irrigation; hand-weed around this time." },
+            { day: 45, stage: "Flowering", action: "Second irrigation is critical now." },
+            { day: 70, stage: "Pod Formation", action: "Watch for aphids in cool, humid weather." },
+            { day: 110, stage: "Harvest Window", action: "Harvest when pods turn yellow-brown." }
+        ]
+    };
+
+    function getCalendarEntries() {
+        try {
+            return JSON.parse(localStorage.getItem('patukrishi_calendar_entries') || '[]');
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveCalendarEntries(entries) {
+        localStorage.setItem('patukrishi_calendar_entries', JSON.stringify(entries));
+    }
+
+    window.addCropCalendarEntry = () => {
+        const cropSel = document.getElementById('calendarCropSelect');
+        const dateInput = document.getElementById('calendarSowingDate');
+        if (!cropSel || !dateInput || !cropSel.value || !dateInput.value) {
+            showNotification('Please select a crop and sowing date', 'error');
+            return;
+        }
+        const entries = getCalendarEntries();
+        entries.push({ crop: cropSel.value, sowingDate: dateInput.value, id: Date.now() });
+        saveCalendarEntries(entries);
+        renderCropCalendar();
+        showNotification('Added to your Crop Calendar', 'success');
+    };
+
+    window.removeCropCalendarEntry = (id) => {
+        const entries = getCalendarEntries().filter(e => e.id !== id);
+        saveCalendarEntries(entries);
+        renderCropCalendar();
+    };
+
+    function renderCropCalendar() {
+        const listDiv = document.getElementById('myCropCalendarList');
+        if (!listDiv) return;
+        const entries = getCalendarEntries();
+
+        if (entries.length === 0) {
+            listDiv.innerHTML = `<p class="big-friendly" style="opacity:.7">No crops added yet. Pick a crop and sowing date above to get your personalised schedule.</p>`;
+            return;
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        listDiv.innerHTML = entries.map(entry => {
+            const stages = cropDurations[entry.crop] || [];
+            const sowDate = new Date(entry.sowingDate);
+            const daysSince = Math.floor((today - sowDate) / (1000 * 60 * 60 * 24));
+
+            let currentStageIdx = 0;
+            for (let i = 0; i < stages.length; i++) {
+                if (daysSince >= stages[i].day) currentStageIdx = i;
+            }
+            const currentStage = stages[currentStageIdx];
+            const nextStage = stages[currentStageIdx + 1];
+
+            const stageRows = stages.map((s, i) => {
+                const stageDate = new Date(sowDate);
+                stageDate.setDate(stageDate.getDate() + s.day);
+                const isPast = daysSince >= s.day;
+                const isCurrent = i === currentStageIdx;
+                return `<div style="display:flex;gap:12px;padding:10px 0;${isCurrent ? 'font-weight:700;' : ''}${!isPast ? 'opacity:.55;' : ''}">
+                    <div style="width:90px;flex-shrink:0;font-size:.85rem;color:var(--text2)">${stageDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</div>
+                    <div style="width:16px;flex-shrink:0;text-align:center">${isCurrent ? '📍' : (isPast ? '✅' : '⚪')}</div>
+                    <div>
+                        <div>${s.stage}</div>
+                        <div style="font-size:.85rem;color:var(--text2);font-weight:400">${s.action}</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            return `<div class="card" style="margin-bottom:20px;border-left:5px solid #f9a825">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+                    <div>
+                        <h3 style="color:var(--primary)">${entry.crop}</h3>
+                        <p style="font-size:.9rem;color:var(--text2)">Sown ${sowDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} · Day ${daysSince} · Currently: <strong>${currentStage ? currentStage.stage : 'N/A'}</strong></p>
+                    </div>
+                    <button onclick="removeCropCalendarEntry(${entry.id})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:1.1rem" title="Remove"><i class="fas fa-trash"></i></button>
+                </div>
+                ${nextStage ? `<div style="background:var(--bg);border-radius:20px;padding:12px 18px;margin:12px 0;font-size:.95rem"><strong>📌 This week:</strong> ${currentStage.action}</div>` : ''}
+                <div style="margin-top:10px">${stageRows}</div>
+            </div>`;
+        }).join('');
+    }
+    window.renderCropCalendar = renderCropCalendar;
+
     function loadDashboard() {
         const dashboard = document.getElementById('dashboard');
         if(dashboard) dashboard.style.display = 'block';
@@ -538,7 +828,14 @@ translations = {
             l.innerHTML = '';
             Object.keys(specificCropAdvice).forEach(e => l.add(new Option(e, e)));
         }
-        
+
+        let calSel = document.getElementById('calendarCropSelect');
+        if(calSel) {
+            calSel.innerHTML = '';
+            Object.keys(cropDurations).forEach(e => calSel.add(new Option(e, e)));
+        }
+        renderCropCalendar();
+
         updateDistrictDropdown();
         initAnalyticsCharts();
         if(typeof AOS !== 'undefined') AOS.refresh();
@@ -991,7 +1288,42 @@ window.analyzeCropImage = async function() {
                 </div>
             `;
         }
-        
+
+        // Try the real Kindwise crop.health API first (via our /api/crop-lens proxy).
+        // If it's not configured yet, or the request fails for any reason, we
+        // silently fall back to the built-in simulated analysis below so the
+        // feature never breaks for the farmer.
+        let realResult = null;
+        try {
+            const base64Only = imageData.split(',')[1];
+            const apiRes = await fetch('/api/crop-lens', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: base64Only })
+            });
+            if (apiRes.ok) {
+                const data = await apiRes.json();
+                if (data.success) realResult = data;
+            }
+        } catch (e) {
+            console.warn('Crop Lens API unavailable, using built-in analysis:', e);
+        }
+
+        if (realResult) {
+            currentAnalysis = { source: 'kindwise', ...realResult };
+            imageHistory.unshift({ id: Date.now(), imageData, analysis: currentAnalysis, timestamp: new Date().toISOString() });
+            if (imageHistory.length > 10) imageHistory.pop();
+
+            if (realResult.isHealthy) {
+                displayRealHealthyResult(realResult);
+            } else {
+                displayRealDiseaseResult(realResult);
+            }
+            displayActionButtons();
+            return;
+        }
+
+        // ---- Fallback: built-in simulated analysis (unchanged behaviour) ----
         // Simulate AI processing delay
         await new Promise(resolve => setTimeout(resolve, 2000));
         
@@ -1016,6 +1348,7 @@ window.analyzeCropImage = async function() {
         } else {
             displayDiseaseResult(analysis);
         }
+
         
         // Show action buttons
         displayActionButtons();
@@ -1074,6 +1407,53 @@ function displayHealthyResult(analysis) {
 }
 
 // Display disease result
+// ---- Display functions for REAL Kindwise crop.health API results ----
+// (kept separate from the simulated displayHealthyResult/displayDiseaseResult
+// above since real API data has its own shape - crop name, disease name,
+// description/treatment text straight from Kindwise's own database.)
+function displayRealHealthyResult(result) {
+    const resultDiv = document.getElementById('lens-result');
+    const cropName = result.crop ? result.crop.name : 'your crop';
+    resultDiv.innerHTML = `
+        <div style="background: linear-gradient(135deg, #2e7d32, #1b5e20); border-radius: 25px; padding: 25px; color: white; margin-top: 20px;">
+            <div style="text-align: center;">
+                <i class="fas fa-check-circle" style="font-size: 4rem; color: #81c784;"></i>
+                <h2 style="margin: 10px 0;">✅ Looks Healthy!</h2>
+                <p style="opacity:.9">Identified as: <strong>${cropName}</strong></p>
+                <p style="margin-top:15px;font-size:.9rem;opacity:.85">Analyzed by Kindwise crop.health AI. Keep monitoring regularly and follow your usual preventive care.</p>
+            </div>
+        </div>`;
+}
+
+function displayRealDiseaseResult(result) {
+    const resultDiv = document.getElementById('lens-result');
+    const d = result.disease;
+    const cropName = result.crop ? result.crop.name : 'crop';
+    const confidence = (d.probability * 100).toFixed(1);
+    const treatment = d.treatment || {};
+
+    const listOrNote = (arr) => (arr && arr.length)
+        ? `<ul style="margin:10px 0;padding-left:20px">${arr.map(x => `<li>${x}</li>`).join('')}</ul>`
+        : '<p style="opacity:.8;font-size:.9rem">No specific guidance available for this one - consult your local agriculture extension officer.</p>';
+
+    resultDiv.innerHTML = `
+        <div style="background: linear-gradient(135deg, #c62828, #8e0000); border-radius: 25px; padding: 25px; color: white; margin-top: 20px;">
+            <div style="text-align: center;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #ffcc80;"></i>
+                <h2 style="margin: 10px 0;">${d.name}</h2>
+                <p style="opacity:.85">Crop: ${cropName} &middot; AI Confidence: ${confidence}%</p>
+                ${d.severity ? `<p><span style="background:rgba(255,255,255,.2);padding:3px 12px;border-radius:20px">${d.severity}</span></p>` : ''}
+            </div>
+            ${d.description ? `<div style="background:rgba(255,255,255,.15);border-radius:20px;padding:18px;margin-top:18px"><h4>📋 About</h4><p>${d.description}</p></div>` : ''}
+            ${d.symptoms ? `<div style="background:rgba(255,255,255,.1);border-radius:20px;padding:18px;margin-top:15px"><h4>🔍 Symptoms</h4><p>${d.symptoms}</p></div>` : ''}
+            <div style="background:rgba(255,255,255,.15);border-radius:20px;padding:18px;margin-top:15px">
+                <h4>🩺 Chemical Treatment</h4>${listOrNote(treatment.chemical)}
+                <h4 style="margin-top:12px">🌿 Biological / Organic</h4>${listOrNote(treatment.biological)}
+                <h4 style="margin-top:12px">🛡️ Prevention</h4>${listOrNote(treatment.prevention)}
+            </div>
+        </div>`;
+}
+
 function displayDiseaseResult(analysis) {
     const resultDiv = document.getElementById('lens-result');
     const diseaseName = analysis.disease;
@@ -1454,14 +1834,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if(chatWindow) chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
     };
     
-    window.sendMessage = () => {
+    window.sendMessage = async () => {
         let e = document.getElementById('chat-input');
         if(!e) return;
-        let t = e.value.trim().toLowerCase();
+        let originalText = e.value.trim();
+        let t = originalText.toLowerCase();
         if(!t) return;
         let n = document.getElementById('chat-messages');
-        if(n) n.innerHTML += `<div class="message msg-user">${e.value.trim()}</div>`;
+        if(n) n.innerHTML += `<div class="message msg-user">${originalText}</div>`;
         e.value = '';
+
+        // Try the real Gemini-powered bot first (via our /api/chatbot proxy).
+        // If it's not configured yet, or the request fails, we fall back to
+        // the built-in keyword-based responses below so the chatbot never breaks.
+        try {
+            const apiRes = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: originalText, language: currentLanguage })
+            });
+            if (apiRes.ok) {
+                const data = await apiRes.json();
+                if (data.success && data.reply) {
+                    if (n) n.innerHTML += `<div class="message msg-bot">${data.reply}</div>`;
+                    if (n) n.scrollTop = n.scrollHeight;
+                    return;
+                }
+            }
+        } catch (err) {
+            console.warn('Chatbot API unavailable, using built-in responses:', err);
+        }
+
+        // ---- Fallback: built-in rule-based responses (unchanged behaviour) ----
         setTimeout(() => {
             let e = botResponses[currentLanguage] || botResponses.en;
             let o = "";
@@ -1545,9 +1949,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     window.switchSection = e => {
-        document.querySelectorAll('.nav-item').forEach((t, n) => {
-            let o = ['home', 'weather', 'mandi', 'lens', 'advisory', 'analytics', 'about'];
-            t.classList.toggle('active', o[n] === e);
+        document.querySelectorAll('.nav-item').forEach(t => {
+            t.classList.toggle('active', t.getAttribute('data-section') === e);
         });
         document.querySelectorAll('.content-section').forEach(t => t.classList.remove('active'));
         const section = document.getElementById(e + '-section');
@@ -3331,27 +3734,3 @@ document.addEventListener('click', function(e) {
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
 })();
-
-// =====================================================
-// NEW FEATURE: WHATSAPP SHARE (no backend required)
-// Lets a farmer share the app, or the currently visible
-// mandi price / scheme, over WhatsApp in one tap.
-// =====================================================
-window.shareOnWhatsApp = function(customText) {
-    const text = customText || 'Check out PatuKrishi 🌾 - free live mandi prices, weather, crop disease detection and government schemes for farmers: https://patukrishi.vercel.app';
-    const url = 'https://wa.me/?text=' + encodeURIComponent(text);
-    window.open(url, '_blank');
-};
-
-// Share the currently displayed mandi price card (best-effort text summary)
-window.shareMandiOnWhatsApp = function() {
-    const messageDiv = document.getElementById('mandi-multiple-list');
-    const stateSel = document.getElementById('mandiStateSelect');
-    const cropSel = document.getElementById('mandiCropSelect');
-    let text = 'PatuKrishi Mandi Bhav 🌾\n';
-    if (stateSel && cropSel && stateSel.value && cropSel.value) {
-        text += `${cropSel.value} - ${stateSel.value}\n`;
-    }
-    text += 'Check live rates: https://patukrishi.vercel.app';
-    shareOnWhatsApp(text);
-};
