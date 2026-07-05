@@ -12,7 +12,10 @@
 
     <!-- External CSS libraries -->
 
-    <link rel="icon" type="image/png" href="patukrishi logo.png">
+    <link rel="icon" type="image/png" href="patukrishi-logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="apple-touch-icon" href="patukrishi-logo.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -24,133 +27,11 @@
 
     <!-- Your custom CSS -->
 
-    <link rel="stylesheet" href="style.css">
-  <!-- Add this line - it's MISSING from your head -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link rel="stylesheet" href="techmankapapa.css">
     
-<style>
-   /* Custom Cursor Integration */
-
-        body {
-
-            /* Yellow Pointer + Seedling Emoji for PatuKrishi vibe */
-
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), auto;
-
-        }
-
-
-        /* Ensure interactive elements keep a clean pointer or the custom cursor */
-
-        button, .click-card, .nav-item, .lang-header, .user-profile {
-
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), pointer;
-
-        }
-  /* Language Modal - Full Screen Blur */
-.lang-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 9999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-.lang-modal-overlay.show {
-    display: flex;
-}
-
-.lang-modal-content {
-    background: white;
-    border-radius: 32px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 25px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    animation: modalFadeIn 0.3s ease;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-.lang-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f9a825;
-}
-
-.lang-modal-header h3 {
-    margin: 0;
-    color: #2e7d32;
-}
-
-.lang-modal-close {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #666;
-}
-
-.lang-modal-close:hover {
-    color: #d32f2f;
-}
-
-.lang-options-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.lang-option-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 15px;
-    background: #f5f5f5;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.lang-option-item:hover {
-    background: #2e7d32;
-    color: white;
-}
-
-.lang-option-item.active {
-    background: #2e7d32;
-    color: white;
-}
-
-.lang-option-item .flag {
-    font-size: 1.5rem;
-}
-
-.lang-option-item .lang-native {
-    font-size: 0.8rem;
-    margin-left: auto;
-}
-
-@media (max-width: 500px) {
-    .lang-options-grid {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
+    <!-- EmailJS Library -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
   
    
 </head>
@@ -159,8 +40,46 @@
 
 <div id="loading-screen"><div class="loading-logo"><i class="fas fa-seedling"></i><h1>PatuKrishi</h1></div><div class="loading-bar"><div class="loading-fill"></div></div><p>Smart Farming for Indian Farmers</p></div>
 
-<div id="auth-container"><div class="auth-card"><div class="auth-greeting"><h1>Welcome Farmer 🙏</h1><p style="margin:20px 0">Your personal agri-companion</p></div><div class="auth-form-wrap"><div class="auth-tabs"><div class="auth-tab active" onclick="switchAuthTab('login')">Login</div><div class="auth-tab" onclick="switchAuthTab('signup')">Sign up</div></div><form id="login-form" class="auth-form active" onsubmit="handleLogin(event)"><div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="login-email" required></div><div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="login-password" required></div><div id="login-error" style="color:#d32f2f;margin-bottom:12px"></div><button class="btn-3d" style="width:100%">Login</button></form><form id="signup-form" class="auth-form" onsubmit="handleSignup(event)"><div class="form-group"><label class="form-label">Full name</label><input type="text" class="form-input" id="signup-name" required></div><div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="signup-email" required></div><div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="signup-password" required></div><div id="signup-error" style="color:#d32f2f;margin-bottom:12px"></div><button class="btn-3d" style="width:100%">Create account</button></form></div></div></div>
-  <!-- Language Modal -->
+<!-- NEW AUTH MODAL -->
+<div id="authModal" class="auth-modal-overlay">
+    <div class="auth-modal">
+        <div class="auth-modal-header">
+            <h1>🌾 PatuKrishi</h1>
+            <p>Your Farmer Friend</p>
+        </div>
+        <div class="auth-modal-body">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTabNew('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTabNew('signup')">Sign Up</button>
+            </div>
+            <div id="login-form-new" class="auth-form active">
+                <input type="email" id="login-email" placeholder="Email Address" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login-btn" onclick="handleLoginNew()">Login</button>
+                <div id="login-error" class="error-message"></div>
+            </div>
+            <div id="signup-form-new" class="auth-form">
+                <input type="text" id="signup-name" placeholder="Full Name" required>
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button id="signup-btn" onclick="handleSignupNew()">Create Account</button>
+                <div id="signup-error" class="error-message"></div>
+                <p class="info-note">We'll send a 6-digit verification code to your email</p>
+            </div>
+            <div id="verification-section" style="display: none;">
+                <hr>
+                <div class="verify-title">🔐 Verify Your Email</div>
+                <div class="verify-subtitle">Enter the 6-digit code sent to your email</div>
+                <input type="text" id="verify-code" placeholder="000000" maxlength="6">
+                <button onclick="verifyCodeNew()" style="background: #f9a825;">Verify Account</button>
+                <div id="verify-error" class="error-message"></div>
+                <div class="resend-link"><a onclick="resendCodeNew()">Didn't receive code? Resend</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Language Modal -->
 <div id="langModal" class="lang-modal-overlay">
     <div class="lang-modal-content">
         <div class="lang-modal-header">
@@ -246,7 +165,7 @@
 
     <header class="main-header">
 
-        <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
+        <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi-logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
 
       <nav class="main-nav"><span class="nav-item active" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" onclick="switchSection('videos')"><span data-translate="videos">Videos</span></span><span class="nav-item" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
 
@@ -318,7 +237,7 @@
             </div>
         </section>
 
-        <section id="mandi-section" class="content-section"><h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span data-translate="mandi-title">Mandi Prices · Kai Bhav</span></h2><div class="card"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px"><select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select><select id="mandiDistrictSelect" class="nice-select"></select><select id="mandiCropSelect" class="nice-select"></select><button class="btn-3d" onclick="fetchMandiPrices()"><span data-translate="show-prices">Show Prices</span></button></div><div id="mandi-multiple-list" style="margin-bottom:20px"></div><div id="mandi-cards-container" class="mandi-card-grid"></div></div></section>
+        <section id="mandi-section" class="content-section"><h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span data-translate="mandi-title">Mandi Prices · Kai Bhav</span></h2><div class="card"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px"><select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select><select id="mandiDistrictSelect" class="nice-select"></select><select id="mandiCropSelect" class="nice-select"></select><button class="btn-3d" onclick="fetchMandiPrices()"><span data-translate="show-prices">Show Prices</span></button><button class="btn-3d" style="background:#25D366" onclick="shareMandiOnWhatsApp()" title="Share these prices on WhatsApp"><i class="fab fa-whatsapp"></i> Share</button></div><div id="mandi-multiple-list" style="margin-bottom:20px"></div><div id="mandi-cards-container" class="mandi-card-grid"></div></div></section>
 
         <div id="lens-section" class="content-section">
             <div class="section-header">
@@ -344,32 +263,33 @@
 
         <section id="advisory-section" class="content-section"><h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span data-translate="advisory-title">Crop Advisory · Pura Guide</span></h2><div class="card"><div style="display:flex;gap:12px;margin-bottom:20px"><button class="btn-3d" id="generalModeBtn" onclick="setAdvisoryMode('general')" style="flex:1">🌾 <span data-translate="state-season">State/UT + Season</span></button><button class="btn-3d" id="specificModeBtn" onclick="setAdvisoryMode('specific')" style="flex:1;background:#f9a825">🌱 <span data-translate="specific-crop">Specific Crop (3-Step)</span></button></div><div id="generalAdvisoryInputs"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="advisoryStateSelect" class="nice-select" style="flex:1"></select><select id="advisorySeasonSelect" class="nice-select" style="flex:1"><option value="Rabi">Rabi (Winter)</option><option value="Kharif">Kharif (Monsoon)</option><option value="Zaid">Zaid (Summer)</option></select><button class="btn-3d" onclick="showGeneralAdvisory()"><span data-translate="get-advice">Get Advice</span></button></div><div id="generalAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div><div id="specificAdvisoryInputs" style="display:none"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="specificCropSelect" class="nice-select" style="flex:2"></select><button class="btn-3d" onclick="showSpecificAdvisory()"><span data-translate="get-guide">Get 3-Step Guide</span></button></div><div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div></div></section>
 
-        <section id="schemes-section" class="content-section">
-            <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">100 Active Schemes</span></h2>
-            <div class="schemes-stats-bar">
-                <div class="stat-item"><i class="fas fa-rupee-sign"></i><span>₹1.5 Lakh Cr+</span><small>Total Budget</small></div>
-                <div class="stat-item"><i class="fas fa-users"></i><span>15 Cr+</span><small>Farmers Benefited</small></div>
-                <div class="stat-item"><i class="fas fa-building"></i><span>13</span><small>Categories</small></div>
-                <div class="stat-item"><i class="fas fa-calendar-alt"></i><span>2026-27</span><small>Updated</small></div>
-            </div>
-            <div class="schemes-category-strip" id="schemeCategoryStrip">
-                <button class="cat-filter-btn active" onclick="filterSchemesByCategory('all')">📌 All (100)</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('income')">💰 Income</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('insurance')">🛡️ Insurance</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('credit')">💳 Credit</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('irrigation')">💧 Irrigation</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('machinery')">🚜 Machinery</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('soil')">🌱 Soil</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('organic')">🌿 Organic</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('animal')">🐄 Animal</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('horticulture')">🥥 Horticulture</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('digital')">🤖 Digital</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('solar')">☀️ Solar</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('market')">📊 Market</button>
-                <button class="cat-filter-btn" onclick="filterSchemesByCategory('disaster')">⚠️ Disaster</button>
-            </div>
-            <div id="allSchemesContainer" class="schemes-full-grid"></div>
-        </section>
+<section id="schemes-section" class="content-section">
+    <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
+    <div class="schemes-stats-bar">
+        <div class="stat-item"><i class="fas fa-rupee-sign"></i><span>₹2 Lakh Cr+</span><small>Total Budget</small></div>
+        <div class="stat-item"><i class="fas fa-users"></i><span>18 Cr+</span><small>Farmers Benefited</small></div>
+        <div class="stat-item"><i class="fas fa-building"></i><span>14</span><small>Categories</small></div>
+        <div class="stat-item"><i class="fas fa-calendar-alt"></i><span>2026-27</span><small>Updated</small></div>
+    </div>
+    <div class="schemes-category-strip" id="schemeCategoryStrip">
+        <button class="cat-filter-btn active" onclick="filterSchemesByCategory('all')">📌 All (140)</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('income')">💰 Income</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('insurance')">🛡️ Insurance</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('credit')">💳 Credit</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('irrigation')">💧 Irrigation</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('machinery')">🚜 Machinery</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('soil')">🌱 Soil</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('organic')">🌿 Organic</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('animal')">🐄 Animal</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('horticulture')">🥥 Horticulture</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('digital')">🤖 Digital</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('solar')">☀️ Solar</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('market')">📊 Market</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('disaster')">⚠️ Disaster</button>
+        <button class="cat-filter-btn" onclick="filterSchemesByCategory('employment')">💼 Employment</button>
+    </div>
+    <div id="allSchemesContainer" class="schemes-full-grid"></div>
+</section>
 
         <section id="videos-section" class="content-section">
             <div class="section-header-with-icon" data-aos="fade-up">
@@ -448,14 +368,14 @@
     <footer class="official-footer">
         <div class="footer-grid">
             <div class="footer-col">
-                <div class="footer-logo"><img src="patukrishi logo.png" alt="PatuKrishi Logo"></div>
+                <div class="footer-logo"><img src="patukrishi-logo.png" alt="PatuKrishi Logo"></div>
                 <p data-translate="footer-tagline">Smart Farming for Indian farmers.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/people/PatuKrishi-Sustainable-Farming/pfbid02Q7jES5tykPXi4f11KRiXoDqdwLFkTGkBCaETi4fom8F533PWk2gt34KToLJF5woPl/" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/_patukrishi_/" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.linkedin.com/in/patukrishi-sustainable-farming-3559913b2/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="https://www.youtube.com/@PatuKrishi" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://twitter.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" onclick="shareOnWhatsApp(); return false;" title="Share PatuKrishi on WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -502,7 +422,7 @@
 
 <button class="chatbot-btn" onclick="toggleChatbot()"><i class="fas fa-robot"></i></button>
 
-<div class="chatbot-window" id="chat-window"><div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px"><i class="fas fa-robot"></i><span data-translate="krishi-bot">Krishi Bot</span><i class="fas fa-times" style="margin-left:auto;cursor:pointer" onclick="toggleChatbot()"></i></div><div class="chat-messages" id="chat-messages"><div class="message msg-bot" data-translate="bot-welcome">🙏 Namaskar! Main aapka Krishi Bot hoon. Poochhiye - mandi bhav, mausam, crop lens, advisory, analytics ya kuch bhi!</div></div><div class="chat-input-area"><input id="chat-input" placeholder="Yahan likhiye..." onkeypress="if(event.key==='Enter') sendMessage()" data-translate="chat-placeholder"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button></div></div>
+<div class="chatbot-window" id="chat-window"><div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px"><i class="fas fa-robot"></i><span data-translate="krishi-bot">Krishi Bot</span><i class="fas fa-times" style="margin-left:auto;cursor:pointer" onclick="toggleChatbot()"></i></div><div class="chat-messages" id="chat-messages"><div class="message msg-bot" data-translate="bot-welcome">🙏 Namaskar! Main aapka Krishi Bot hoon. Poochhiye - mandi bhav, mausam, crop lens, advisory, analytics ya kuch bhi!</div></div><div class="chat-input-area"><button id="chat-mic-btn" title="Speak your question" style="background:#f9a825"><i class="fas fa-microphone"></i></button><input id="chat-input" placeholder="Yahan likhiye..." onkeypress="if(event.key==='Enter') sendMessage()" data-translate="chat-placeholder"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button></div></div>
 
 <div id="notification-container"></div>
 
@@ -512,57 +432,10 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <!-- Your custom JavaScript -->
-<script src="script.js"></script>
+<script src="itzmee_here.js"></script>
 
-<!-- EmailJS Configuration and Contact Form Handler -->
-<script>
-    // Contact Form Submit Handler - Sends email automatically
-    document.getElementById('patuContactForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        
-        const name = document.getElementById('patuName').value;
-        const mobile = document.getElementById('patuMobile').value;
-        const email = document.getElementById('patuEmail').value;
-        const message = document.getElementById('patuMessage').value;
-        const statusDiv = document.getElementById('patuFormStatus');
-        
-        // Show loading state
-        statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
-        statusDiv.style.color = '#f9a825';
-        
-        try {
-            const templateParams = {
-                from_name: name,
-                from_email: email,
-                mobile: mobile,
-                message: message,
-                to_email: 'patukrishi@gmail.com'
-            };
-            
-            const response = await emailjs.send('service_c48sfqj', 'template_xnjx3mg', templateParams);
-            
-            if (response.status === 200) {
-                statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Message sent successfully! We\'ll get back to you soon.';
-                statusDiv.style.color = '#4caf50';
-                document.getElementById('patuContactForm').reset();
-                
-                setTimeout(() => {
-                    statusDiv.innerHTML = '';
-                }, 5000);
-            } else {
-                throw new Error('Failed to send');
-            }
-        } catch (error) {
-            console.error('EmailJS Error:', error);
-            statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Failed to send message. Please try again later.';
-            statusDiv.style.color = '#f44336';
-            
-            setTimeout(() => {
-                statusDiv.innerHTML = '';
-            }, 5000);
-        }
-    });
-</script>
+<!-- Auth system now lives in itzmee_here.js -->
+
 
 </body>
-</html>
+  </html>
