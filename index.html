@@ -12,10 +12,10 @@
 
     <!-- External CSS libraries -->
 
-    <link rel="icon" type="image/png" href="patukrishi-logo.png">
+    <link rel="icon" type="image/png" href="patukrishi logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2e7d32">
-    <link rel="apple-touch-icon" href="patukrishi-logo.png">
+    <link rel="apple-touch-icon" href="patukrishi logo.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -165,9 +165,9 @@
 
     <header class="main-header">
 
-        <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi-logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
+        <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
 
-      <nav class="main-nav"><span class="nav-item active" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" onclick="switchSection('videos')"><span data-translate="videos">Videos</span></span><span class="nav-item" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
+      <nav class="main-nav"><span class="nav-item active" data-section="home" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" data-section="weather" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" data-section="mandi" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" data-section="lens" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" data-section="advisory" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" data-section="calendar" onclick="switchSection('calendar')"><span data-translate="calendar">Crop Calendar</span></span><span class="nav-item" data-section="schemes" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" data-section="about" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
 
         <div style="display:flex;gap:18px;align-items:center">
 
@@ -237,7 +237,7 @@
             </div>
         </section>
 
-        <section id="mandi-section" class="content-section"><h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span data-translate="mandi-title">Mandi Prices · Kai Bhav</span></h2><div class="card"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px"><select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select><select id="mandiDistrictSelect" class="nice-select"></select><select id="mandiCropSelect" class="nice-select"></select><button class="btn-3d" onclick="fetchMandiPrices()"><span data-translate="show-prices">Show Prices</span></button><button class="btn-3d" style="background:#25D366" onclick="shareMandiOnWhatsApp()" title="Share these prices on WhatsApp"><i class="fab fa-whatsapp"></i> Share</button></div><div id="mandi-multiple-list" style="margin-bottom:20px"></div><div id="mandi-cards-container" class="mandi-card-grid"></div></div></section>
+        <section id="mandi-section" class="content-section"><h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span data-translate="mandi-title">Mandi Prices · Kai Bhav</span></h2><div class="card"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px"><select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select><select id="mandiDistrictSelect" class="nice-select"></select><select id="mandiCropSelect" class="nice-select"></select><button class="btn-3d" onclick="fetchMandiPrices()"><span data-translate="show-prices">Show Prices</span></button></div><div id="mandi-multiple-list" style="margin-bottom:20px"></div><div id="mandi-cards-container" class="mandi-card-grid"></div></div></section>
 
         <div id="lens-section" class="content-section">
             <div class="section-header">
@@ -262,6 +262,19 @@
         </div>
 
         <section id="advisory-section" class="content-section"><h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span data-translate="advisory-title">Crop Advisory · Pura Guide</span></h2><div class="card"><div style="display:flex;gap:12px;margin-bottom:20px"><button class="btn-3d" id="generalModeBtn" onclick="setAdvisoryMode('general')" style="flex:1">🌾 <span data-translate="state-season">State/UT + Season</span></button><button class="btn-3d" id="specificModeBtn" onclick="setAdvisoryMode('specific')" style="flex:1;background:#f9a825">🌱 <span data-translate="specific-crop">Specific Crop (3-Step)</span></button></div><div id="generalAdvisoryInputs"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="advisoryStateSelect" class="nice-select" style="flex:1"></select><select id="advisorySeasonSelect" class="nice-select" style="flex:1"><option value="Rabi">Rabi (Winter)</option><option value="Kharif">Kharif (Monsoon)</option><option value="Zaid">Zaid (Summer)</option></select><button class="btn-3d" onclick="showGeneralAdvisory()"><span data-translate="get-advice">Get Advice</span></button></div><div id="generalAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div><div id="specificAdvisoryInputs" style="display:none"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="specificCropSelect" class="nice-select" style="flex:2"></select><button class="btn-3d" onclick="showSpecificAdvisory()"><span data-translate="get-guide">Get 3-Step Guide</span></button></div><div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div></div></section>
+
+        <section id="calendar-section" class="content-section">
+            <h2 class="agri-border"><i class="fas fa-calendar-check"></i> <span data-translate="calendar-title">Crop Calendar · Boai se Katai Tak</span></h2>
+            <div class="card">
+                <p class="big-friendly" style="margin-bottom:20px" data-translate="calendar-desc">Select your crop and sowing date. We'll show you the key stages ahead and what to do this week.</p>
+                <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
+                    <select id="calendarCropSelect" class="nice-select" style="flex:1"></select>
+                    <input type="date" id="calendarSowingDate" class="form-input" style="flex:1;min-width:180px">
+                    <button class="btn-3d" onclick="addCropCalendarEntry()"><span data-translate="add-crop">Add to My Calendar</span></button>
+                </div>
+                <div id="myCropCalendarList"></div>
+            </div>
+        </section>
 
 <section id="schemes-section" class="content-section">
     <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
@@ -290,40 +303,6 @@
     </div>
     <div id="allSchemesContainer" class="schemes-full-grid"></div>
 </section>
-
-        <section id="videos-section" class="content-section">
-            <div class="section-header-with-icon" data-aos="fade-up">
-                <i class="fas fa-video" style="font-size: 2rem; color: #f9a825;"></i>
-                <h2><span data-translate="videos">PatuKrishi Video Library</span></h2>
-            </div>
-            <div class="video-gallery" data-aos="fade-up">
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/h8CF8SFDAgM" title="Smart Farmers Use This" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="video-info">
-                        <span class="video-duration"><i class="far fa-clock"></i> 5:02 min</span>
-                        <h4>📊 Smart Farmers Use This… Do You? | PatuKrishi 🔥</h4>
-                        <p class="video-description">Modern agri-tech secrets that boost yield & save costs. Precision farming insights revealed.</p>
-                    </div>
-                </div>
-                <div class="video-card" style="opacity: 0.7;">
-                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #2e7d32, #1b5e20); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-plus-circle" style="font-size: 48px; color: #f9a825;"></i>
-                    </div>
-                    <div class="video-info">
-                        <span class="video-duration"><i class="far fa-clock"></i> Coming Soon</span>
-                        <h4>More Videos Coming Soon...</h4>
-                        <p class="video-description">Stay tuned for more farming tips, crop guidance, and success stories.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="view-all-btn">
-                <a href="https://www.youtube.com/@PatuKrishi" target="_blank" class="btn-3d" style="display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fab fa-youtube"></i> Subscribe to PatuKrishi YouTube
-                </a>
-            </div>
-        </section>
 
         <section id="about-section" class="content-section">
             <h2 class="agri-border"><i class="fas fa-info-circle"></i> <span data-translate="about-title">About Us · Hamari Kahani</span></h2>
@@ -368,14 +347,13 @@
     <footer class="official-footer">
         <div class="footer-grid">
             <div class="footer-col">
-                <div class="footer-logo"><img src="patukrishi-logo.png" alt="PatuKrishi Logo"></div>
+                <div class="footer-logo"><img src="patukrishi logo.png" alt="PatuKrishi Logo"></div>
                 <p data-translate="footer-tagline">Smart Farming for Indian farmers.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/people/PatuKrishi-Sustainable-Farming/pfbid02Q7jES5tykPXi4f11KRiXoDqdwLFkTGkBCaETi4fom8F533PWk2gt34KToLJF5woPl/" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/_patukrishi_/" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.linkedin.com/in/patukrishi-sustainable-farming-3559913b2/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="https://www.youtube.com/@PatuKrishi" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="#" onclick="shareOnWhatsApp(); return false;" title="Share PatuKrishi on WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             <div class="footer-col">
