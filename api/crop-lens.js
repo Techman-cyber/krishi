@@ -2,17 +2,23 @@
 // Vercel serverless function. Keeps the Kindwise crop.health API key on the
 // server so it never appears in browser-visible JS. Deploy as-is on Vercel;
 // no extra dependencies needed (Node 18+ has global fetch built in).
-//
-// SETUP:
-// 1. Get a free API key at https://admin.kindwise.com (product: crop.health)
-// 2. In your Vercel project: Settings -> Environment Variables
-//    Add: KINDWISE_API_KEY = <your key>
-// 3. Redeploy. That's it - the frontend already calls this endpoint.
-//
-// If the key isn't set yet, this returns { success: false, reason: 'not_configured' }
-// so the frontend can fall back to the built-in simulated Crop Lens instead of breaking.
 
 module.exports = async function handler(req, res) {
+    // 1. Handle CORS Headers so your frontend can communicate securely across domains
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+
+    // 2. Handle the browser's automatic preflight OPTIONS request instantly
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    // 3. Strictly enforce that the actual data request must be a POST
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, reason: 'method_not_allowed' });
     }
@@ -82,4 +88,4 @@ module.exports = async function handler(req, res) {
         console.error('crop-lens proxy error:', err);
         return res.status(200).json({ success: false, reason: 'request_failed' });
     }
-}
+};
