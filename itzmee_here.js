@@ -1,7 +1,7 @@
 (function(){
     // ==================== SWIPER INITIALIZATION ====================
     const swiper = new Swiper('.mySwiper', {
-        loop: !0,
+        loop: false,
         autoplay: {
             delay: 3e3,
             disableOnInteraction: !1
