@@ -1,134 +1,3 @@
-// ========== COMPLETE DEV TOOLS & SOURCE PROTECTION ==========
-
-// 1. Disable Right Click
-document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-  return false;
-});
-
-// 2. Disable Drag and Drop
-document.addEventListener('dragstart', function(e) {
-  e.preventDefault();
-  return false;
-});
-
-// 3. Disable Text Selection
-document.body.style.userSelect = 'none';
-document.body.style.webkitUserSelect = 'none';
-document.body.style.msUserSelect = 'none';
-
-// 4. Disable Image Dragging (including dynamically added images)
-const disableDragging = function() {
-  const images = document.querySelectorAll('img');
-  images.forEach(img => {
-    img.setAttribute('draggable', 'false');
-  });
-};
-disableDragging();
-new MutationObserver(disableDragging).observe(document.body, { childList: true, subtree: true });
-
-// 5. Disable ALL Keyboard Shortcuts
-document.addEventListener('keydown', function(e) {
-  // F12
-  if (e.key === 'F12') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+I (Inspect)
-  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+J (Console)
-  if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+C (Inspect Element)
-  if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+U (View Source)
-  if (e.ctrlKey && e.key === 'u') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+S (Save)
-  if (e.ctrlKey && e.key === 's') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+P (Print)
-  if (e.ctrlKey && e.key === 'p') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+K (Firefox Console)
-  if (e.ctrlKey && e.shiftKey && e.key === 'K') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+E (Firefox Inspector)
-  if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+M (Firefox Responsive)
-  if (e.ctrlKey && e.shiftKey && e.key === 'M') {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+P (Firefox Command)
-  if (e.ctrlKey && e.shiftKey && e.key === 'P') {
-    e.preventDefault();
-    return false;
-  }
-});
-
-// 6. Detect Dev Tools via Debugger
-let devToolsOpen = false;
-
-function detectDevTools() {
-  const start = performance.now();
-  debugger;
-  const end = performance.now();
-  
-  if (end - start > 100) {
-    if (!devToolsOpen) {
-      devToolsOpen = true;
-      // Clear page and show warning
-      document.body.innerHTML = `
-        <div style="text-align:center; padding:50px; min-height:100vh; background:#1a1a2e; color:white; display:flex; align-items:center; justify-content:center; flex-direction:column;">
-          <h1 style="font-size:3rem;">🔒 Access Denied</h1>
-          <p style="font-size:1.2rem; margin-top:1rem;">Developer Tools are not allowed on this site.</p>
-          <p>Please close Dev Tools and refresh the page.</p>
-        </div>
-      `;
-      document.body.style.margin = '0';
-      document.body.style.padding = '0';
-    }
-    return true;
-  }
-  devToolsOpen = false;
-  return false;
-}
-
-// Run immediately
-detectDevTools();
-
-// Keep checking every second
-setInterval(detectDevTools, 1000);
-
-// 9. Block view-source: URL
-if (window.location.protocol === 'view-source:') {
-  window.location.href = 'about:blank';
-}
-
-console.log('Protection Active');
-
-
-
 (function(){
     // ==================== SWIPER INITIALIZATION ====================
     const swiper = new Swiper('.mySwiper', {
@@ -2812,7 +2681,58 @@ const govtSchemesDB = [
         id: 130, name: "Direct Marketing Scheme", fullName: "Farmers' Direct Marketing Scheme", category: "market",
         icon: "fa-store", amount: "50% subsidy up to ₹2 lakh", benefits: ["Farmer market stall subsidy", "Direct-to-consumer sales", "Branding support", "Digital payment setup"],
         eligibility: ["Individual farmers", "FPOs", "SHGs", "Women farmers"], documents: ["Land records", "Market stall plan", "Aadhaar", "Bank account"], helpline: "1800-180-1551", website: "https://agricoop.nic.in"
-    }
+    },
+  // ========== EMPLOYMENT & SKILL DEVELOPMENT SCHEMES (10 schemes) ==========
+{
+    id: 131, name: "MGNREGA Agriculture", fullName: "Mahatma Gandhi NREGA - Agriculture Works", category: "employment",
+    icon: "fa-hard-hat", amount: "100 days guaranteed wage", benefits: ["100 days guaranteed employment", "₹300+ daily wage", "Farm pond construction", "Land development works", "Irrigation canal work"],
+    eligibility: ["All rural households", "Adult members willing to do unskilled work", "Priority to SC/ST/women"], documents: ["Job card", "Aadhaar", "Bank account", "Ration card"], helpline: "1800-11-0001", website: "https://nrega.nic.in"
+},
+{
+    id: 132, name: "Agri-Clinics & Agri-Business Centres", fullName: "ACABC - Agri-Entrepreneurship Scheme", category: "employment",
+    icon: "fa-briefcase", amount: "₹20 lakh loan + 44% subsidy", benefits: ["Training for agri-graduates", "44% subsidy on project cost", "Loan up to ₹20 lakh", "Monthly stipend during training"],
+    eligibility: ["Agriculture graduates", "Diploma holders in agriculture", "Biological science graduates", "Post-graduates in agri-allied subjects"], documents: ["Degree certificate", "Aadhaar", "Bank account", "Business plan", "NOC from NABARD"], helpline: "1800-180-1551", website: "https://agripreneur.nic.in"
+},
+{
+    id: 133, name: "Skill Development in Agriculture", fullName: "National Skill Development in Agriculture", category: "employment",
+    icon: "fa-graduation-cap", amount: "Free training + ₹5,000 stipend", benefits: ["Free skill training programs", "Drone pilot training", "Soil testing technician", "Farm machinery operator", "Food processing skills"],
+    eligibility: ["Rural youth (18-35 years)", "Farmers' children", "Women farmers", "School dropouts"], documents: ["Aadhaar", "Age proof", "Educational certificates", "Bank account", "Passport photo"], helpline: "1800-180-1551", website: "https://agricoop.nic.in"
+},
+{
+    id: 134, name: "PMKVY Agriculture", fullName: "Pradhan Mantri Kaushal Vikas Yojana - Agriculture", category: "employment",
+    icon: "fa-tools", amount: "Free training + certification", benefits: ["Free vocational training", "Government certification", "Job placement assistance", "Recognition of Prior Learning", "Agri-machinery repair training"],
+    eligibility: ["Youth aged 18-45", "Farmers' families", "Rural and urban youth", "Women candidates"], documents: ["Aadhaar", "Age proof", "Educational documents", "Bank account", "Mobile number"], helpline: "1800-123-9626", website: "https://pmkvyofficial.org"
+},
+{
+    id: 135, name: "Startup India - Agriculture", fullName: "Startup India Agriculture Grand Challenge", category: "employment",
+    icon: "fa-rocket", amount: "₹50 lakh seed funding", benefits: ["Seed funding up to ₹50 lakh", "Mentorship from experts", "Incubation support", "Tax exemption for 3 years", "Patent filing support"],
+    eligibility: ["Agri-tech startups", "Young entrepreneurs (18-35)", "Innovative agri-solutions", "Registered startups (DPIIT)"], documents: ["Startup registration", "Innovation details", "Business plan", "Team profiles", "Bank account"], helpline: "1800-115-565", website: "https://startupindia.gov.in"
+},
+{
+    id: 136, name: "Rural Self Employment Training", fullName: "RSETI - Rural Self Employment Training Institutes", category: "employment",
+    icon: "fa-chalkboard-teacher", amount: "Free training + credit linkage", benefits: ["Free residential training (7-30 days)", "Dairy farming training", "Poultry & goat farming", "Bank credit linkage", "Post-training handholding"],
+    eligibility: ["Rural youth (18-45 years)", "Unemployed youth", "Farmers' children", "Women candidates"], documents: ["Aadhaar", "Ration card", "Income certificate", "Bank account", "Passport photos"], helpline: "1800-425-1515", website: "https://rseti.gov.in"
+},
+{
+    id: 137, name: "Rashtriya Yuva Sashaktikaran Karyakram", fullName: "National Youth Empowerment Program - Agriculture", category: "employment",
+    icon: "fa-users", amount: "₹2 lakh project support", benefits: ["Youth-led agricultural projects", "Leadership development", "Community farming initiatives", "Financial literacy training", "Market linkage support"],
+    eligibility: ["Youth groups (15-29 years)", "Youth clubs", "Nehru Yuva Kendra members", "Rural youth organizations"], documents: ["Group registration", "Member details", "Aadhaar", "Bank account", "Project proposal"], helpline: "011-23382122", website: "https://nyks.nic.in"
+},
+{
+    id: 138, name: "Deen Dayal Upadhyaya Grameen Kaushalya Yojana", fullName: "DDU-GKY - Rural Skill Development", category: "employment",
+    icon: "fa-cogs", amount: "Free training + ₹1,000/month stipend", benefits: ["3-12 months skill training", "Monthly stipend during training", "100% job placement guarantee", "Post-placement support", "Food and accommodation free"],
+    eligibility: ["Rural poor youth (18-35 years)", "SC/ST/women priority", "BPL families", "MGNREGA worker families"], documents: ["Aadhaar", "BPL certificate", "Age proof", "Bank account", "Passport photo"], helpline: "1800-266-6146", website: "https://ddugky.gov.in"
+},
+{
+    id: 139, name: "National Livelihood Mission - Farm Livelihoods", fullName: "NRLM - Aajeevika Farm Livelihoods", category: "employment",
+    icon: "fa-hands-helping", amount: "₹50,000 per SHG", benefits: ["SHG-based farming activities", "Community investment fund", "Revolving fund support", "Value chain development", "Market linkage"],
+    eligibility: ["Women SHGs under NRLM", "Farmers' collectives", "Producer groups", "Village organizations"], documents: ["SHG registration", "Member list", "Bank account", "Resolution copy", "Aadhaar"], helpline: "1800-180-1551", website: "https://aajeevika.gov.in"
+},
+{
+    id: 140, name: "Krishi Vigyan Kendra Training", fullName: "KVK - Farmer Training & Employment Program", category: "employment",
+    icon: "fa-microscope", amount: "Free training + inputs", benefits: ["Hands-on training at KVKs", "Integrated farming training", "Value addition training", "Input kits provided", "Certificate from ICAR"],
+    eligibility: ["All farmers", "Farm women", "Rural youth", "School dropouts", "Agri-entrepreneurs"], documents: ["Aadhaar", "Land records (if applicable)", "Bank account", "2 passport photos", "Mobile number"], helpline: "011-25843277", website: "https://kvk.icar.gov.in"
+}
 ];
 
 // =====================================================
@@ -3000,4 +2920,438 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+  
 })();
+// =====================================================
+// AUTH SYSTEM (EmailJS-based signup/login/verification)
+// Moved out of index.html inline <script> block
+// =====================================================
+    // EmailJS Configuration
+    const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';
+    const EMAILJS_SERVICE_ID = 'service_c48sfqj';
+    const EMAILJS_TEMPLATE_ID = 'template_tzsa9yh';
+    
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    
+    // Database
+    let users = JSON.parse(localStorage.getItem('patukrishi_users') || '{}');
+    let pendingVerifications = JSON.parse(localStorage.getItem('patukrishi_pending') || '{}');
+    let currentPendingEmail = null;
+    
+    // Generate 6-digit verification code
+    function generateCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    
+    // Send verification email
+    async function sendVerificationEmail(email, name, code) {
+        try {
+            const templateParams = {
+                email: email,
+                to_name: name,
+                name: name,
+                passcode: code,
+                time: new Date().toLocaleTimeString()
+            };
+            
+            const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            console.log('Email sent successfully!', response);
+            return { success: true };
+        } catch (error) {
+            console.error('Email failed:', error);
+            return { success: false, error: error.text || 'Failed to send email' };
+        }
+    }
+    
+    // Show loading state on button
+    function setButtonLoading(buttonId, isLoading) {
+        const btn = document.getElementById(buttonId);
+        if (btn) {
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loader"></span> Please wait...';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = buttonId === 'login-btn' ? 'Login' : 'Create Account';
+            }
+        }
+    }
+    
+    // Switch between login and signup tabs
+    window.switchAuthTabNew = (tab) => {
+        document.querySelectorAll('#authModal .auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#authModal .auth-form').forEach(f => f.classList.remove('active'));
+        document.getElementById('verification-section').style.display = 'none';
+        document.getElementById('verify-error').innerText = '';
+        
+        if (tab === 'login') {
+            document.querySelectorAll('#authModal .auth-tab')[0].classList.add('active');
+            document.getElementById('login-form-new').classList.add('active');
+        } else {
+            document.querySelectorAll('#authModal .auth-tab')[1].classList.add('active');
+            document.getElementById('signup-form-new').classList.add('active');
+        }
+    };
+    
+    // Handle Signup
+    window.handleSignupNew = async () => {
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const errorDiv = document.getElementById('signup-error');
+        
+        if (!name || !email || !password) {
+            errorDiv.innerText = 'Please fill all fields';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        if (password.length < 4) {
+            errorDiv.innerText = 'Password must be at least 4 characters';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        if (users[email]) {
+            errorDiv.innerText = 'Email already registered. Please login.';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        const code = generateCode();
+        
+        setButtonLoading('signup-btn', true);
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '📧 Sending verification email...';
+        
+        const emailResult = await sendVerificationEmail(email, name, code);
+        
+        if (!emailResult.success) {
+            setButtonLoading('signup-btn', false);
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = '❌ ' + emailResult.error;
+            return;
+        }
+        
+        pendingVerifications[email] = {
+            name: name,
+            password: password,
+            code: code,
+            expires: Date.now() + 15 * 60 * 1000
+        };
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        currentPendingEmail = email;
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerHTML = '✅ Verification code sent to ' + email + '! Please check your inbox (and spam folder).';
+        
+        document.getElementById('signup-name').value = '';
+        document.getElementById('signup-email').value = '';
+        document.getElementById('signup-password').value = '';
+        document.getElementById('verification-section').style.display = 'block';
+        document.getElementById('verify-code').value = '';
+        document.getElementById('verify-error').innerText = '';
+        
+        setButtonLoading('signup-btn', false);
+    };
+    
+    // Verify Code
+    window.verifyCodeNew = () => {
+        const code = document.getElementById('verify-code').value;
+        const email = currentPendingEmail;
+        const errorDiv = document.getElementById('verify-error');
+        
+        if (!code || code.length !== 6) {
+            errorDiv.innerText = 'Please enter the 6-digit verification code';
+            return;
+        }
+        
+        if (!email) {
+            errorDiv.innerText = 'No pending verification. Please sign up again.';
+            return;
+        }
+        
+        const pending = pendingVerifications[email];
+        
+        if (!pending) {
+            errorDiv.innerText = 'No pending verification found. Please sign up again.';
+            return;
+        }
+        
+        if (pending.code !== code) {
+            errorDiv.innerText = '❌ Invalid verification code. Please try again.';
+            return;
+        }
+        
+        if (pending.expires < Date.now()) {
+            errorDiv.innerText = '❌ Verification code expired. Please click "Resend" to get a new code.';
+            return;
+        }
+        
+        // Verified! Move to users database
+        users[email] = {
+            name: pending.name,
+            email: email,
+            password: pending.password,
+            verified: true,
+            createdAt: new Date().toISOString()
+        };
+        
+        delete pendingVerifications[email];
+        localStorage.setItem('patukrishi_users', JSON.stringify(users));
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '✅ Account verified successfully! You can now login.';
+        
+        setTimeout(() => {
+            document.getElementById('verification-section').style.display = 'none';
+            document.getElementById('login-email').value = email;
+            switchAuthTabNew('login');
+            errorDiv.innerText = '';
+        }, 2000);
+    };
+    
+    // Resend verification code
+    window.resendCodeNew = async () => {
+        const email = currentPendingEmail;
+        const errorDiv = document.getElementById('verify-error');
+        
+        if (!email) {
+            errorDiv.innerText = 'No pending verification. Please sign up again.';
+            return;
+        }
+        
+        const pending = pendingVerifications[email];
+        
+        if (!pending) {
+            errorDiv.innerText = 'No pending verification found. Please sign up again.';
+            return;
+        }
+        
+        const newCode = generateCode();
+        pending.code = newCode;
+        pending.expires = Date.now() + 15 * 60 * 1000;
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '📧 Sending new code...';
+        
+        const emailResult = await sendVerificationEmail(email, pending.name, newCode);
+        
+        if (emailResult.success) {
+            errorDiv.className = 'success-message';
+            errorDiv.innerText = '✅ New verification code sent! Please check your email.';
+        } else {
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = '❌ ' + emailResult.error;
+        }
+    };
+    
+    // Handle Login
+    window.handleLoginNew = async () => {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const errorDiv = document.getElementById('login-error');
+        
+        if (!email || !password) {
+            errorDiv.innerText = 'Please enter email and password';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        setButtonLoading('login-btn', true);
+        errorDiv.innerText = '';
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        const user = users[email];
+        
+        if (!user) {
+            errorDiv.innerText = 'No account found. Please sign up first.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        if (user.password !== password) {
+            errorDiv.innerText = 'Incorrect password. Please try again.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        if (!user.verified) {
+            errorDiv.innerText = 'Please verify your email first. Check your inbox for the verification code.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        localStorage.setItem('patukrishi_session', JSON.stringify({ name: user.name, email: user.email }));
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '✅ Login successful! Redirecting...';
+        
+        setTimeout(() => {
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            // Update user info in header
+            if (typeof loadDashboard === 'function') {
+                loadDashboard();
+            } else {
+                location.reload();
+            }
+        }, 1000);
+    };
+    
+    // Check if already logged in
+    const session = localStorage.getItem('patukrishi_session');
+    if (session) {
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('authModal').style.display = 'none';
+    } else {
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('authModal').style.display = 'flex';
+    }
+    
+    // Remove old auth container
+    const oldAuth = document.getElementById('auth-container');
+    if (oldAuth) oldAuth.style.display = 'none';
+// =====================================================
+// CONTACT FORM HANDLER (EmailJS)
+// Moved out of index.html inline <script> block
+// =====================================================
+    if (document.getElementById('patuContactForm')) {
+        document.getElementById('patuContactForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('patuName').value;
+            const mobile = document.getElementById('patuMobile').value;
+            const email = document.getElementById('patuEmail').value;
+            const message = document.getElementById('patuMessage').value;
+            const statusDiv = document.getElementById('patuFormStatus');
+            
+            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
+            statusDiv.style.color = '#f9a825';
+            
+            try {
+                const templateParams = {
+                    from_name: name,
+                    from_email: email,
+                    mobile: mobile,
+                    message: message,
+                    to_email: 'patukrishi@gmail.com'
+                };
+                
+                const response = await emailjs.send('service_c48sfqj', 'template_xnjx3mg', templateParams);
+                
+                if (response.status === 200) {
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Message sent successfully! We\'ll get back to you soon.';
+                    statusDiv.style.color = '#4caf50';
+                    document.getElementById('patuContactForm').reset();
+                    
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '';
+                    }, 5000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Failed to send message. Please try again later.';
+                statusDiv.style.color = '#f44336';
+                
+                setTimeout(() => {
+                    statusDiv.innerHTML = '';
+                }, 5000);
+            }
+        });
+    }
+// =====================================================
+// NEW FEATURE: VOICE INPUT FOR KRISHI BOT (Web Speech API)
+// Works entirely in-browser, no backend/API key needed.
+// Falls back silently (button hidden) on unsupported browsers.
+// =====================================================
+(function initVoiceInput() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const micBtn = document.getElementById('chat-mic-btn');
+    const chatInput = document.getElementById('chat-input');
+
+    if (!SpeechRecognition || !micBtn || !chatInput) {
+        if (micBtn) micBtn.style.display = 'none'; // hide if unsupported
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    // Map site language to a speech-recognition locale (best-effort; falls back to Hindi/English)
+    const speechLangMap = {
+        en: 'en-IN', hi: 'hi-IN', bn: 'bn-IN', te: 'te-IN', mr: 'mr-IN',
+        gu: 'gu-IN', pa: 'pa-IN', ta: 'ta-IN', ml: 'ml-IN', ur: 'ur-IN',
+        kn: 'kn-IN', or: 'or-IN', mwr: 'hi-IN', sa: 'hi-IN'
+    };
+
+    let listening = false;
+
+    micBtn.addEventListener('click', () => {
+        if (listening) {
+            recognition.stop();
+            return;
+        }
+        recognition.lang = speechLangMap[window.currentLanguage] || 'hi-IN';
+        try {
+            recognition.start();
+        } catch (e) {
+            console.warn('Speech recognition could not start:', e);
+        }
+    });
+
+    recognition.onstart = () => {
+        listening = true;
+        micBtn.classList.add('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+    };
+
+    recognition.onerror = () => {
+        listening = false;
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+
+    recognition.onend = () => {
+        listening = false;
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+})();
+
+// =====================================================
+// NEW FEATURE: WHATSAPP SHARE (no backend required)
+// Lets a farmer share the app, or the currently visible
+// mandi price / scheme, over WhatsApp in one tap.
+// =====================================================
+window.shareOnWhatsApp = function(customText) {
+    const text = customText || 'Check out PatuKrishi 🌾 - free live mandi prices, weather, crop disease detection and government schemes for farmers: https://patukrishi.vercel.app';
+    const url = 'https://wa.me/?text=' + encodeURIComponent(text);
+    window.open(url, '_blank');
+};
+
+// Share the currently displayed mandi price card (best-effort text summary)
+window.shareMandiOnWhatsApp = function() {
+    const messageDiv = document.getElementById('mandi-multiple-list');
+    const stateSel = document.getElementById('mandiStateSelect');
+    const cropSel = document.getElementById('mandiCropSelect');
+    let text = 'PatuKrishi Mandi Bhav 🌾\n';
+    if (stateSel && cropSel && stateSel.value && cropSel.value) {
+        text += `${cropSel.value} - ${stateSel.value}\n`;
+    }
+    text += 'Check live rates: https://patukrishi.vercel.app';
+    shareOnWhatsApp(text);
+};
