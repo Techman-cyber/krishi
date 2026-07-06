@@ -1,5 +1,19 @@
 // /api/chatbot.js
 // Vercel serverless function. Keeps the Gemini API key on the server.
+// Node 18+ has global fetch built in - no extra dependencies needed.
+//
+// SETUP:
+// 1. Get a free API key at https://aistudio.google.com/app/apikey
+// 2. In your Vercel project: Settings -> Environment Variables
+//    Add: GEMINI_API_KEY = <your key>
+// 3. Redeploy. That's it - the frontend already calls this endpoint.
+//
+// If the key isn't set yet, this returns { success: false, reason: 'not_configured' }
+// so the frontend falls back to the existing rule-based Krishi Bot instead of breaking.
+//
+// Model name note: Google updates Gemini model IDs over time. If this stops
+// working, check https://ai.google.dev/gemini-api/docs/models for the current
+// recommended "flash" model name and swap it into GEMINI_MODEL below.
 
 const GEMINI_MODEL = 'gemini-2.0-flash';
 
@@ -10,21 +24,6 @@ const LANGUAGE_NAMES = {
 };
 
 module.exports = async function handler(req, res) {
-    // 1. Handle CORS Headers so your frontend can communicate securely
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', '*'); 
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
-
-    // 2. Handle the browser's automatic preflight OPTIONS request
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    // 3. Strictly enforce that the actual request must be a POST
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, reason: 'method_not_allowed' });
     }
@@ -66,7 +65,11 @@ for exact figures.`;
         if (!geminiRes.ok) {
             const errText = await geminiRes.text();
             console.error('Gemini API error:', geminiRes.status, errText);
-            return res.status(200).json({ success: false, reason: 'provider_error' });
+            return res.status(200).json({
+                success: false,
+                reason: 'provider_error',
+                debug: { status: geminiRes.status, message: errText.slice(0, 500) }
+            });
         }
 
         const data = await geminiRes.json();
@@ -79,6 +82,6 @@ for exact figures.`;
         return res.status(200).json({ success: true, reply: reply.trim() });
     } catch (err) {
         console.error('chatbot proxy error:', err);
-        return res.status(200).json({ success: false, reason: 'request_failed' });
+        return res.status(200).json({ success: false, reason: 'request_failed', debug: String(err && err.message || err) });
     }
-};
+}
