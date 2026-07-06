@@ -1,21 +1,14 @@
 // /api/chatbot.js
-// Vercel serverless function. Keeps the Gemini API key on the server.
+// Vercel serverless function. Keeps the OpenRouter API key on the server.
 // Node 18+ has global fetch built in - no extra dependencies needed.
 //
 // SETUP:
-// 1. Get a free API key at https://aistudio.google.com/app/apikey
+// 1. Get an API key at https://openrouter.ai/
 // 2. In your Vercel project: Settings -> Environment Variables
-//    Add: GEMINI_API_KEY = <your key>
-// 3. Redeploy. That's it - the frontend already calls this endpoint.
-//
-// If the key isn't set yet, this returns { success: false, reason: 'not_configured' }
-// so the frontend falls back to the existing rule-based Krishi Bot instead of breaking.
-//
-// Model name note: Google updates Gemini model IDs over time. If this stops
-// working, check https://ai.google.dev/gemini-api/docs/models for the current
-// recommended "flash" model name and swap it into GEMINI_MODEL below.
+//    Add: OPENROUTER_API_KEY = <your openrouter key>
+// 3. Redeploy.
 
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const MODEL_NAME = 'openai/gpt-4o';
 
 const LANGUAGE_NAMES = {
     en: 'English', hi: 'Hindi', bn: 'Bengali', te: 'Telugu', mr: 'Marathi',
@@ -28,7 +21,7 @@ module.exports = async function handler(req, res) {
         return res.status(405).json({ success: false, reason: 'method_not_allowed' });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
         return res.status(200).json({ success: false, reason: 'not_configured' });
     }
@@ -49,31 +42,40 @@ if unsure, and suggest the farmer check the app's Mandi Prices, Advisory, or Gov
 for exact figures.`;
 
     try {
-        const geminiRes = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
+        const openRouterRes = await fetch(
+            'https://openrouter.ai/api/v1/chat/completions',
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': 'https://krishi-18o0jqwtd-techman-cybers-projects.vercel.app', // Optional: Replace with your actual domain
+                    'X-Title': 'PatuKrishi App', // Optional: Replace with your actual app name
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
-                    system_instruction: { parts: [{ text: systemPrompt }] },
-                    contents: [{ role: 'user', parts: [{ text: message }] }],
-                    generationConfig: { maxOutputTokens: 300, temperature: 0.6 }
+                    model: MODEL_NAME,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: message }
+                    ],
+                    max_tokens: 300,
+                    temperature: 0.6
                 })
             }
         );
 
-        if (!geminiRes.ok) {
-            const errText = await geminiRes.text();
-            console.error('Gemini API error:', geminiRes.status, errText);
+        if (!openRouterRes.ok) {
+            const errText = await openRouterRes.text();
+            console.error('OpenRouter API error:', openRouterRes.status, errText);
             return res.status(200).json({
                 success: false,
                 reason: 'provider_error',
-                debug: { status: geminiRes.status, message: errText.slice(0, 500) }
+                debug: { status: openRouterRes.status, message: errText.slice(0, 500) }
             });
         }
 
-        const data = await geminiRes.json();
-        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const data = await openRouterRes.json();
+        const reply = data?.choices?.[0]?.message?.content;
 
         if (!reply) {
             return res.status(200).json({ success: false, reason: 'empty_response' });
