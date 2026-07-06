@@ -13,9 +13,6 @@
     <!-- External CSS libraries -->
 
     <link rel="icon" type="image/png" href="patukrishi logo.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2e7d32">
-    <link rel="apple-touch-icon" href="patukrishi logo.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -32,6 +29,332 @@
     <!-- EmailJS Library -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
+<style>
+   /* Custom Cursor Integration */
+
+        body {
+
+            /* Yellow Pointer + Seedling Emoji for PatuKrishi vibe */
+
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), auto;
+
+        }
+
+
+        /* Ensure interactive elements keep a clean pointer or the custom cursor */
+
+        button, .click-card, .nav-item, .lang-header, .user-profile {
+
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), pointer;
+
+        }
+  /* Language Modal - Full Screen Blur */
+.lang-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.lang-modal-overlay.show {
+    display: flex;
+}
+
+.lang-modal-content {
+    background: white;
+    border-radius: 32px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 25px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.lang-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f9a825;
+}
+
+.lang-modal-header h3 {
+    margin: 0;
+    color: #2e7d32;
+}
+
+.lang-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.lang-modal-close:hover {
+    color: #d32f2f;
+}
+
+.lang-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.lang-option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #f5f5f5;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lang-option-item:hover {
+    background: #2e7d32;
+    color: white;
+}
+
+.lang-option-item.active {
+    background: #2e7d32;
+    color: white;
+}
+
+.lang-option-item .flag {
+    font-size: 1.5rem;
+}
+
+.lang-option-item .lang-native {
+    font-size: 0.8rem;
+    margin-left: auto;
+}
+
+@media (max-width: 500px) {
+    .lang-options-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* NEW AUTH MODAL STYLES */
+.auth-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-modal {
+    background: white;
+    border-radius: 32px;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    animation: modalFadeIn 0.3s ease;
+    overflow: hidden;
+}
+
+.auth-modal-header {
+    background: linear-gradient(135deg, #2e7d32, #f9a825);
+    padding: 30px;
+    text-align: center;
+    color: white;
+}
+
+.auth-modal-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.auth-modal-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.auth-modal-body {
+    padding: 30px;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.3s;
+}
+
+.auth-tab.active {
+    color: #2e7d32;
+    border-bottom: 3px solid #2e7d32;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 14px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.auth-form button:hover {
+    background: #1b5e20;
+}
+
+.auth-form button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.success-message {
+    color: #4caf50;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top: 2px solid #2e7d32;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+.verify-title {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.verify-subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+#verify-code {
+    text-align: center;
+    font-size: 1.3rem;
+    letter-spacing: 8px;
+    font-weight: bold;
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+}
+
+.resend-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.resend-link a {
+    color: #2e7d32;
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.resend-link a:hover {
+    text-decoration: underline;
+}
+
+.info-note {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 15px;
+}
+</style>
   
    
 </head>
@@ -167,7 +490,7 @@
 
         <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
 
-      <nav class="main-nav"><span class="nav-item active" data-section="home" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" data-section="weather" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" data-section="mandi" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" data-section="lens" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" data-section="advisory" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" data-section="calendar" onclick="switchSection('calendar')"><span data-translate="calendar">Crop Calendar</span></span><span class="nav-item" data-section="schemes" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" data-section="about" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
+      <nav class="main-nav"><span class="nav-item active" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" onclick="switchSection('videos')"><span data-translate="videos">Videos</span></span><span class="nav-item" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
 
         <div style="display:flex;gap:18px;align-items:center">
 
@@ -263,19 +586,6 @@
 
         <section id="advisory-section" class="content-section"><h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span data-translate="advisory-title">Crop Advisory · Pura Guide</span></h2><div class="card"><div style="display:flex;gap:12px;margin-bottom:20px"><button class="btn-3d" id="generalModeBtn" onclick="setAdvisoryMode('general')" style="flex:1">🌾 <span data-translate="state-season">State/UT + Season</span></button><button class="btn-3d" id="specificModeBtn" onclick="setAdvisoryMode('specific')" style="flex:1;background:#f9a825">🌱 <span data-translate="specific-crop">Specific Crop (3-Step)</span></button></div><div id="generalAdvisoryInputs"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="advisoryStateSelect" class="nice-select" style="flex:1"></select><select id="advisorySeasonSelect" class="nice-select" style="flex:1"><option value="Rabi">Rabi (Winter)</option><option value="Kharif">Kharif (Monsoon)</option><option value="Zaid">Zaid (Summer)</option></select><button class="btn-3d" onclick="showGeneralAdvisory()"><span data-translate="get-advice">Get Advice</span></button></div><div id="generalAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div><div id="specificAdvisoryInputs" style="display:none"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="specificCropSelect" class="nice-select" style="flex:2"></select><button class="btn-3d" onclick="showSpecificAdvisory()"><span data-translate="get-guide">Get 3-Step Guide</span></button></div><div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div></div></section>
 
-        <section id="calendar-section" class="content-section">
-            <h2 class="agri-border"><i class="fas fa-calendar-check"></i> <span data-translate="calendar-title">Crop Calendar · Boai se Katai Tak</span></h2>
-            <div class="card">
-                <p class="big-friendly" style="margin-bottom:20px" data-translate="calendar-desc">Select your crop and sowing date. We'll show you the key stages ahead and what to do this week.</p>
-                <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
-                    <select id="calendarCropSelect" class="nice-select" style="flex:1"></select>
-                    <input type="date" id="calendarSowingDate" class="form-input" style="flex:1;min-width:180px">
-                    <button class="btn-3d" onclick="addCropCalendarEntry()"><span data-translate="add-crop">Add to My Calendar</span></button>
-                </div>
-                <div id="myCropCalendarList"></div>
-            </div>
-        </section>
-
 <section id="schemes-section" class="content-section">
     <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
     <div class="schemes-stats-bar">
@@ -303,6 +613,40 @@
     </div>
     <div id="allSchemesContainer" class="schemes-full-grid"></div>
 </section>
+
+        <section id="videos-section" class="content-section">
+            <div class="section-header-with-icon" data-aos="fade-up">
+                <i class="fas fa-video" style="font-size: 2rem; color: #f9a825;"></i>
+                <h2><span data-translate="videos">PatuKrishi Video Library</span></h2>
+            </div>
+            <div class="video-gallery" data-aos="fade-up">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <iframe src="https://www.youtube.com/embed/h8CF8SFDAgM" title="Smart Farmers Use This" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-duration"><i class="far fa-clock"></i> 5:02 min</span>
+                        <h4>📊 Smart Farmers Use This… Do You? | PatuKrishi 🔥</h4>
+                        <p class="video-description">Modern agri-tech secrets that boost yield & save costs. Precision farming insights revealed.</p>
+                    </div>
+                </div>
+                <div class="video-card" style="opacity: 0.7;">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, #2e7d32, #1b5e20); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-plus-circle" style="font-size: 48px; color: #f9a825;"></i>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-duration"><i class="far fa-clock"></i> Coming Soon</span>
+                        <h4>More Videos Coming Soon...</h4>
+                        <p class="video-description">Stay tuned for more farming tips, crop guidance, and success stories.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="view-all-btn">
+                <a href="https://www.youtube.com/@PatuKrishi" target="_blank" class="btn-3d" style="display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fab fa-youtube"></i> Subscribe to PatuKrishi YouTube
+                </a>
+            </div>
+        </section>
 
         <section id="about-section" class="content-section">
             <h2 class="agri-border"><i class="fas fa-info-circle"></i> <span data-translate="about-title">About Us · Hamari Kahani</span></h2>
@@ -354,6 +698,7 @@
                     <a href="https://www.instagram.com/_patukrishi_/" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.linkedin.com/in/patukrishi-sustainable-farming-3559913b2/" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="https://www.youtube.com/@PatuKrishi" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -400,7 +745,7 @@
 
 <button class="chatbot-btn" onclick="toggleChatbot()"><i class="fas fa-robot"></i></button>
 
-<div class="chatbot-window" id="chat-window"><div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px"><i class="fas fa-robot"></i><span data-translate="krishi-bot">Krishi Bot</span><i class="fas fa-times" style="margin-left:auto;cursor:pointer" onclick="toggleChatbot()"></i></div><div class="chat-messages" id="chat-messages"><div class="message msg-bot" data-translate="bot-welcome">🙏 Namaskar! Main aapka Krishi Bot hoon. Poochhiye - mandi bhav, mausam, crop lens, advisory, analytics ya kuch bhi!</div></div><div class="chat-input-area"><button id="chat-mic-btn" title="Speak your question" style="background:#f9a825"><i class="fas fa-microphone"></i></button><input id="chat-input" placeholder="Yahan likhiye..." onkeypress="if(event.key==='Enter') sendMessage()" data-translate="chat-placeholder"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button></div></div>
+<div class="chatbot-window" id="chat-window"><div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px"><i class="fas fa-robot"></i><span data-translate="krishi-bot">Krishi Bot</span><i class="fas fa-times" style="margin-left:auto;cursor:pointer" onclick="toggleChatbot()"></i></div><div class="chat-messages" id="chat-messages"><div class="message msg-bot" data-translate="bot-welcome">🙏 Namaskar! Main aapka Krishi Bot hoon. Poochhiye - mandi bhav, mausam, crop lens, advisory, analytics ya kuch bhi!</div></div><div class="chat-input-area"><input id="chat-input" placeholder="Yahan likhiye..." onkeypress="if(event.key==='Enter') sendMessage()" data-translate="chat-placeholder"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button></div></div>
 
 <div id="notification-container"></div>
 
@@ -412,8 +757,350 @@
 <!-- Your custom JavaScript -->
 <script src="itzmee_here.js"></script>
 
-<!-- Auth system now lives in itzmee_here.js -->
+<!-- NEW AUTH SYSTEM SCRIPT -->
+<script>
+    // EmailJS Configuration
+    const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';
+    const EMAILJS_SERVICE_ID = 'service_c48sfqj';
+    const EMAILJS_TEMPLATE_ID = 'template_tzsa9yh';
+    
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    
+    // Database
+    let users = JSON.parse(localStorage.getItem('patukrishi_users') || '{}');
+    let pendingVerifications = JSON.parse(localStorage.getItem('patukrishi_pending') || '{}');
+    let currentPendingEmail = null;
+    
+    // Generate 6-digit verification code
+    function generateCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    
+    // Send verification email
+    async function sendVerificationEmail(email, name, code) {
+        try {
+            const templateParams = {
+                email: email,
+                to_name: name,
+                name: name,
+                passcode: code,
+                time: new Date().toLocaleTimeString()
+            };
+            
+            const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            console.log('Email sent successfully!', response);
+            return { success: true };
+        } catch (error) {
+            console.error('Email failed:', error);
+            return { success: false, error: error.text || 'Failed to send email' };
+        }
+    }
+    
+    // Show loading state on button
+    function setButtonLoading(buttonId, isLoading) {
+        const btn = document.getElementById(buttonId);
+        if (btn) {
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loader"></span> Please wait...';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = buttonId === 'login-btn' ? 'Login' : 'Create Account';
+            }
+        }
+    }
+    
+    // Switch between login and signup tabs
+    window.switchAuthTabNew = (tab) => {
+        document.querySelectorAll('#authModal .auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#authModal .auth-form').forEach(f => f.classList.remove('active'));
+        document.getElementById('verification-section').style.display = 'none';
+        document.getElementById('verify-error').innerText = '';
+        
+        if (tab === 'login') {
+            document.querySelectorAll('#authModal .auth-tab')[0].classList.add('active');
+            document.getElementById('login-form-new').classList.add('active');
+        } else {
+            document.querySelectorAll('#authModal .auth-tab')[1].classList.add('active');
+            document.getElementById('signup-form-new').classList.add('active');
+        }
+    };
+    
+    // Handle Signup
+    window.handleSignupNew = async () => {
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const errorDiv = document.getElementById('signup-error');
+        
+        if (!name || !email || !password) {
+            errorDiv.innerText = 'Please fill all fields';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        if (password.length < 4) {
+            errorDiv.innerText = 'Password must be at least 4 characters';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        if (users[email]) {
+            errorDiv.innerText = 'Email already registered. Please login.';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        const code = generateCode();
+        
+        setButtonLoading('signup-btn', true);
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '📧 Sending verification email...';
+        
+        const emailResult = await sendVerificationEmail(email, name, code);
+        
+        if (!emailResult.success) {
+            setButtonLoading('signup-btn', false);
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = '❌ ' + emailResult.error;
+            return;
+        }
+        
+        pendingVerifications[email] = {
+            name: name,
+            password: password,
+            code: code,
+            expires: Date.now() + 15 * 60 * 1000
+        };
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        currentPendingEmail = email;
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerHTML = '✅ Verification code sent to ' + email + '! Please check your inbox (and spam folder).';
+        
+        document.getElementById('signup-name').value = '';
+        document.getElementById('signup-email').value = '';
+        document.getElementById('signup-password').value = '';
+        document.getElementById('verification-section').style.display = 'block';
+        document.getElementById('verify-code').value = '';
+        document.getElementById('verify-error').innerText = '';
+        
+        setButtonLoading('signup-btn', false);
+    };
+    
+    // Verify Code
+    window.verifyCodeNew = () => {
+        const code = document.getElementById('verify-code').value;
+        const email = currentPendingEmail;
+        const errorDiv = document.getElementById('verify-error');
+        
+        if (!code || code.length !== 6) {
+            errorDiv.innerText = 'Please enter the 6-digit verification code';
+            return;
+        }
+        
+        if (!email) {
+            errorDiv.innerText = 'No pending verification. Please sign up again.';
+            return;
+        }
+        
+        const pending = pendingVerifications[email];
+        
+        if (!pending) {
+            errorDiv.innerText = 'No pending verification found. Please sign up again.';
+            return;
+        }
+        
+        if (pending.code !== code) {
+            errorDiv.innerText = '❌ Invalid verification code. Please try again.';
+            return;
+        }
+        
+        if (pending.expires < Date.now()) {
+            errorDiv.innerText = '❌ Verification code expired. Please click "Resend" to get a new code.';
+            return;
+        }
+        
+        // Verified! Move to users database
+        users[email] = {
+            name: pending.name,
+            email: email,
+            password: pending.password,
+            verified: true,
+            createdAt: new Date().toISOString()
+        };
+        
+        delete pendingVerifications[email];
+        localStorage.setItem('patukrishi_users', JSON.stringify(users));
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '✅ Account verified successfully! You can now login.';
+        
+        setTimeout(() => {
+            document.getElementById('verification-section').style.display = 'none';
+            document.getElementById('login-email').value = email;
+            switchAuthTabNew('login');
+            errorDiv.innerText = '';
+        }, 2000);
+    };
+    
+    // Resend verification code
+    window.resendCodeNew = async () => {
+        const email = currentPendingEmail;
+        const errorDiv = document.getElementById('verify-error');
+        
+        if (!email) {
+            errorDiv.innerText = 'No pending verification. Please sign up again.';
+            return;
+        }
+        
+        const pending = pendingVerifications[email];
+        
+        if (!pending) {
+            errorDiv.innerText = 'No pending verification found. Please sign up again.';
+            return;
+        }
+        
+        const newCode = generateCode();
+        pending.code = newCode;
+        pending.expires = Date.now() + 15 * 60 * 1000;
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '📧 Sending new code...';
+        
+        const emailResult = await sendVerificationEmail(email, pending.name, newCode);
+        
+        if (emailResult.success) {
+            errorDiv.className = 'success-message';
+            errorDiv.innerText = '✅ New verification code sent! Please check your email.';
+        } else {
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = '❌ ' + emailResult.error;
+        }
+    };
+    
+    // Handle Login
+    window.handleLoginNew = async () => {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const errorDiv = document.getElementById('login-error');
+        
+        if (!email || !password) {
+            errorDiv.innerText = 'Please enter email and password';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        setButtonLoading('login-btn', true);
+        errorDiv.innerText = '';
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        const user = users[email];
+        
+        if (!user) {
+            errorDiv.innerText = 'No account found. Please sign up first.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        if (user.password !== password) {
+            errorDiv.innerText = 'Incorrect password. Please try again.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        if (!user.verified) {
+            errorDiv.innerText = 'Please verify your email first. Check your inbox for the verification code.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        localStorage.setItem('patukrishi_session', JSON.stringify({ name: user.name, email: user.email }));
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '✅ Login successful! Redirecting...';
+        
+        setTimeout(() => {
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            // Update user info in header
+            if (typeof loadDashboard === 'function') {
+                loadDashboard();
+            } else {
+                location.reload();
+            }
+        }, 1000);
+    };
+    
+    // Check if already logged in
+    const session = localStorage.getItem('patukrishi_session');
+    if (session) {
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('authModal').style.display = 'none';
+    } else {
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('authModal').style.display = 'flex';
+    }
+    
+    // Remove old auth container
+    const oldAuth = document.getElementById('auth-container');
+    if (oldAuth) oldAuth.style.display = 'none';
+</script>
 
+<!-- Contact Form Handler -->
+<script>
+    if (document.getElementById('patuContactForm')) {
+        document.getElementById('patuContactForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('patuName').value;
+            const mobile = document.getElementById('patuMobile').value;
+            const email = document.getElementById('patuEmail').value;
+            const message = document.getElementById('patuMessage').value;
+            const statusDiv = document.getElementById('patuFormStatus');
+            
+            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
+            statusDiv.style.color = '#f9a825';
+            
+            try {
+                const templateParams = {
+                    from_name: name,
+                    from_email: email,
+                    mobile: mobile,
+                    message: message,
+                    to_email: 'patukrishi@gmail.com'
+                };
+                
+                const response = await emailjs.send('service_c48sfqj', 'template_xnjx3mg', templateParams);
+                
+                if (response.status === 200) {
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Message sent successfully! We\'ll get back to you soon.';
+                    statusDiv.style.color = '#4caf50';
+                    document.getElementById('patuContactForm').reset();
+                    
+                    setTimeout(() => {
+                        statusDiv.innerHTML = '';
+                    }, 5000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Failed to send message. Please try again later.';
+                statusDiv.style.color = '#f44336';
+                
+                setTimeout(() => {
+                    statusDiv.innerHTML = '';
+                }, 5000);
+            }
+        });
+    }
+</script>
 
 </body>
   </html>
