@@ -1,12 +1,12 @@
 // /api/crop-lens.js
-// Vercel serverless function. Keeps the Kindwise crop.health API key on the
-// server so it never appears in browser-visible JS. Deploy as-is on Vercel;
-// no extra dependencies needed (Node 18+ has global fetch built in).
+// Vercel serverless function. Keeps the Plant.id API key on the server so it
+// never appears in browser-visible JS. Deploy as-is on Vercel; no extra
+// dependencies needed (Node 18+ has global fetch built in).
 //
 // SETUP:
-// 1. Get a free API key at https://admin.kindwise.com (product: crop.health)
-// 2. In your Vercel project: Settings -> Environment Variables
-//    Add: KINDWISE_API_KEY = <your key>
+// 1. Get a free API key at https://admin.kindwise.com (product: plant.id)
+// 2. In your Vercel project: Settings -> Environment Variables (Production!)
+//    Add: PLANTID_API_KEY = <your key>
 // 3. Redeploy. That's it - the frontend already calls this endpoint.
 //
 // If the key isn't set yet, this returns { success: false, reason: 'not_configured' }
@@ -17,7 +17,7 @@ module.exports = async function handler(req, res) {
         return res.status(405).json({ success: false, reason: 'method_not_allowed' });
     }
 
-    const apiKey = process.env.KINDWISE_API_KEY;
+    const apiKey = process.env.PLANTID_API_KEY;
     if (!apiKey) {
         return res.status(200).json({ success: false, reason: 'not_configured' });
     }
@@ -28,8 +28,8 @@ module.exports = async function handler(req, res) {
     }
 
     try {
-        const kindwiseRes = await fetch(
-            'https://crop.kindwise.com/api/v1/identification?details=description,treatment,symptoms,severity,common_names',
+        const plantIdRes = await fetch(
+            'https://api.plant.id/v3/identification?details=description,treatment,symptoms,severity,common_names&health=all',
             {
                 method: 'POST',
                 headers: {
@@ -40,25 +40,28 @@ module.exports = async function handler(req, res) {
             }
         );
 
-        if (!kindwiseRes.ok) {
-            const errText = await kindwiseRes.text();
-            console.error('Kindwise API error:', kindwiseRes.status, errText);
+        if (!plantIdRes.ok) {
+            const errText = await plantIdRes.text();
+            console.error('Plant.id API error:', plantIdRes.status, errText);
             return res.status(200).json({
                 success: false,
                 reason: 'provider_error',
-                debug: { status: kindwiseRes.status, message: errText.slice(0, 500) }
+                debug: { status: plantIdRes.status, message: errText.slice(0, 500) }
             });
         }
 
-        const data = await kindwiseRes.json();
+        const data = await plantIdRes.json();
         const result = data.result || {};
 
-        const cropSuggestions = (result.crop && result.crop.suggestions) || [];
+        const cropSuggestions = (result.classification && result.classification.suggestions) || [];
         const diseaseSuggestions = (result.disease && result.disease.suggestions) || [];
-
-        // Treat as healthy if no disease suggestion clears a reasonable confidence bar
         const topDisease = diseaseSuggestions[0];
-        const isHealthy = !topDisease || topDisease.probability < 0.3;
+
+        // Prefer Plant.id's own is_healthy verdict when present; otherwise
+        // fall back to a probability threshold on the top disease suggestion.
+        const isHealthy = result.is_healthy
+            ? result.is_healthy.binary
+            : (!topDisease || topDisease.probability < 0.3);
 
         return res.status(200).json({
             success: true,
@@ -66,7 +69,7 @@ module.exports = async function handler(req, res) {
             crop: cropSuggestions[0]
                 ? { name: cropSuggestions[0].name, probability: cropSuggestions[0].probability }
                 : null,
-            disease: topDisease
+            disease: (!isHealthy && topDisease)
                 ? {
                       name: topDisease.name,
                       probability: topDisease.probability,
