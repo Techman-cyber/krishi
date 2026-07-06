@@ -356,7 +356,7 @@ if (typeof emailjs !== 'undefined') {
             Showing ${cropData.markets.length} market rates. Compare prices before selling your crop!
         </p>`;
     }
- farmingTips = {
+farmingTips = {
             en: ["🌱 Always test your soil before sowing - different crops need different nutrients","💧 Drip irrigation saves 30% water","🌾 Practice crop rotation - maintains soil fertility","🐛 Regular pest inspection - early detection saves crops","📱 Get all updates on PatuKrishi app","💰 Check mandi prices before selling - get best rates","🌞 Mulching helps retain soil moisture","🌱 Increase use of cow dung manure - reduce chemical fertilizers","🌾 Treat wheat seeds before sowing","🍚 Prepare nursery before paddy transplantation","🧶 Install pheromone traps to prevent pink bollworm in cotton","🎋 Use 2-3 eye pieces for sugarcane planting","🌽 Maintain 60x25 cm spacing for maize","🥔 Plant potatoes in October-November","🧅 Use 6-8 week old seedlings for onion nursery","🍅 Stake tomato plants for better yield","🌱 Green manure improves soil health","💧 Reduce irrigation in cold weather","🌾 Harvest wheat at 12-14% moisture","📊 Get crop insurance - protection against natural disasters","🌱 Maintain proper fertilizer quantity per hectare","💧 Check water quality for irrigation","🌾 Don't burn crop residue - beneficial for soil","🐛 Increase use of organic pesticides","🌱 Maintain proper seed rate - not too less or too much","📅 Sow Rabi crops in October-November","🌧️ Sow Kharif crops in June-July","☀️ Light irrigation for Zaid crops","🌾 4-5 irrigations sufficient for wheat","🍚 Maintain 5 cm water in paddy fields","🧶 Maintain 90x60 cm spacing for cotton","🌽 Top dress urea in maize","🥔 Earth up potato plants","🌱 Spray neem oil for crop protection","💧 Drip irrigated crops give higher yield","🌾 Harvest wheat in March-April","🍚 Harvest paddy in October-November","🧶 Pick cotton in October-December","🌽 Harvest maize in 90-110 days","🎋 Harvest sugarcane in 10-12 months","🌱 Sow groundnut in June-July","🌾 Sow mustard in October","🌱 Sow chickpea in October-November","🌾 Sow barley in October-November","🌱 Control pests in pigeon pea","💧 Prevent yellow mosaic in soybean","🌾 Sow bajra in July","🌱 Manage moisture in jowar crop","📊 Check mandi rates before selling","🌾 PatuKrishi - Every farmer's companion"],
             hi: ["🌱 बुवाई से पहले मिट्टी की जांच जरूर करें - अलग फसलों को अलग पोषक तत्व चाहिए","💧 ड्रिप सिंचाई से 30% पानी की बचत करें","🌾 फसल चक्र अपनाएं - मिट्टी की उर्वरता बनी रहेगी","🐛 कीटों की नियमित जांच करें - समय पर पहचान से फसल बचेगी","📱 पटुकृषि ऐप से हर अपडेट पाएं","💰 मंडी भाव देखकर ही फसल बेचें - सही दाम मिलेगा","🌞 मल्चिंग से मिट्टी की नमी बनी रहती है","🌱 गोबर खाद का प्रयोग बढ़ाएं - रासायनिक खाद कम करें","🌾 गेहूं की बुवाई से पहले बीज उपचार जरूरी","🍚 धान की रोपाई से पहले नर्सरी तैयार करें","🧶 कपास में गुलाबी सुंडी से बचाव के लिए फेरोमोन ट्रैप लगाएं","🎋 गन्ने की बुवाई के समय 2-3 आंख वाले टुकड़े लें","🌽 मक्का की फसल में 60x25 सेमी की दूरी रखें","🥔 आलू की बुवाई अक्टूबर-नवंबर में करें","🧅 प्याज की नर्सरी में 6-8 सप्ताह पुराने पौधे लगाएं","🍅 टमाटर में सहारा देने से उपज बढ़ती है","🌱 हरी खाद से मिट्टी की सेहत सुधरेगी","💧 ठंड के मौसम में सिंचाई कम करें","🌾 गेहूं की कटाई नमी 12-14% पर करें","📊 फसल बीमा जरूर कराएं - प्राकृतिक आपदा से बचाव","🌱 प्रति हेक्टेयर खाद की सही मात्रा का ध्यान रखें","💧 सिंचाई के लिए पानी की गुणवत्ता जांचें","🌾 फसल अवशेष न जलाएं - मिट्टी के लिए फायदेमंद","🐛 जैविक कीटनाशकों का प्रयोग बढ़ाएं","🌱 बीज दर का ध्यान रखें - कम या ज्यादा न हो","📅 रबी की बुवाई अक्टूबर-नवंबर में करें","🌧️ खरीफ की बुवाई जून-जुलाई में करें","☀️ जायद की फसलों के लिए हल्की सिंचाई","🌾 गेहूं में 4-5 सिंचाई पर्याप्त","🍚 धान में 5 सेमी पानी जरूर रखें","🧶 कपास में 90x60 सेमी की दूरी रखें","🌽 मक्का में यूरिया की टॉप ड्रेसिंग करें","🥔 आलू में मिट्टी चढ़ाना जरूरी","🌱 फसल सुरक्षा के लिए नीम तेल का छिड़काव","💧 ड्रिप सिंचित फसलों में पैदावार अधिक","🌾 गेहूं की कटाई मार्च-अप्रैल में","🍚 धान की कटाई अक्टूबर-नवंबर में","🧶 कपास की तुड़ाई अक्टूबर-दिसंबर में","🌽 मक्का की कटाई 90-110 दिन में","🎋 गन्ने की कटाई 10-12 महीने में","🌱 मूंगफली की बुवाई जून-जुलाई में","🌾 सरसों की बुवाई अक्टूबर में","🌱 चने की बुवाई अक्टूबर-नवंबर में","🌾 जौ की बुवाई अक्टूबर-नवंबर में","🌱 अरहर की फसल में कीट नियंत्रण जरूरी","💧 सोयाबीन में पीला मोज़ेक रोग से बचाव","🌾 बाजरे की बुवाई जुलाई में करें","🌱 ज्वार की फसल में नमी प्रबंधन","📊 मंडी भाव की जानकारी लेकर ही बेचें","🌾 पटुकृषि - हर किसान का साथी"],
             bn: ["🌱 বপনের আগে মাটি পরীক্ষা করুন - বিভিন্ন ফসলের বিভিন্ন পুষ্টি প্রয়োজন","💧 ড্রিপ সেচ 30% জল বাঁচায়","🌾 ফসলের আবর্তন করুন - মাটির উর্বরতা বজায় থাকে","🐛 নিয়মিত পোকা পরীক্ষা - আগে শনাক্ত করলে ফসল বাঁচে","📱 পাটুকৃষি অ্যাপে সব আপডেট পান","💰 বিক্রির আগে মন্ডির দাম দেখুন - সেরা দাম পান","🌞 মালচিং মাটির আর্দ্রতা ধরে রাখে","🌱 গোবর সারের ব্যবহার বাড়ান - রাসায়নিক সার কমান","🌾 বপনের আগে গমের বীজ শোধন করুন","🍚 ধান রোপণের আগে নার্সারি তৈরি করুন","🧶 তুলোতে গোলাপী বলওয়ার্ম প্রতিরোধে ফেরোমন ফাঁদ বসান","🎋 আখ রোপণের সময় 2-3 চোখযুক্ত টুকরো ব্যবহার করুন","🌽 ভুট্টার জন্য 60x25 সেমি দূরত্ব বজায় রাখুন","🥔 অক্টোবর-নভেম্বরে আলু রোপণ করুন","🧅 পেঁয়াজের নার্সারিতে 6-8 সপ্তাহের চারা ব্যবহার করুন","🍅 ভাল ফলনের জন্য টমেটো গাছকে সাপোর্ট দিন","🌱 সবুজ সার মাটির স্বাস্থ্য উন্নত করে","💧 ঠান্ডা আবহাওয়ায় সেচ কমান","🌾 12-14% আর্দ্রতায় গম কাটুন","📊 ফসল বীমা করান - প্রাকৃতিক দুর্যোগ থেকে সুরক্ষা","🌱 প্রতি হেক্টরে সঠিক সার পরিমাণ বজায় রাখুন","💧 সেচের জন্য জলের গুণমান পরীক্ষা করুন","🌾 ফসলের অবশিষ্টাংশ পোড়াবেন না - মাটির জন্য উপকারী","🐛 জৈব কীটনাশকের ব্যবহার বাড়ান","🌱 সঠিক বীজ হার বজায় রাখুন - কম বা বেশি না হয়","📅 অক্টোবর-নভেম্বরে রবি ফসল বপন করুন","🌧️ জুন-জুলাইতে খরিফ ফসল বপন করুন","☀️ জায়েদ ফসলের জন্য হালকা সেচ","🌾 গমের জন্য 4-5 সেচ যথেষ্ট","🍚 ধান ক্ষেতে 5 সেমি জল বজায় রাখুন","🧶 তুলোর জন্য 90x60 সেমি দূরত্ব বজায় রাখুন","🌽 ভুট্টায় ইউরিয়ার টপ ড্রেসিং করুন","🥔 আলু গাছে মাটি তোলা জরুরি","🌱 ফসল সুরক্ষার জন্য নিম তেল স্প্রে করুন","💧 ড্রিপ সেচ দেওয়া ফসলে ফলন বেশি হয়","🌾 মার্চ-এপ্রিলে গম কাটুন","🍚 অক্টোবর-নভেম্বরে ধান কাটুন","🧶 অক্টোবর-ডিসেম্বরে তুলো তুলুন","🌽 90-110 দিনে ভুট্টা কাটুন","🎋 10-12 মাসে আখ কাটুন","🌱 জুন-জুলাইতে চিনাবাদাম বপন করুন","🌾 অক্টোবরে সরিষা বপন করুন","🌱 অক্টোবর-নভেম্বরে ছোলা বপন করুন","🌾 অক্টোবর-নভেম্বরে যব বপন করুন","🌱 অড়হর ফসলে পোকা নিয়ন্ত্রণ জরুরি","💧 সয়াবিনে হলুদ মোজাইক প্রতিরোধ করুন","🌾 জুলাইতে বাজরা বপন করুন","🌱 জোয়ার ফসলে আর্দ্রতা ব্যবস্থাপনা","📊 বিক্রির আগে মন্ডির দাম দেখে নিন","🌾 পাটুকৃষি - প্রতিটি কৃষকের সঙ্গী"],
@@ -408,6 +408,7 @@ translations = {
     or: { logo: "ପଟୁକୃଷି", home: "ହୋମ୍", weather: "ପାଣିପାଗ", mandi: "ମଣ୍ଡି", lens: "କ୍ରପ୍ ଲେନ୍ସ", advisory: "ପରାମର୍ଶ", analytics: "ଆନାଲିଟିକ୍ସ", videos: "ଭିଡିଓ", govtSchemes: "ସରକାରୀ ଯୋଜନା", about: "ଆମ ବିଷୟରେ", profile: "ପ୍ରୋଫାଇଲ୍", logout: "ଲଗ୍‌ଆଉଟ୍", namaste: "ନମସ୍କାର", "hero-text": "ଆପଣଙ୍କ କୃଷକ ବନ୍ଧୁ - ସ୍ମାର୍ଟ ଚାଷ ସହିତ", "sustainable-title": "🌱 ପଟୁକୃଷି – ସ୍ମାର୍ଟ ଚାଷ", "sustainable-text": "🇮🇳 ଭାରତରେ କୃଷକମାନଙ୍କୁ ସମୟୋଚିତ ଏବଂ ସଠିକ୍ ସୂଚନା ମିଳିବା ଅତ୍ୟନ୍ତ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ। ପଟୁକୃଷି ଆପଣଙ୍କୁ ଲାଇଭ୍ ମଣ୍ଡି ମୂଲ୍ୟ, ପାଣିପାଗ ପୂର୍ବାନୁମାନ, କ୍ରପ୍ ଲେନ୍ସ (ରୋଗ ଚିହ୍ନଟ ଏବଂ ଚିକିତ୍ସା), ଏବଂ ବୁଣାଠାରୁ ଅମଳ ପର୍ଯ୍ୟନ୍ତ ପର୍ଯ୍ୟାୟକ୍ରମେ ମାର୍ଗଦର୍ଶନ ପ୍ରଦାନ କରେ। ଆପଣଙ୍କ କ୍ଷେତର ଉତ୍ପାଦନକୁ ଲାଭରେ ପରିଣତ କରିବା ପାଇଁ ଆମେ ଏଠାରେ ଅଛୁ। ଆପଣ ପଞ୍ଜାବର ଗହମ କୃଷକ ହୁଅନ୍ତୁ କିମ୍ବା ତାମିଲନାଡୁର ଧାନ ଉତ୍ପାଦକ, ପଟୁକୃଷି ପ୍ରତ୍ୟେକ କୃଷକଙ୍କ ପାଇଁ। ବର୍ତ୍ତମାନ ଚାଷ ସ୍ମାର୍ଟ, ଏବଂ ଲାଭ ନିଶ୍ଚିତ! 💚", "weather-desc": "ଲାଇଭ୍ ପୂର୍ବାନୁମାନ · ଫସଲ ସୁପାରିଶ", "mandi-desc": "ସମସ୍ତ ରାଜ୍ୟ ଏବଂ କେନ୍ଦ୍ରଶାସିତ ଅଞ୍ଚଳ · ଜିଲ୍ଲା · ଏକାଧିକ ହାର", "advisory-desc": "ରାଜ୍ୟ/କେନ୍ଦ୍ରଶାସିତ ଅଞ୍ଚଳ + ଫସଲ · 3-ପଦକ୍ଷେପ ଗାଇଡ୍", "weather-title": "ପାଣିପାଗ · ପାଣିପାଗ ପରାମର୍ଶ", "city-placeholder": "ସହର ନାମ ଦିଅନ୍ତୁ (ଯଥା ଦିଲ୍ଲୀ)", search: "ଖୋଜନ୍ତୁ", "my-location": "ମୋର ସ୍ଥାନ", "mandi-title": "ମଣ୍ଡି ମୂଲ୍ୟ · ମଣ୍ଡି ଭାଉ", "show-prices": "ମୂଲ୍ୟ ଦେଖାନ୍ତୁ", "lens-title": "କ୍ରପ୍ ଲେନ୍ସ · ରୋଗ ଚିହ୍ନଟ", "upload-title": "ଫସଲ ଫଟୋ ଅପଲୋଡ୍ କରନ୍ତୁ", "upload-desc": "ନକଲି ରୋଗ ଚିହ୍ନଟ", "advisory-title": "ଫସଲ ପରାମର୍ଶ · ସମ୍ପୂର୍ଣ୍ଣ ଗାଇଡ୍", "state-season": "ରାଜ୍ୟ/କେନ୍ଦ୍ରଶାସିତ ଅଞ୍ଚଳ + ଋତୁ", "specific-crop": "ନିର୍ଦ୍ଦିଷ୍ଟ ଫସଲ (3-ପଦକ୍ଷେପ)", "get-advice": "ପରାମର୍ଶ ନିଅନ୍ତୁ", "get-guide": "3-ପଦକ୍ଷେପ ଗାଇଡ୍ ନିଅନ୍ତୁ", "analytics-title": "କୃଷି ଆନାଲିଟିକ୍ସ · ତଥ୍ୟ ଅନ୍ତର୍ଦୃଷ୍ଟି", "happy-farmers": "ଖୁସି କୃଷକ", "avg-profit": "ହାରାହାରି ଲାଭ/ଏକର", "weather-alerts": "ପାଣିପାଗ ସତର୍କତା", "active-farms": "ସକ୍ରିୟ କୃଷିକ୍ଷେତ୍ର", "price-trends": "📈 ମୂଲ୍ୟ ଧାରା (ଗତ 6 ମାସ)", "crop-distribution": "🌾 ଫସଲ ବଣ୍ଟନ", "weather-patterns": "🌡️ ପାଣିପାଗ ଢାଞ୍ଚା", "profit-calculator": "💰 ଲାଭ କ୍ୟାଲକୁଲେଟର", "select-crop": "ଫସଲ ଚୟନ କରନ୍ତୁ", area: "କ୍ଷେତ୍ରଫଳ (ଏକରରେ)", calculate: "ଲାଭ ଗଣନା କରନ୍ତୁ", "market-insights": "📊 ବଜାର ଅନ୍ତର୍ଦୃଷ୍ଟି", rising: "⬆️ ବୃଦ୍ଧି ପାଉଛି", stable: "↗️ ସ୍ଥିର", falling: "⬇️ ହ୍ରାସ ପାଉଛି", "seasonal-forecast": "🌦️ ଋତୁକାଳୀନ ପୂର୍ବାନୁମାନ 2026", rabi: "ରବି ଋତୁ", kharif: "ଖରିଫ୍ ଋତୁ", zaid: "ଜାୟଦ ଋତୁ", "optimal-conditions": "ସର୍ବୋତ୍ତମ ପରିସ୍ଥିତି", "rabi-crops": "ଗହମ, ସୋରିଷ, ଛେନା", "kharif-crops": "ଧାନ, ତୁଳା, ମକା", "zaid-crops": "ମୁଗ, ପନିପରିବା", "about-title": "ଆମ ବିଷୟରେ · ଆମର କାହାଣୀ", mission: "ଆମର ଲକ୍ଷ୍ୟ", "mission-text": "ଟକାଇ ଏବଂ ଲାଭଦାୟକ ଚାଷ ପାଇଁ ପ୍ରତ୍ୟେକ ଭାରତୀୟ କୃଷକଙ୍କୁ ପ୍ରଯୁକ୍ତିବିଦ୍ୟା-ଚାଳିତ ସମାଧାନ ସହିତ ସଶକ୍ତ କରିବା। ଆମେ ପାରମ୍ପରିକ ଜ୍ଞାନ ଏବଂ ଆଧୁନିକ ନବସୃଜନ ମଧ୍ୟରେ ଥିବା ବ୍ୟବଧାନକୁ କମ୍ କରୁ।", vision: "ଆମର ସ୍ୱପ୍ନ", "vision-text": "ଏକ ଡିଜିଟାଲ୍ ଇକୋସିଷ୍ଟମ୍ ସୃଷ୍ଟି କରିବା ଯେଉଁଠାରେ ପ୍ରତ୍ୟେକ କୃଷକଙ୍କର ରିୟଲ-ଟାଇମ୍ ବଜାର ତଥ୍ୟ, ପାଣିପାଗ ସୂଚନା ଏବଂ ବିଶେଷଜ୍ଞ ମାର୍ଗଦର୍ଶନରେ ପ୍ରବେଶ ଅଛି - ଚାଷକୁ ସ୍ମାର୍ଟ ଏବଂ ଅଧିକ ଲାଭଦାୟକ କରିବା।", values: "ଆମର ମୂଲ୍ୟବୋଧ", "values-text": "ସଚ୍ଚୋଟତା, ନବସୃଜନ, ସମାବେଶୀତା। ଆମେ କୃଷକମାନଙ୍କୁ ପ୍ରଥମେ ରଖିବା ଏବଂ ସେହି ସମାଧାନ ସୃଷ୍ଟି କରିବାରେ ବିଶ୍ୱାସ କରୁ ଯାହା ସେମାନଙ୍କ ଜୀବନରେ ପ୍ରକୃତ ପରିବର୍ତ୍ତନ ଆଣେ।", "founder-role": "ପ୍ରତିଷ୍ଠାତା ଏବଂ ବିକାଶକାରୀ", "founder-quote": "\"ମୁଁ ପଟୁକୃଷି ନିର୍ମାଣ କଲି କାରଣ ଆମର କୃଷକମାନେ ଡିଜିଟାଲ୍ ଦୁନିଆରେ ଜଣେ ବନ୍ଧୁଙ୍କ ଅଧିକାରୀ—କେହି ଜଣେ ଯେ ସେମାନଙ୍କ ଭାଷା କୁହେ, ସେମାନଙ୍କ ସଂଘର୍ଷ ବୁଝେ ଏବଂ ସେମାନଙ୍କୁ ବଢିବାରେ ସାହାଯ୍ୟ କରେ। ଏହା ହେଉଛି ସେହି ହାତଗୁଡ଼ିକୁ ଧନ୍ୟବାଦ ଦେବାର ମୋର ଉପାୟ ଯେଉଁମାନେ ଆମ ରାଷ୍ଟ୍ରକୁ ଖାଦ୍ୟ ଯୋଗାନ୍ତି।\"", "why-choose": "❓ କାହିଁକି କୃଷକମାନେ ପଟୁକୃଷି ବାଛନ୍ତି", "real-time": "ରିୟଲ-ଟାଇମ୍ ତଥ୍ୟ", "real-time-desc": "ଲାଇଭ୍ ମଣ୍ଡି ମୂଲ୍ୟ ଏବଂ ପାଣିପାଗ", "ai-powered": "AI-ଚାଳିତ", "ai-powered-desc": "ସ୍ମାର୍ଟ ରୋଗ ଚିହ୍ନଟ", "local-langs": "🌐 ସ୍ଥାନୀୟ ଭାଷାଗୁଡ଼ିକ", "local-langs-desc": "ଇଂରାଜୀ, ହିନ୍ଦୀ, ବଙ୍ଗାଳୀ, ତେଲୁଗୁ, ମରାଠୀ, ଗୁଜରାଟୀ, ମାରୱାଡ଼ୀ, ପଞ୍ଜାବୀ, ତାମିଲ, ମାଲାୟାଲମ୍, ଉର୍ଦ୍ଦୁ, କନ୍ନଡ଼, ଓଡ଼ିଆ, ସଂସ୍କୃତ, ଭୋଜପୁରୀ, ଡୋଗ୍ରୀ ଏବଂ ଅଧିକ", free: "100% ମାଗଣା", "free-desc": "କୃଷକମାନଙ୍କ ପାଇଁ ସବୁବେଳେ ମାଗଣା", "send-message": "ଆମକୁ ଏକ ସନ୍ଦେଶ ପଠାନ୍ତୁ", "message-desc": "ପ୍ରଶ୍ନ ଅଛି? ଆମେ ଆପଣଙ୍କଠାରୁ ଶୁଣିବାକୁ ପସନ୍ଦ କରିବୁ!", "message-placeholder": "ଆପଣଙ୍କ ପ୍ରଶ୍ନ ଏଠାରେ ଲେଖନ୍ତୁ...", "google-form": "ଗୁଗୁଲ୍ ଫର୍ମ ଖୋଲନ୍ତୁ", "google-form-note": "📝 ଆମର ଫିଡବ୍ୟାକ୍ ଫର୍ମ ଖୋଲିବାକୁ ଉପରୋକ୍ତ ବଟନ୍‌ରେ କ୍ଲିକ୍ କରନ୍ତୁ", "footer-tagline": "ଭାରତୀୟ କୃଷକମାନଙ୍କ ପାଇଁ ସ୍ମାର୍ଟ ଚାଷ।", "quick-links": "ଶୀଘ୍ର ଲିଙ୍କ୍‌ଗୁଡ଼ିକ", policies: "ନୀତି ଏବଂ ଆଇନଗତ", privacy: "ଗୋପନୀୟତା ନୀତି: ଆମେ ଆପଣଙ୍କ ତଥ୍ୟର ସମ୍ମାନ କରୁ। କୌଣସି ତୃତୀୟ-ପକ୍ଷ ସେୟାରିଂ ନାହିଁ।", terms: "ନିୟମ ଏବଂ ସର୍ତ୍ତାବଳୀ: ଏହି ସାଇଟ୍‌ର ବ୍ୟବହାର ସ୍ୱୀକୃତି ସୂଚିତ କରେ।", cookie: "କୁକି ନୀତି: କାର୍ଯ୍ୟକାରିତା ପାଇଁ ଆମେ ଅତ୍ୟାବଶ୍ୟକ କୁକି ବ୍ୟବହାର କରୁ।", disclaimer: "ଅସ୍ୱୀକାର: ସୂଚନା କେବଳ ମାର୍ଗଦର୍ଶନ ପାଇଁ। ସ୍ଥାନୀୟ ଭାବରେ ଯାଞ୍ଚ କରନ୍ତୁ।", refund: "ଫେରସ୍ତ ନୀତି: ସେବାଗୁଡ଼ିକ ମାଗଣା ହୋଇଥିବାରୁ ପ୍ରଯୁଜ୍ୟ ନୁହେଁ।", "support": "ସହାୟତା ଏବଂ ସୂଚନା", faq: "FAQ: ଆମର ସହାୟତା ବିଭାଗ ପରିଦର୍ଶନ କରନ୍ତୁ।", contact: "ଯୋଗାଯୋଗ: patukrishi@gmail.com", careers: "କ୍ୟାରିୟର: ଆମର ଲକ୍ଷ୍ୟରେ ଯୋଗ ଦିଅନ୍ତୁ।", press: "ପ୍ରେସ୍: ମିଡିଆ ଅନୁସନ୍ଧାନ ସ୍ୱାଗତଯୋଗ୍ୟ।", office: "କାର୍ଯ୍ୟାଳୟ: ଡିଜିଟାଲ୍ ପ୍ଲାଟଫର୍ମ - ପ୍ୟାନ୍-ଇଣ୍ଡିଆ ସେବା", copyright: "© 2026 ପଟୁକୃଷି – ସମସ୍ତ ଅଧିକାର ସଂରକ୍ଷିତ। ଭାରତୀୟ କୃଷକମାନଙ୍କ ପାଇଁ 💚 ରେ ନିର୍ମିତ।", "edit-profile": "ପ୍ରୋଫାଇଲ୍ ସମ୍ପାଦନ କରନ୍ତୁ", "name-placeholder": "ନାମ", save: "ସଞ୍ଚୟ କରନ୍ତୁ", cancel: "ବାତିଲ୍ କରନ୍ତୁ", "krishi-bot": "କୃଷି ବଟ୍", "bot-welcome": "🙏 ନମସ୍କାର! ମୁଁ ଆପଣଙ୍କ କୃଷି ବଟ୍। ପଚାରନ୍ତୁ - ମଣ୍ଡି ଭାଉ, ପାଣିପାଗ, କ୍ରପ୍ ଲେନ୍ସ, ପରାମର୍ଶ, ଆନାଲିଟିକ୍ସ କିମ୍ବା କିଛି!", "chat-placeholder": "ଏଠାରେ ଲେଖନ୍ତୁ..." },
     sa: { logo: "पटुकृषिः", home: "मुखपृष्ठम्", weather: "वातावरणम्", mandi: "मण्डी", lens: "फसल-लेन्स्", advisory: "सलाह", analytics: "विश्लेषणम्", videos: "वीडियो", govtSchemes: "सरकारी-योजनाः", about: "अस्माकं विषये", profile: "व्यक्तिचित्रम्", logout: "निर्गमनम्", namaste: "नमस्कारः", "hero-text": "भवतः कृषकमित्रम् - स्मार्ट-कृष्या सह", "sustainable-title": "🌱 पटुकृषिः – स्मार्ट-कृषिः", "sustainable-text": "🇮🇳 भारते कृषकेभ्यः समयोचितं यथार्थं च सूचनाप्राप्तिः अतीव महत्त्वपूर्णा। पटुकृषिः भवभ्यः प्रत्यक्षमण्डीमूल्यानि, वातावरणपूर्वानुमानम्, फसल-लेन्स् (रोगज्ञानं चिकित्सा च), वपनात् कट्टनपर्यन्तं सोपानमार्गदर्शनं च प्रददाति। वयं भवतः क्षेत्रोत्पादनं लाभे परिणन्तुम् अत्र स्मः। भवान् पञ्जाबप्रदेशस्य गोधूमकृषको वा तमिळनाडुराज्यस्य व्रीहिकृषको वा भवतु, पटुकृषिः प्रत्येककृषकाय अस्ति। अधुना कृषिः स्मार्ट, लाभः निश्चितः! 💚", "weather-desc": "प्रत्यक्षपूर्वानुमानम् · फसलशिफारसिः", "mandi-desc": "सर्वे राज्यानि केन्द्रशासितप्रदेशाः च · मण्डलानि · बहूनि मूल्यानि", "advisory-desc": "राज्यम्/केन्द्रशासितप्रदेशः + फसलम् · ३-चरणीयमार्गदर्शिका", "weather-title": "वातावरणम् · मौसमसलाह", "city-placeholder": "नगरं लिखत (यथा दिल्ली)", search: "अन्वेषणम्", "my-location": "मम स्थानम्", "mandi-title": "मण्डीमूल्यानि · मण्डीभावाः", "show-prices": "मूल्यानि दर्शयतु", "lens-title": "फसल-लेन्स् · रोगस्य पहचान", "upload-title": "फसलचित्रम् उपारोपयतु", "upload-desc": "अनुकरण-रोगपरीक्षा", "advisory-title": "फसल-सलाह · पूर्णमार्गदर्शिका", "state-season": "राज्यम्/केन्द्रशासितप्रदेशः + ऋतुः", "specific-crop": "विशिष्टफसलम् (३-चरणीयम्)", "get-advice": "सलाह प्राप्नोतु", "get-guide": "३-चरणीयमार्गदर्शिकां प्राप्नोतु", "analytics-title": "कृषि-विश्लेषणम् · डेटा-अन्तर्दृष्टयः", "happy-farmers": "सन्तुष्टाः कृषकाः", "avg-profit": "सामान्यलाभः/एकर", "weather-alerts": "वातावरण-सूचनाः", "active-farms": "सक्रियक्षेत्राणि", "price-trends": "📈 मूल्यप्रवृत्तयः (गत ६ मासाः)", "crop-distribution": "🌾 फसलवितरणम्", "weather-patterns": "🌡️ वातावरणप्रारूपाणि", "profit-calculator": "💰 लाभगणकयन्त्रम्", "select-crop": "फसलं चिनोतु", area: "क्षेत्रफलम् (एकरेषु)", calculate: "लाभं गणयतु", "market-insights": "📊 बाजार-अन्तर्दृष्टयः", rising: "⬆️ वर्धमानम्", stable: "↗️ स्थिरम्", falling: "⬇️ ह्रसमानम्", "seasonal-forecast": "🌦️ ऋतु-पूर्वानुमानम् २०२६", rabi: "रबि-ऋतुः", kharif: "खरीफ-ऋतुः", zaid: "जायद-ऋतुः", "optimal-conditions": "अनुकूलाः परिस्थितयः", "rabi-crops": "गोधूमः, सर्षपः, चणकः", "kharif-crops": "व्रीहिः, कार्पासः, यवनालः", "zaid-crops": "मुद्गः, शाकानि", "about-title": "अस्माकं विषये · अस्माकं कथा", mission: "अस्माकं लक्ष्यम्", "mission-text": "प्रत्येकं भारतीयं कृषकं प्रौद्योगिकी-चालितसमाधानैः सशक्तं कर्तुम्, येन धारणीया लाभदायका च कृषिः स्यात्। वयं पारम्परिकज्ञानं आधुनिकनवाचारं च मध्ये अन्तरं पूरयामः।", vision: "अस्माकं दृष्टिः", "vision-text": "एकं डिजिटल-परितन्त्रं निर्मातुम् यत्र प्रत्येकः कृषकः वास्तविकसमय-बाजारतथ्यानि, वातावरणसूचनाः, विशेषज्ञमार्गदर्शनं च प्राप्नुयात् - कृषिं स्मार्टं अधिकलाभदायकं च कुर्वन्।", values: "अस्माकं मूल्यानि", "values-text": "सत्यनिष्ठा, नवाचारः, समावेशिता। वयं कृषकान् प्रथमं स्थापयितुं, तेषां जीवने वास्तविकं परिवर्तनम् आनयन्ति समाधानानि निर्मातुं च विश्वसिमः।", "founder-role": "संस्थापकः & विकासकः", "founder-quote": "\"अहं पटुकृषिं निर्मितवान् यतः अस्माकं कृषकेभ्यः डिजिटल-जगति मित्रम् अर्हति—यः तेषां भाषां वदति, तेषां संघर्षान् अवगच्छति, तान् वर्धितुं साहाय्यं च करोति। अस्माकं राष्ट्रं पोषयद्भ्यः हस्तेभ्यः धन्यवादः ज्ञापनस्य एषः मम मार्गः।\"", "why-choose": "❓ कृषकाः पटुकृषिं किमर्थं चिन्वन्ति", "real-time": "वास्तविकसमय-तथ्यानि", "real-time-desc": "प्रत्यक्षमण्डीमूल्यानि वातावरणं च", "ai-powered": "कृत्रिम-बुद्धि-चालितम्", "ai-powered-desc": "स्मार्ट-रोगज्ञानम्", "local-langs": "🌐 स्थानीयभाषाः", "local-langs-desc": "आङ्ग्लभाषा, हिन्दी, बाङ्गला, तेलुगु, मराठी, गुजराती, मारवाडी, पञ्जाबी, तमिळ्, मलयाळम्, उर्दू, कन्नड, ओडिया, संस्कृतम्, भोजपुरी, डोगरी इत्यादयः", free: "१००% निःशुल्कम्", "free-desc": "कृषकेभ्यः सदा निःशुल्कम्", "send-message": "अस्मभ्यं सन्देशं प्रेषयतु", "message-desc": "प्रश्नाः सन्ति? भवतः समीपात् श्रोतुम् इच्छामः!", "message-placeholder": "अत्र भवतः प्रश्नं लिखतु...", "google-form": "गूगल-फार्मम् उद्घाटयतु", "google-form-note": "📝 अस्माकं प्रतिक्रिया-फार्मम् उद्घाटितुम् उपरिस्थितं बटनं नोदयतु", "footer-tagline": "भारतीयकृषकेभ्यः स्मार्ट-कृषिः।", "quick-links": "शीघ्र-सम्पर्काः", policies: "नीतयः & विधिकाः", privacy: "गोपनीयता-नीतिः: वयं भवतः तथ्यानि आद्रियामहे। तृतीय-पक्षसहभागः नास्ति।", terms: "नियमाः & शर्ताः: अस्य जालस्थानस्य उपयोगः स्वीकारं सूचयति।", cookie: "कुकी-नीतिः: कार्यक्षमतायै वयं आवश्यकाः कुकीः उपयुञ्ज्महे।", disclaimer: "अस्वीकरणम्: सूचना केवलं मार्गदर्शनाय। स्थानीयतया सत्यापयतु।", refund: "प्रतिनिवृत्ति-नीतिः: सेवाः निःशुल्काः इति कारणेन अनुपयुक्ता।", "support": "साहाय्यं & सूचना", faq: "सामान्यप्रश्नाः: अस्माकं साहाय्य-विभागं पश्यन्तु।", contact: "सम्पर्कः: patukrishi@gmail.com", careers: "वृत्तिः: अस्माकं लक्ष्ये सम्मिल्यन्ताम्।", press: "प्रेसः: माध्यम-जिज्ञासाः स्वागतम्।", office: "कार्यालयः: डिजिटल-मञ्चः - सर्वभारत-सेवा", copyright: "© २०२६ पटुकृषिः – सर्वे अधिकाराः सुरक्षिताः। भारतीयकृषकेभ्यः 💚 सह निर्मितम्।", "edit-profile": "व्यक्तिचित्रं सम्पादयतु", "name-placeholder": "नाम", save: "रक्षयतु", cancel: "निरस्यतु", "krishi-bot": "कृषि-बाट्", "bot-welcome": "🙏 नमस्कार! अहं भवतः कृषि-बाट् अस्मि। पृच्छन्तु - मण्डीभावाः, वातावरणम्, फसल-लेन्स्, सलाह, विश्लेषणम् अथवा किमपि!", "chat-placeholder": "अत्र लिखन्तु..." }
 };
+
 
     function translatePage() {
         document.querySelectorAll('[data-translate]').forEach(e => {
@@ -508,165 +509,7 @@ translations = {
     };
     
     // ==================== DASHBOARD FUNCTIONS ====================
-    // ==================== CROP CALENDAR FEATURE ====================
-    // Pure client-side (no backend/API needed). Farmer picks a crop + sowing
-    // date, we compute a stage-by-stage timeline from day-offsets derived
-    // from the existing specificCropAdvice guides, store it in localStorage,
-    // and always show "what to do this week" based on today's date.
-    const cropDurations = {
-        "Wheat (Gehu)": [
-            { day: 0, stage: "Sowing", action: "Sow treated seed, 100-125 kg/ha, 20-22.5 cm row spacing." },
-            { day: 21, stage: "Crown Root Initiation", action: "First irrigation is critical now - do not delay." },
-            { day: 45, stage: "Tillering", action: "Second irrigation + top-dress remaining nitrogen." },
-            { day: 65, stage: "Flowering", action: "Irrigate; watch for yellow rust in humid weather." },
-            { day: 100, stage: "Grain Filling", action: "Maintain moisture; avoid water stress now." },
-            { day: 130, stage: "Harvest Window", action: "Harvest when grain moisture is 12-14%." }
-        ],
-        "Rice (Dhan/Chawal)": [
-            { day: 0, stage: "Nursery", action: "Sow nursery bed; soak seed in salt water first." },
-            { day: 28, stage: "Transplanting", action: "Transplant 25-30 day old seedlings, 20x15 cm spacing." },
-            { day: 45, stage: "Tillering", action: "Maintain 5 cm standing water; apply zinc sulphate." },
-            { day: 70, stage: "Panicle Initiation", action: "Watch for stem borer and leaf folder." },
-            { day: 95, stage: "Flowering", action: "Keep consistent water level; avoid drought stress." },
-            { day: 130, stage: "Harvest Window", action: "Drain field; harvest when 80% grains turn golden." }
-        ],
-        "Maize (Makka/Bhutta)": [
-            { day: 0, stage: "Sowing", action: "Sow treated seed, 60x25 cm spacing." },
-            { day: 25, stage: "Knee-High Stage", action: "Earth up soil around plants; first top-dress urea." },
-            { day: 45, stage: "Tasseling", action: "Ensure irrigation; this is a critical water stage." },
-            { day: 55, stage: "Silking", action: "Irrigate again; watch for fall armyworm." },
-            { day: 100, stage: "Harvest Window", action: "Harvest when husk turns brown and dry." }
-        ],
-        "Cotton (Kapas)": [
-            { day: 0, stage: "Sowing", action: "Sow treated seed, 90x60 cm spacing (hybrids)." },
-            { day: 30, stage: "Squaring", action: "Install pheromone traps for pink bollworm now." },
-            { day: 60, stage: "Flowering", action: "Irrigate; monitor sucking pests." },
-            { day: 90, stage: "Boll Formation", action: "Continue pest watch; avoid water stress." },
-            { day: 150, stage: "Harvest Window", action: "First picking when bolls open fully; 3-4 pickings, 7-10 days apart." }
-        ],
-        "Potato (Aloo)": [
-            { day: 0, stage: "Planting", action: "Plant treated tubers, 60x20 cm spacing." },
-            { day: 25, stage: "Earthing Up", action: "Earth up soil around plants." },
-            { day: 45, stage: "Tuber Formation", action: "Maintain consistent irrigation; watch for late blight." },
-            { day: 75, stage: "Bulking", action: "Continue irrigation; avoid waterlogging." },
-            { day: 95, stage: "Harvest Window", action: "Stop irrigation 15 days before harvest; dig when vines dry." }
-        ],
-        "Onion (Pyaz)": [
-            { day: 0, stage: "Nursery", action: "Sow nursery bed." },
-            { day: 42, stage: "Transplanting", action: "Transplant 6-8 week old seedlings, 15x10 cm spacing." },
-            { day: 70, stage: "Bulb Development", action: "Apply sulphur; maintain regular irrigation." },
-            { day: 110, stage: "Maturity", action: "Stop irrigation as tops start falling over." },
-            { day: 130, stage: "Harvest Window", action: "Harvest when 50% tops fall; cure in field 5-7 days." }
-        ],
-        "Tomato (Tamatar)": [
-            { day: 0, stage: "Nursery", action: "Sow nursery bed." },
-            { day: 28, stage: "Transplanting", action: "Transplant 25-30 day seedlings, 75x45 cm spacing." },
-            { day: 45, stage: "Staking", action: "Provide bamboo support; start drip irrigation every 2-3 days." },
-            { day: 60, stage: "Flowering", action: "Apply boron and calcium nitrate to prevent blossom end rot." },
-            { day: 80, stage: "Harvest Window", action: "First harvest around 65-80 days after transplanting." }
-        ],
-        "Sugarcane (Ganna)": [
-            { day: 0, stage: "Planting", action: "Plant treated setts (2-3 eye pieces), 90x60 cm spacing." },
-            { day: 60, stage: "Tillering", action: "First irrigation cycle; keep every 10-15 days." },
-            { day: 120, stage: "Earthing Up", action: "Earth up around the base of plants." },
-            { day: 240, stage: "Grand Growth", action: "Continue regular irrigation and nutrient top-dressing." },
-            { day: 330, stage: "Harvest Window", action: "Harvest 10-12 months after planting." }
-        ],
-        "Mustard (Sarson)": [
-            { day: 0, stage: "Sowing", action: "Sow treated seed, 45x15 cm spacing." },
-            { day: 25, stage: "Vegetative Growth", action: "First irrigation; hand-weed around this time." },
-            { day: 45, stage: "Flowering", action: "Second irrigation is critical now." },
-            { day: 70, stage: "Pod Formation", action: "Watch for aphids in cool, humid weather." },
-            { day: 110, stage: "Harvest Window", action: "Harvest when pods turn yellow-brown." }
-        ]
-    };
-
-    function getCalendarEntries() {
-        try {
-            return JSON.parse(localStorage.getItem('patukrishi_calendar_entries') || '[]');
-        } catch (e) {
-            return [];
-        }
-    }
-
-    function saveCalendarEntries(entries) {
-        localStorage.setItem('patukrishi_calendar_entries', JSON.stringify(entries));
-    }
-
-    window.addCropCalendarEntry = () => {
-        const cropSel = document.getElementById('calendarCropSelect');
-        const dateInput = document.getElementById('calendarSowingDate');
-        if (!cropSel || !dateInput || !cropSel.value || !dateInput.value) {
-            showNotification('Please select a crop and sowing date', 'error');
-            return;
-        }
-        const entries = getCalendarEntries();
-        entries.push({ crop: cropSel.value, sowingDate: dateInput.value, id: Date.now() });
-        saveCalendarEntries(entries);
-        renderCropCalendar();
-        showNotification('Added to your Crop Calendar', 'success');
-    };
-
-    window.removeCropCalendarEntry = (id) => {
-        const entries = getCalendarEntries().filter(e => e.id !== id);
-        saveCalendarEntries(entries);
-        renderCropCalendar();
-    };
-
-    function renderCropCalendar() {
-        const listDiv = document.getElementById('myCropCalendarList');
-        if (!listDiv) return;
-        const entries = getCalendarEntries();
-
-        if (entries.length === 0) {
-            listDiv.innerHTML = `<p class="big-friendly" style="opacity:.7">No crops added yet. Pick a crop and sowing date above to get your personalised schedule.</p>`;
-            return;
-        }
-
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        listDiv.innerHTML = entries.map(entry => {
-            const stages = cropDurations[entry.crop] || [];
-            const sowDate = new Date(entry.sowingDate);
-            const daysSince = Math.floor((today - sowDate) / (1000 * 60 * 60 * 24));
-
-            let currentStageIdx = 0;
-            for (let i = 0; i < stages.length; i++) {
-                if (daysSince >= stages[i].day) currentStageIdx = i;
-            }
-            const currentStage = stages[currentStageIdx];
-            const nextStage = stages[currentStageIdx + 1];
-
-            const stageRows = stages.map((s, i) => {
-                const stageDate = new Date(sowDate);
-                stageDate.setDate(stageDate.getDate() + s.day);
-                const isPast = daysSince >= s.day;
-                const isCurrent = i === currentStageIdx;
-                return `<div style="display:flex;gap:12px;padding:10px 0;${isCurrent ? 'font-weight:700;' : ''}${!isPast ? 'opacity:.55;' : ''}">
-                    <div style="width:90px;flex-shrink:0;font-size:.85rem;color:var(--text2)">${stageDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</div>
-                    <div style="width:16px;flex-shrink:0;text-align:center">${isCurrent ? '📍' : (isPast ? '✅' : '⚪')}</div>
-                    <div>
-                        <div>${s.stage}</div>
-                        <div style="font-size:.85rem;color:var(--text2);font-weight:400">${s.action}</div>
-                    </div>
-                </div>`;
-            }).join('');
-
-            return `<div class="card" style="margin-bottom:20px;border-left:5px solid #f9a825">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-                    <div>
-                        <h3 style="color:var(--primary)">${entry.crop}</h3>
-                        <p style="font-size:.9rem;color:var(--text2)">Sown ${sowDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} · Day ${daysSince} · Currently: <strong>${currentStage ? currentStage.stage : 'N/A'}</strong></p>
-                    </div>
-                    <button onclick="removeCropCalendarEntry(${entry.id})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:1.1rem" title="Remove"><i class="fas fa-trash"></i></button>
-                </div>
-                ${nextStage ? `<div style="background:var(--bg);border-radius:20px;padding:12px 18px;margin:12px 0;font-size:.95rem"><strong>📌 This week:</strong> ${currentStage.action}</div>` : ''}
-                <div style="margin-top:10px">${stageRows}</div>
-            </div>`;
-        }).join('');
-    }
-    window.renderCropCalendar = renderCropCalendar;
+    
 
     function loadDashboard() {
         const dashboard = document.getElementById('dashboard');
