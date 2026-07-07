@@ -72,20 +72,28 @@ if (typeof emailjs !== 'undefined') {
         </div>`;
     }
     
-    // ==================== REAL MANDI API FUNCTION ====================
-    async function fetchRealMandiPricesFromAPI(state, district, commodity) {
-        try {
-            const url = `${MANDI_API_URL}?api-key=${MANDI_API_KEY}&format=json&filters[state]=${encodeURIComponent(state)}&filters[district]=${encodeURIComponent(district)}&filters[commodity]=${encodeURIComponent(commodity)}&limit=20`;
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data && data.records && data.records.length > 0) {
-                return data.records;
-            }
-            return null;
-        } catch (error) {
-            console.error('Error fetching mandi prices:', error);
-            return null;
+   // ==================== UPDATED SECURE MANDI HELPER ====================
+async function fetchRealMandiPricesFromAPI(state, district, commodity) {
+    try {
+        // Point directly to your Vercel serverless function
+        const response = await fetch('/api/mandi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ state, district, crop: commodity })
+        });
+        
+        const data = await response.json();
+        
+        // Return the records if the server call succeeded
+        if (data.success && data.records && data.records.length > 0) {
+            return data.records;
         }
+        return null;
+    } catch (error) {
+        console.error('Error connecting to secure mandi proxy:', error);
+        return null;
+    }
+}
     }
     
     // ==================== MAIN WEATHER FUNCTION (REAL 5-DAY FORECAST) ====================
