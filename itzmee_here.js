@@ -288,7 +288,9 @@ window.fetchMandiPrices = async () => {
         return;
     }
     
+    // रीसेट containers
     container.innerHTML = '<div style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse fa-3x"></i><p>Connecting to secure proxy engine...</p></div>';
+    messageDiv.innerHTML = ''; 
     
     try {
         const response = await fetch('/api/mandi', {
@@ -299,7 +301,7 @@ window.fetchMandiPrices = async () => {
         
         const data = await response.json();
         
-        // Check for an explicit true flag from your backend before rendering live tracks
+        // चेक करें कि बैकएंड रिस्पॉन्स सफल है या नहीं
         if (data.success === true && data.records && data.records.length > 0) {
             container.innerHTML = '';
             data.records.forEach(record => {
@@ -317,24 +319,22 @@ window.fetchMandiPrices = async () => {
                 `;
                 container.appendChild(card);
             });
-            messageDiv.innerHTML = `<p class="big-friendly" style="background:#e8f5e9; padding:15px; border-radius:15px;">
-                ✅ <strong>Real-time mandi prices from ${district}, ${state}</strong><br>
-                Showing ${data.records.length} market rates for ${crop}. Prices are updated securely.
-            </p>`;
-            showNotification(`Found ${data.records.length} market rates for ${crop} in ${district}`, 'success');
+            messageDiv.innerHTML = `<p class="big-friendly" style="background:#e8f5e9; padding:15px; border-radius:15px;">✅ Live rates displayed from secure server.</p>`;
+            showNotification(`Found ${data.records.length} market rates!`, 'success');
         } else {
-            // Trigger the fallback immediately if success is false
+            // अगर API डाउन है तो तुरंत स्क्रीन साफ करके फॉलबैक मॉक डेटा लोड करें
             console.warn('Backend proxy reported error tier fallback profile status. Loading mock data.');
-            container.innerHTML = ''; // Clear loading screen text completely
+            container.innerHTML = ''; 
             useMockMandiData(state, district, crop, container, messageDiv);
         }
     } catch (error) {
         console.error('Connection timeout or parsing failure, executing fallback:', error);
-        container.innerHTML = ''; // Clear loading screen text completely here too
+        container.innerHTML = ''; 
         useMockMandiData(state, district, crop, container, messageDiv);
     }
-},
-    }
+};
+
+// ==================== FARMING TIPS DATABASE ====================
 farmingTips = {
             en: ["🌱 Always test your soil before sowing - different crops need different nutrients","💧 Drip irrigation saves 30% water","🌾 Practice crop rotation - maintains soil fertility","🐛 Regular pest inspection - early detection saves crops","📱 Get all updates on PatuKrishi app","💰 Check mandi prices before selling - get best rates","🌞 Mulching helps retain soil moisture","🌱 Increase use of cow dung manure - reduce chemical fertilizers","🌾 Treat wheat seeds before sowing","🍚 Prepare nursery before paddy transplantation","🧶 Install pheromone traps to prevent pink bollworm in cotton","🎋 Use 2-3 eye pieces for sugarcane planting","🌽 Maintain 60x25 cm spacing for maize","🥔 Plant potatoes in October-November","🧅 Use 6-8 week old seedlings for onion nursery","🍅 Stake tomato plants for better yield","🌱 Green manure improves soil health","💧 Reduce irrigation in cold weather","🌾 Harvest wheat at 12-14% moisture","📊 Get crop insurance - protection against natural disasters","🌱 Maintain proper fertilizer quantity per hectare","💧 Check water quality for irrigation","🌾 Don't burn crop residue - beneficial for soil","🐛 Increase use of organic pesticides","🌱 Maintain proper seed rate - not too less or too much","📅 Sow Rabi crops in October-November","🌧️ Sow Kharif crops in June-July","☀️ Light irrigation for Zaid crops","🌾 4-5 irrigations sufficient for wheat","🍚 Maintain 5 cm water in paddy fields","🧶 Maintain 90x60 cm spacing for cotton","🌽 Top dress urea in maize","🥔 Earth up potato plants","🌱 Spray neem oil for crop protection","💧 Drip irrigated crops give higher yield","🌾 Harvest wheat in March-April","🍚 Harvest paddy in October-November","🧶 Pick cotton in October-December","🌽 Harvest maize in 90-110 days","🎋 Harvest sugarcane in 10-12 months","🌱 Sow groundnut in June-July","🌾 Sow mustard in October","🌱 Sow chickpea in October-November","🌾 Sow barley in October-November","🌱 Control pests in pigeon pea","💧 Prevent yellow mosaic in soybean","🌾 Sow bajra in July","🌱 Manage moisture in jowar crop","📊 Check mandi rates before selling","🌾 PatuKrishi - Every farmer's companion"],
             hi: ["🌱 बुवाई से पहले मिट्टी की जांच जरूर करें - अलग फसलों को अलग पोषक तत्व चाहिए","💧 ड्रिप सिंचाई से 30% पानी की बचत करें","🌾 फसल चक्र अपनाएं - मिट्टी की उर्वरता बनी रहेगी","🐛 कीटों की नियमित जांच करें - समय पर पहचान से फसल बचेगी","📱 पटुकृषि ऐप से हर अपडेट पाएं","💰 मंडी भाव देखकर ही फसल बेचें - सही दाम मिलेगा","🌞 मल्चिंग से मिट्टी की नमी बनी रहती है","🌱 गोबर खाद का प्रयोग बढ़ाएं - रासायनिक खाद कम करें","🌾 गेहूं की बुवाई से पहले बीज उपचार जरूरी","🍚 धान की रोपाई से पहले नर्सरी तैयार करें","🧶 कपास में गुलाबी सुंडी से बचाव के लिए फेरोमोन ट्रैप लगाएं","🎋 गन्ने की बुवाई के समय 2-3 आंख वाले टुकड़े लें","🌽 मक्का की फसल में 60x25 सेमी की दूरी रखें","🥔 आलू की बुवाई अक्टूबर-नवंबर में करें","🧅 प्याज की नर्सरी में 6-8 सप्ताह पुराने पौधे लगाएं","🍅 टमाटर में सहारा देने से उपज बढ़ती है","🌱 हरी खाद से मिट्टी की सेहत सुधरेगी","💧 ठंड के मौसम में सिंचाई कम करें","🌾 गेहूं की कटाई नमी 12-14% पर करें","📊 फसल बीमा जरूर कराएं - प्राकृतिक आपदा से बचाव","🌱 प्रति हेक्टेयर खाद की सही मात्रा का ध्यान रखें","💧 सिंचाई के लिए पानी की गुणवत्ता जांचें","🌾 फसल अवशेष न जलाएं - मिट्टी के लिए फायदेमंद","🐛 जैविक कीटनाशकों का प्रयोग बढ़ाएं","🌱 बीज दर का ध्यान रखें - कम या ज्यादा न हो","📅 रबी की बुवाई अक्टूबर-नवंबर में करें","🌧️ खरीफ की बुवाई जून-जुलाई में करें","☀️ जायद की फसलों के लिए हल्की सिंचाई","🌾 गेहूं में 4-5 सिंचाई पर्याप्त","🍚 धान में 5 सेमी पानी जरूर रखें","🧶 कपास में 90x60 सेमी की दूरी रखें","🌽 मक्का में यूरिया की टॉप ड्रेसिंग करें","🥔 आलू में मिट्टी चढ़ाना जरूरी","🌱 फसल सुरक्षा के लिए नीम तेल का छिड़काव","💧 ड्रिप सिंचित फसलों में पैदावार अधिक","🌾 गेहूं की कटाई मार्च-अप्रैल में","🍚 धान की कटाई अक्टूबर-नवंबर में","🧶 कपास की तुड़ाई अक्टूबर-दिसंबर में","🌽 मक्का की कटाई 90-110 दिन में","🎋 गन्ने की कटाई 10-12 महीने में","🌱 मूंगफली की बुवाई जून-जुलाई में","🌾 सरसों की बुवाई अक्टूबर में","🌱 चने की बुवाई अक्टूबर-नवंबर में","🌾 जौ की बुवाई अक्टूबर-नवंबर में","🌱 अरहर की फसल में कीट नियंत्रण जरूरी","💧 सोयाबीन में पीला मोज़ेक रोग से बचाव","🌾 बाजरे की बुवाई जुलाई में करें","🌱 ज्वार की फसल में नमी प्रबंधन","📊 मंडी भाव की जानकारी लेकर ही बेचें","🌾 पटुकृषि - हर किसान का साथी"],
