@@ -1,16 +1,11 @@
 // /api/crop-lens.js
-// Vercel serverless function. Keeps the Plant.id API key on the server so it
-// never appears in browser-visible JS. Deploy as-is on Vercel; no extra
-// dependencies needed (Node 18+ has global fetch built in).
+// Vercel serverless function. Keeps the Plant.id API key on the server.
+// Deploy as-is on Vercel; no extra dependencies needed (Node 18+ has global fetch).
 //
 // SETUP:
-// 1. Get a free API key at https://admin.kindwise.com (product: plant.id)
-// 2. In your Vercel project: Settings -> Environment Variables (Production!)
+// 1. Get an API key at https://admin.kindwise.com (product: plant.id / Health Assessment)
+// 2. In your Vercel project: Settings -> Environment Variables
 //    Add: PLANTID_API_KEY = <your key>
-// 3. Redeploy. That's it - the frontend already calls this endpoint.
-//
-// If the key isn't set yet, this returns { success: false, reason: 'not_configured' }
-// so the frontend can fall back to the built-in simulated Crop Lens instead of breaking.
 
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -28,6 +23,12 @@ module.exports = async function handler(req, res) {
     }
 
     try {
+        // Handle cases where frontend sends the data URI prefix (e.g., data:image/jpeg;base64,...)
+        let base64Image = image;
+        if (base64Image.startsWith('data:')) {
+            base64Image = base64Image.split(',')[1];
+        }
+
         const plantIdRes = await fetch(
             'https://api.plant.id/v3/identification?details=description,treatment,symptoms,severity,common_names&health=all',
             {
@@ -36,7 +37,7 @@ module.exports = async function handler(req, res) {
                     'Content-Type': 'application/json',
                     'Api-Key': apiKey
                 },
-                body: JSON.stringify({ images: [image] })
+                body: JSON.stringify({ images: [base64Image] })
             }
         );
 
@@ -71,13 +72,13 @@ module.exports = async function handler(req, res) {
                 : null,
             disease: (!isHealthy && topDisease)
                 ? {
-                      name: topDisease.name,
-                      probability: topDisease.probability,
-                      commonNames: topDisease.details?.common_names || [],
-                      description: topDisease.details?.description || '',
-                      symptoms: topDisease.details?.symptoms || '',
-                      severity: topDisease.details?.severity || '',
-                      treatment: topDisease.details?.treatment || null
+                    name: topDisease.name,
+                    probability: topDisease.probability,
+                    commonNames: topDisease.details?.common_names || [],
+                    description: topDisease.details?.description || '',
+                    symptoms: topDisease.details?.symptoms || '',
+                    severity: topDisease.details?.severity || '',
+                    treatment: topDisease.details?.treatment || null
                   }
                 : null,
             secondaryDiseases: diseaseSuggestions.slice(1, 3).map(d => ({
@@ -87,6 +88,10 @@ module.exports = async function handler(req, res) {
         });
     } catch (err) {
         console.error('crop-lens proxy error:', err);
-        return res.status(200).json({ success: false, reason: 'request_failed', debug: String(err && err.message || err) });
+        return res.status(200).json({ 
+            success: false, 
+            reason: 'request_failed', 
+            debug: String(err && err.message || err) 
+        });
     }
 }
