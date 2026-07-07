@@ -275,61 +275,60 @@ async function fetchRealMandiPricesFromAPI(state, district, commodity) {
         }
     };
     
-  // ==================== SECURE MANDI PRICES FUNCTION ====================
-    window.fetchMandiPrices = async () => {
-        const state = document.getElementById('mandiStateSelect').value;
-        const district = document.getElementById('mandiDistrictSelect').value;
-        const crop = document.getElementById('mandiCropSelect').value;
-        const container = document.getElementById('mandi-cards-container');
-        const messageDiv = document.getElementById('mandi-multiple-list');
+// ==================== SECURE MANDI ENGINE WITH AUTO-FALLBACK ====================
+window.fetchMandiPrices = async () => {
+    const state = document.getElementById('mandiStateSelect').value;
+    const district = document.getElementById('mandiDistrictSelect').value;
+    const crop = document.getElementById('mandiCropSelect').value;
+    const container = document.getElementById('mandi-cards-container');
+    const messageDiv = document.getElementById('mandi-multiple-list');
+    
+    if (!state || !district || !crop) {
+        showNotification('Please select state, district and crop', 'error');
+        return;
+    }
+    
+    container.innerHTML = '<div style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse fa-3x"></i><p>Connecting to secure proxy engine...</p></div>';
+    
+    try {
+        const response = await fetch('/api/mandi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ state, district, crop })
+        });
         
-        if (!state || !district || !crop) {
-            showNotification('Please select state, district and crop', 'error');
-            return;
-        }
+        const data = await response.json();
         
-        container.innerHTML = '<div style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse fa-3x"></i><p>Fetching live mandi prices from secure server...</p></div>';
-        
-        try {
-            // Send selections to your Vercel server function, keeping your API key hidden
-            const response = await fetch('/api/mandi', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ state, district, crop })
+        // Check for an explicit true flag from your backend before rendering live tracks
+        if (data.success === true && data.records && data.records.length > 0) {
+            container.innerHTML = '';
+            data.records.forEach(record => {
+                const card = document.createElement('div');
+                card.className = 'market-card';
+                const price = record.modal_price || record.avg_price || record.min_price || record.max_price;
+                const priceValue = price ? `₹${parseInt(price).toLocaleString()}` : 'N/A';
+                card.innerHTML = `
+                    <h4>🏪 ${record.market || 'Market Name'}</h4>
+                    <p><strong>🌾 Crop:</strong> ${record.commodity || crop}</p>
+                    <p><strong>💰 Price (₹/q):</strong> <span style="font-size:1.4rem; color:#2e7d32;">${priceValue}</span></p>
+                    <p><strong>📅 Date:</strong> ${record.arrival_date || record.updated_date || 'Latest'}</p>
+                    <p><strong>📍 Location:</strong> ${record.district || district}, ${record.state || state}</p>
+                    <small style="color:#666;">📊 Source: AGMARKNET (Government of India)</small>
+                `;
+                container.appendChild(card);
             });
-            
-            const data = await response.json();
-            
-            if (data.success && data.records && data.records.length > 0) {
-                container.innerHTML = '';
-                data.records.forEach(record => {
-                    const card = document.createElement('div');
-                    card.className = 'market-card';
-                    const price = record.modal_price || record.avg_price || record.min_price || record.max_price;
-                    const priceValue = price ? `₹${parseInt(price).toLocaleString()}` : 'N/A';
-                    card.innerHTML = `
-                        <h4>🏪 ${record.market || record.arrival_mandi || 'Market Name'}</h4>
-                        <p><strong>🌾 Crop:</strong> ${record.commodity || crop}</p>
-                        <p><strong>💰 Price (₹/q):</strong> <span style="font-size:1.4rem; color:#2e7d32;">${priceValue}</span></p>
-                        <p><strong>📅 Date:</strong> ${record.arrival_date || record.updated_date || 'Latest'}</p>
-                        <p><strong>📍 Location:</strong> ${record.district || district}, ${record.state || state}</p>
-                        <small style="color:#666;">📊 Source: AGMARKNET (Government of India)</small>
-                    `;
-                    container.appendChild(card);
-                });
-                messageDiv.innerHTML = `<p class="big-friendly" style="background:#e8f5e9; padding:15px; border-radius:15px;">
-                    ✅ <strong>Real-time mandi prices from ${district}, ${state}</strong><br>
-                    Showing ${data.records.length} market rates for ${crop}. Prices are updated securely.
-                </p>`;
-                showNotification(`Found ${data.records.length} market rates for ${crop} in ${district}`, 'success');
-            } else {
-                useMockMandiData(state, district, crop, container, messageDiv);
-            }
-        } catch (error) {
-            console.error('Secure fetch failed, using mock fallback:', error);
+            messageDiv.innerHTML = `<p class="big-friendly" style="background:#e8f5e9; padding:15px; border-radius:15px;">✅ Live rates displayed from secure server.</p>`;
+            showNotification(`Found ${data.records.length} market rates!`, 'success');
+        } else {
+            // Trigger the fallback immediately if success is false
+            console.warn('Backend proxy reported error tier fallback profile status. Loading mock data.');
             useMockMandiData(state, district, crop, container, messageDiv);
-            showNotification('Unable to fetch live prices. Showing demo data.', 'warning');
         }
+    } catch (error) {
+        console.error('Connection timeout or parsing failure, executing fallback:', error);
+        useMockMandiData(state, district, crop, container, messageDiv);
+    }
+};
     };
 farmingTips = {
             en: ["🌱 Always test your soil before sowing - different crops need different nutrients","💧 Drip irrigation saves 30% water","🌾 Practice crop rotation - maintains soil fertility","🐛 Regular pest inspection - early detection saves crops","📱 Get all updates on PatuKrishi app","💰 Check mandi prices before selling - get best rates","🌞 Mulching helps retain soil moisture","🌱 Increase use of cow dung manure - reduce chemical fertilizers","🌾 Treat wheat seeds before sowing","🍚 Prepare nursery before paddy transplantation","🧶 Install pheromone traps to prevent pink bollworm in cotton","🎋 Use 2-3 eye pieces for sugarcane planting","🌽 Maintain 60x25 cm spacing for maize","🥔 Plant potatoes in October-November","🧅 Use 6-8 week old seedlings for onion nursery","🍅 Stake tomato plants for better yield","🌱 Green manure improves soil health","💧 Reduce irrigation in cold weather","🌾 Harvest wheat at 12-14% moisture","📊 Get crop insurance - protection against natural disasters","🌱 Maintain proper fertilizer quantity per hectare","💧 Check water quality for irrigation","🌾 Don't burn crop residue - beneficial for soil","🐛 Increase use of organic pesticides","🌱 Maintain proper seed rate - not too less or too much","📅 Sow Rabi crops in October-November","🌧️ Sow Kharif crops in June-July","☀️ Light irrigation for Zaid crops","🌾 4-5 irrigations sufficient for wheat","🍚 Maintain 5 cm water in paddy fields","🧶 Maintain 90x60 cm spacing for cotton","🌽 Top dress urea in maize","🥔 Earth up potato plants","🌱 Spray neem oil for crop protection","💧 Drip irrigated crops give higher yield","🌾 Harvest wheat in March-April","🍚 Harvest paddy in October-November","🧶 Pick cotton in October-December","🌽 Harvest maize in 90-110 days","🎋 Harvest sugarcane in 10-12 months","🌱 Sow groundnut in June-July","🌾 Sow mustard in October","🌱 Sow chickpea in October-November","🌾 Sow barley in October-November","🌱 Control pests in pigeon pea","💧 Prevent yellow mosaic in soybean","🌾 Sow bajra in July","🌱 Manage moisture in jowar crop","📊 Check mandi rates before selling","🌾 PatuKrishi - Every farmer's companion"],
