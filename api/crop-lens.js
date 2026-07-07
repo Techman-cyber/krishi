@@ -29,11 +29,11 @@ module.exports = async function handler(req, res) {
             base64Image = base64Image.split(',')[1];
         }
 
-        // Pl@ntNet expects binary files via multipart/form-data.
-        // Convert the base64 string into a binary Blob entirely on the server.
+        // Convert the incoming base64 string into a binary Blob asset completely on the server.
         const buffer = Buffer.from(base64Image, 'base64');
         const blob = new Blob([buffer], { type: 'image/jpeg' });
 
+        // Construct multi-part payload for the Pl@ntNet endpoint
         const formData = new FormData();
         formData.append('images', blob, 'crop.jpg');
         formData.append('organs', 'leaf'); // Directs the scanner to look at foliage anomalies
@@ -78,11 +78,11 @@ module.exports = async function handler(req, res) {
                     description: `Identified pathological configuration matching international standard EPPO index [${topResult.name || 'N/A'}].`,
                     symptoms: "Visible tissue deterioration matching localized fungal, pest, or physiological disorders.",
                     severity: topResult.score > 0.7 ? "Critical" : (topResult.score > 0.4 ? "High" : "Medium"),
-                    treatment: null // Pl@ntNet focuses purely on identification; mapping handles fallback gracefully
+                    treatment: null // Pl@ntNet focuses purely on identification; UI handling handles fallback gracefully
                   }
                 : null,
             secondaryDiseases: results.slice(1, 3).map(d => ({
-                name: d.label || 'Alternative Pathenogen Profile',
+                name: d.label || 'Alternative Pathogen Profile',
                 probability: d.score
             }))
         });
