@@ -25,8 +25,6 @@
     
     // ==================== API KEYS ====================
     const WEATHER_API_KEY = '20f6a3909724aac57a9b95e4f3e0194c';
-    const MANDI_API_URL = 'https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070';
-    const MANDI_API_KEY = '579b464db66ec23bdd000001f753570ef99342734fba2fcd9d53e80e';
   // ========== ADD YOUR NEW APIs HERE ==========
 const EMAILJS_SERVICE_ID = 'service_c48sfqj';      // <-- Add your EmailJS Service ID
 const EMAILJS_TEMPLATE_ID = 'template_xnjx3mg';    // <-- Add your EmailJS Template ID  
@@ -270,7 +268,7 @@ if (typeof emailjs !== 'undefined') {
         }
     };
     
-    // ==================== UPDATED MANDI PRICES FUNCTION WITH REAL API ====================
+  // ==================== SECURE MANDI PRICES FUNCTION ====================
     window.fetchMandiPrices = async () => {
         const state = document.getElementById('mandiStateSelect').value;
         const district = document.getElementById('mandiDistrictSelect').value;
@@ -283,13 +281,21 @@ if (typeof emailjs !== 'undefined') {
             return;
         }
         
-        container.innerHTML = '<div style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse fa-3x"></i><p>Fetching live mandi prices from government API...</p></div>';
+        container.innerHTML = '<div style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse fa-3x"></i><p>Fetching live mandi prices from secure server...</p></div>';
         
         try {
-            const records = await fetchRealMandiPricesFromAPI(state, district, crop);
-            if (records && records.length > 0) {
+            // Send selections to your Vercel server function, keeping your API key hidden
+            const response = await fetch('/api/mandi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ state, district, crop })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success && data.records && data.records.length > 0) {
                 container.innerHTML = '';
-                records.forEach(record => {
+                data.records.forEach(record => {
                     const card = document.createElement('div');
                     card.className = 'market-card';
                     const price = record.modal_price || record.avg_price || record.min_price || record.max_price;
@@ -306,56 +312,18 @@ if (typeof emailjs !== 'undefined') {
                 });
                 messageDiv.innerHTML = `<p class="big-friendly" style="background:#e8f5e9; padding:15px; border-radius:15px;">
                     ✅ <strong>Real-time mandi prices from ${district}, ${state}</strong><br>
-                    Showing ${records.length} market rates for ${crop}. Prices are updated by government sources.
+                    Showing ${data.records.length} market rates for ${crop}. Prices are updated securely.
                 </p>`;
-                showNotification(`Found ${records.length} market rates for ${crop} in ${district}`, 'success');
+                showNotification(`Found ${data.records.length} market rates for ${crop} in ${district}`, 'success');
             } else {
                 useMockMandiData(state, district, crop, container, messageDiv);
             }
         } catch (error) {
-            console.error('API error, using mock data:', error);
+            console.error('Secure fetch failed, using mock fallback:', error);
             useMockMandiData(state, district, crop, container, messageDiv);
             showNotification('Unable to fetch live prices. Showing demo data.', 'warning');
         }
     };
-    
-    function useMockMandiData(state, district, crop, container, messageDiv) {
-        const cropsData = {
-            'Wheat': { basePrice: 2450, markets: ['APMC Main Yard', 'Grain Market', 'Kisan Mandi', 'Wholesale Market'], minPrice: 2350, maxPrice: 2550 },
-            'Rice': { basePrice: 2150, markets: ['Rice Millers Association', 'Grain Market', 'APMC Yard', 'Farmers Market'], minPrice: 2050, maxPrice: 2250 },
-            'Tomato': { basePrice: 45, markets: ['Vegetable Market', 'Farmers Market', 'Wholesale Mandi', 'Retail Hub'], minPrice: 35, maxPrice: 65 },
-            'Potato': { basePrice: 2850, markets: ['Cold Storage Hub', 'APMC Market', 'Farmers Mandi', 'Wholesale Center'], minPrice: 2750, maxPrice: 3100 },
-            'Onion': { basePrice: 3900, markets: ['Lasalgaon Market', 'APMC Yard', 'Farmers Mandi', 'Wholesale Hub'], minPrice: 3500, maxPrice: 4500 },
-            'Cotton': { basePrice: 7200, markets: ['Cotton Mandi', 'Ginning Mill Hub', 'APMC Yard', 'Farmers Market'], minPrice: 6900, maxPrice: 7600 },
-            'Maize': { basePrice: 2100, markets: ['Grain Market', 'APMC Yard', 'Farmers Mandi', 'Wholesale Hub'], minPrice: 2000, maxPrice: 2250 },
-            'Sugarcane': { basePrice: 380, markets: ['Sugar Mill Gate', 'Cooperative Society', 'Farmers Mandi', 'APMC Yard'], minPrice: 360, maxPrice: 410 }
-        };
-        const cropData = cropsData[crop] || { basePrice: 2000, markets: ['Main Market', 'APMC Yard', 'Local Mandi', 'Farmers Market'], minPrice: 1900, maxPrice: 2200 };
-        container.innerHTML = '';
-        cropData.markets.forEach((marketName) => {
-            const variation = (Math.random() - 0.5) * 200;
-            const price = Math.round(cropData.basePrice + variation);
-            const minPrice = cropData.minPrice || (cropData.basePrice - 100);
-            const maxPrice = cropData.maxPrice || (cropData.basePrice + 100);
-            const change = ((Math.random() - 0.5) * 8).toFixed(1);
-            const changeClass = change >= 0 ? 'price-up' : 'price-down';
-            const card = document.createElement('div');
-            card.className = 'market-card';
-            card.innerHTML = `
-                <h4>🏪 ${marketName}</h4>
-                <p><strong>🌾 Crop:</strong> ${crop}</p>
-                <p><strong>💰 Price (₹/q):</strong> <span style="font-size:1.4rem; color:#2e7d32;">₹${price.toLocaleString()}</span></p>
-                <p><strong>📊 Range:</strong> ₹${minPrice} - ₹${maxPrice}</p>
-                <p><strong>📈 Change:</strong> <span class="${changeClass}">${change}%</span></p>
-                <p><strong>📍 Market:</strong> ${district}, ${state}</p>
-            `;
-            container.appendChild(card);
-        });
-        messageDiv.innerHTML = `<p class="big-friendly" style="background:#fff3e0; padding:15px; border-radius:15px;">
-            📊 <strong>${district} mandi prices for ${crop}</strong><br>
-            Showing ${cropData.markets.length} market rates. Compare prices before selling your crop!
-        </p>`;
-    }
 farmingTips = {
             en: ["🌱 Always test your soil before sowing - different crops need different nutrients","💧 Drip irrigation saves 30% water","🌾 Practice crop rotation - maintains soil fertility","🐛 Regular pest inspection - early detection saves crops","📱 Get all updates on PatuKrishi app","💰 Check mandi prices before selling - get best rates","🌞 Mulching helps retain soil moisture","🌱 Increase use of cow dung manure - reduce chemical fertilizers","🌾 Treat wheat seeds before sowing","🍚 Prepare nursery before paddy transplantation","🧶 Install pheromone traps to prevent pink bollworm in cotton","🎋 Use 2-3 eye pieces for sugarcane planting","🌽 Maintain 60x25 cm spacing for maize","🥔 Plant potatoes in October-November","🧅 Use 6-8 week old seedlings for onion nursery","🍅 Stake tomato plants for better yield","🌱 Green manure improves soil health","💧 Reduce irrigation in cold weather","🌾 Harvest wheat at 12-14% moisture","📊 Get crop insurance - protection against natural disasters","🌱 Maintain proper fertilizer quantity per hectare","💧 Check water quality for irrigation","🌾 Don't burn crop residue - beneficial for soil","🐛 Increase use of organic pesticides","🌱 Maintain proper seed rate - not too less or too much","📅 Sow Rabi crops in October-November","🌧️ Sow Kharif crops in June-July","☀️ Light irrigation for Zaid crops","🌾 4-5 irrigations sufficient for wheat","🍚 Maintain 5 cm water in paddy fields","🧶 Maintain 90x60 cm spacing for cotton","🌽 Top dress urea in maize","🥔 Earth up potato plants","🌱 Spray neem oil for crop protection","💧 Drip irrigated crops give higher yield","🌾 Harvest wheat in March-April","🍚 Harvest paddy in October-November","🧶 Pick cotton in October-December","🌽 Harvest maize in 90-110 days","🎋 Harvest sugarcane in 10-12 months","🌱 Sow groundnut in June-July","🌾 Sow mustard in October","🌱 Sow chickpea in October-November","🌾 Sow barley in October-November","🌱 Control pests in pigeon pea","💧 Prevent yellow mosaic in soybean","🌾 Sow bajra in July","🌱 Manage moisture in jowar crop","📊 Check mandi rates before selling","🌾 PatuKrishi - Every farmer's companion"],
             hi: ["🌱 बुवाई से पहले मिट्टी की जांच जरूर करें - अलग फसलों को अलग पोषक तत्व चाहिए","💧 ड्रिप सिंचाई से 30% पानी की बचत करें","🌾 फसल चक्र अपनाएं - मिट्टी की उर्वरता बनी रहेगी","🐛 कीटों की नियमित जांच करें - समय पर पहचान से फसल बचेगी","📱 पटुकृषि ऐप से हर अपडेट पाएं","💰 मंडी भाव देखकर ही फसल बेचें - सही दाम मिलेगा","🌞 मल्चिंग से मिट्टी की नमी बनी रहती है","🌱 गोबर खाद का प्रयोग बढ़ाएं - रासायनिक खाद कम करें","🌾 गेहूं की बुवाई से पहले बीज उपचार जरूरी","🍚 धान की रोपाई से पहले नर्सरी तैयार करें","🧶 कपास में गुलाबी सुंडी से बचाव के लिए फेरोमोन ट्रैप लगाएं","🎋 गन्ने की बुवाई के समय 2-3 आंख वाले टुकड़े लें","🌽 मक्का की फसल में 60x25 सेमी की दूरी रखें","🥔 आलू की बुवाई अक्टूबर-नवंबर में करें","🧅 प्याज की नर्सरी में 6-8 सप्ताह पुराने पौधे लगाएं","🍅 टमाटर में सहारा देने से उपज बढ़ती है","🌱 हरी खाद से मिट्टी की सेहत सुधरेगी","💧 ठंड के मौसम में सिंचाई कम करें","🌾 गेहूं की कटाई नमी 12-14% पर करें","📊 फसल बीमा जरूर कराएं - प्राकृतिक आपदा से बचाव","🌱 प्रति हेक्टेयर खाद की सही मात्रा का ध्यान रखें","💧 सिंचाई के लिए पानी की गुणवत्ता जांचें","🌾 फसल अवशेष न जलाएं - मिट्टी के लिए फायदेमंद","🐛 जैविक कीटनाशकों का प्रयोग बढ़ाएं","🌱 बीज दर का ध्यान रखें - कम या ज्यादा न हो","📅 रबी की बुवाई अक्टूबर-नवंबर में करें","🌧️ खरीफ की बुवाई जून-जुलाई में करें","☀️ जायद की फसलों के लिए हल्की सिंचाई","🌾 गेहूं में 4-5 सिंचाई पर्याप्त","🍚 धान में 5 सेमी पानी जरूर रखें","🧶 कपास में 90x60 सेमी की दूरी रखें","🌽 मक्का में यूरिया की टॉप ड्रेसिंग करें","🥔 आलू में मिट्टी चढ़ाना जरूरी","🌱 फसल सुरक्षा के लिए नीम तेल का छिड़काव","💧 ड्रिप सिंचित फसलों में पैदावार अधिक","🌾 गेहूं की कटाई मार्च-अप्रैल में","🍚 धान की कटाई अक्टूबर-नवंबर में","🧶 कपास की तुड़ाई अक्टूबर-दिसंबर में","🌽 मक्का की कटाई 90-110 दिन में","🎋 गन्ने की कटाई 10-12 महीने में","🌱 मूंगफली की बुवाई जून-जुलाई में","🌾 सरसों की बुवाई अक्टूबर में","🌱 चने की बुवाई अक्टूबर-नवंबर में","🌾 जौ की बुवाई अक्टूबर-नवंबर में","🌱 अरहर की फसल में कीट नियंत्रण जरूरी","💧 सोयाबीन में पीला मोज़ेक रोग से बचाव","🌾 बाजरे की बुवाई जुलाई में करें","🌱 ज्वार की फसल में नमी प्रबंधन","📊 मंडी भाव की जानकारी लेकर ही बेचें","🌾 पटुकृषि - हर किसान का साथी"],
