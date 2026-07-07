@@ -94,7 +94,6 @@ async function fetchRealMandiPricesFromAPI(state, district, commodity) {
         return null;
     }
 }
-    }
     
     // ==================== MAIN WEATHER FUNCTION (REAL 5-DAY FORECAST) ====================
     window.getWeatherData = async () => {
