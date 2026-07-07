@@ -24,8 +24,8 @@
     
     // ==================== API KEYS ====================
     const WEATHER_API_KEY = '20f6a3909724aac57a9b95e4f3e0194c';
-    const MANDI_API_URL = 'https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070';
-    const MANDI_API_KEY = '579b464db66ec23bdd000001f753570ef99342734fba2fcd9d53e80e';
+    // ==================== NEW STABLE API ROUTE (NO KEY REQUIRED) ====================
+const MANDI_API_URL = 'https://api.ceda.ashoka.edu.in/v1/agmarknet/prices';
   // ========== ADD YOUR NEW APIs HERE ==========
 const EMAILJS_SERVICE_ID = 'service_c48sfqj';      // <-- Add your EmailJS Service ID
 const EMAILJS_TEMPLATE_ID = 'template_xnjx3mg';    // <-- Add your EmailJS Template ID  
