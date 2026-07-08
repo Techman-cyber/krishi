@@ -32,7 +32,7 @@ const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';      // <-- Add your EmailJS Pub
 if (typeof emailjs !== 'undefined') {
     emailjs.init(EMAILJS_PUBLIC_KEY);
 }
-    // ==================== WEATHER HELPER FUNCTIONS ====================
+   // ==================== WEATHER HELPER FUNCTIONS ====================
     function getMostCommon(arr) {
         return arr.sort((a, b) => arr.filter(v => v === a).length - arr.filter(v => v === b).length).pop();
     }
@@ -87,7 +87,7 @@ if (typeof emailjs !== 'undefined') {
         }
     }
     
-// ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
+    // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO) ====================
     window.getWeatherData = async () => {
         const city = document.getElementById('cityInput').value.trim();
         const resultDiv = document.getElementById('weather-result');
@@ -161,7 +161,6 @@ if (typeof emailjs !== 'undefined') {
         });
     };
 
-    // Helper to translate WMO Weather interpretation codes to readable text strings + graphics
     function getWeatherDesc(code) {
         if (code === 0) return { text: "Clear Sky", icon: "☀️", main: "Clear" };
         if ([1, 2, 3].includes(code)) return { text: "Partly Cloudy", icon: "⛅", main: "Clouds" };
@@ -176,9 +175,18 @@ if (typeof emailjs !== 'undefined') {
     function renderMeteoWeather(data, targetDiv) {
         const currentCondition = getWeatherDesc(data.current.code);
         
+        // Live system clock parsing for current verification timestamp tracking
+        const now = new Date();
+        const currentTimeString = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const currentDateString = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
         let currentHtml = `
-            <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow);">
-                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2>
+            <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow); position: relative;">
+                <div style="position: absolute; top: 15px; right: 20px; font-size: 0.85rem; color: var(--text2); background: var(--card-bg); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); font-weight: 500;">
+                    🕒 As of: ${currentTimeString} | ${currentDateString}
+                </div>
+                
+                <h2 style="color: #2e7d32; margin-top: 15px;">📍 ${data.locationName}</h2>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
                     <span style="font-size: 5rem; line-height: 1;">${currentCondition.icon}</span>
                     <div>
@@ -195,12 +203,12 @@ if (typeof emailjs !== 'undefined') {
 
         let forecastHtml = `
             <div style="margin-top:25px;">
-                <h3>📅 5-Day Weather Forecast</h3>
+                <h3>📅 7-Day Farm Forecast</h3>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
         `;
         
-        // Limits data array down to an exact 5-day view match
-        data.daily.slice(0, 5).forEach(day => {
+        // Render 7 elements from Open-Meteo arrays safely
+        data.daily.forEach(day => {
             const dateObj = new Date(day.date);
             const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
             const dayCondition = getWeatherDesc(day.code);
