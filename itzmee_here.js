@@ -3449,48 +3449,49 @@ document.addEventListener('click', function(e) {
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
 
+recognition.onerror = () => {
+        listening = false;
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+    };
+
     recognition.onend = () => {
         listening = false;
         micBtn.classList.remove('listening');
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
-})(); // <--- Voice function safely closes here!
+})(); // <--- SAFELY CLOSES VOICE INPUT FIRST!
 
 // ==================== AUTHENTICATION GUEST INTERCEPTOR ====================
 window.enterAsGuest = () => {
     console.log("Guest entry engine initialized...");
 
-    // 1. Build session payload structures
-    const guestUser = {
-        uid: "guest_" + Math.random().toString(36).substr(2, 9),
-        displayName: "Guest Farmer",
-        isGuest: true
+    // 1. Build session layout matching your HTML keys precisely
+    const guestSession = { 
+        name: "Guest Farmer 🌾", 
+        email: "guest@patukrishi.internal",
+        isGuest: true 
     };
-    localStorage.setItem('patukrishi_user', JSON.stringify(guestUser));
+    localStorage.setItem('patukrishi_session', JSON.stringify(guestSession));
 
-    // 2. Dynamic ID Finder (Checks common page wrapper structures)
-    const authScreen = document.getElementById('auth-container') || document.getElementById('login-screen') || document.querySelector('.login-container');
-    const mainDashboard = document.getElementById('main-app-dashboard') || document.getElementById('dashboard') || document.getElementById('app') || document.querySelector('.app-container');
+    // 2. Target the exact HTML container IDs from your markup
+    const authScreen = document.getElementById('authModal');
+    const mainDashboard = document.getElementById('dashboard');
 
-    // 3. Switch screens instantly
-    if (authScreen) {
-        authScreen.style.display = 'none';
-    } else {
-        console.warn("Could not find auth container element style handles.");
-    }
+    // 3. Switch layout views instantly
+    if (authScreen) authScreen.style.display = 'none';
+    if (mainDashboard) mainDashboard.style.display = 'block';
 
-    if (mainDashboard) {
-        mainDashboard.style.display = 'block';
-        // Remove structural classes if your layout toggles view using active states
-        mainDashboard.classList.remove('hidden');
-        mainDashboard.classList.add('active');
-    } else {
-        // Fallback: If your page handles views via routing classes on document body
-        document.body.classList.add('logged-in');
-        console.log("Using body class fallback sequence.");
-    }
+    // 4. Update elements to show Guest status cleanly in your layout headers
+    const headerName = document.getElementById('header-name');
+    const welcomeName = document.getElementById('welcome-name');
+    const avatarImg = document.getElementById('header-avatar');
+    
+    if (headerName) headerName.innerText = "Guest";
+    if (welcomeName) welcomeName.innerText = "Guest";
+    if (avatarImg) avatarImg.innerText = "G";
 
-    // 4. Fire the new Open-Meteo GPS weather metrics automatically
+    // 5. Fire your new Open-Meteo GPS weather metrics automatically
     if (typeof window.getLocationWeatherData === 'function') {
         window.getLocationWeatherData();
     }
