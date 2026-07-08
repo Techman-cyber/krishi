@@ -3413,6 +3413,8 @@ document.addEventListener('click', function(e) {
         micBtn.classList.remove('listening');
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
+})(); // <--- Voice function safely closes here!
+
 // ==================== AUTHENTICATION GUEST INTERCEPTOR ====================
 window.enterAsGuest = () => {
     console.log("Guest entry engine initialized...");
