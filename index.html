@@ -1,362 +1,344 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-
     <title>PatuKrishi · Smart Farming for Indian Farmers</title>
-
+    
     <link rel="icon" type="image/png" href="patukrishi logo.png">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
-
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
     <link rel="stylesheet" href="techmankapapa.css">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
-<style>
-   /* Custom Cursor Integration */
-
+    <style>
+        /* Custom Cursor Integration */
         body {
-
-            /* Yellow Pointer + Seedling Emoji for PatuKrishi vibe */
-
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), auto;
-
         }
-
-
-        /* Ensure interactive elements keep a clean pointer or the custom cursor */
 
         button, .click-card, .nav-item, .lang-header, .user-profile {
-
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), pointer;
-
         }
-  /* Language Modal - Full Screen Blur */
-.lang-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 9999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
 
-.lang-modal-overlay.show {
-    display: flex;
-}
+        /* Language Modal - Full Screen Blur */
+        .lang-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
 
-.lang-modal-content {
-    background: white;
-    border-radius: 32px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 25px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    animation: modalFadeIn 0.3s ease;
-}
+        .lang-modal-overlay.show {
+            display: flex;
+        }
 
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
+        .lang-modal-content {
+            background: white;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease;
+        }
 
-.lang-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f9a825;
-}
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-.lang-modal-header h3 {
-    margin: 0;
-    color: #2e7d32;
-}
+        .lang-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f9a825;
+        }
 
-.lang-modal-close {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #666;
-}
+        .lang-modal-header h3 {
+            margin: 0;
+            color: #2e7d32;
+        }
 
-.lang-modal-close:hover {
-    color: #d32f2f;
-}
+        .lang-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+        }
 
-.lang-options-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
+        .lang-modal-close:hover {
+            color: #d32f2f;
+        }
 
-.lang-option-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 15px;
-    background: #f5f5f5;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
+        .lang-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
 
-.lang-option-item:hover {
-    background: #2e7d32;
-    color: white;
-}
+        .lang-option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: #f5f5f5;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-.lang-option-item.active {
-    background: #2e7d32;
-    color: white;
-}
+        .lang-option-item:hover {
+            background: #2e7d32;
+            color: white;
+        }
 
-.lang-option-item .flag {
-    font-size: 1.5rem;
-}
+        .lang-option-item.active {
+            background: #2e7d32;
+            color: white;
+        }
 
-.lang-option-item .lang-native {
-    font-size: 0.8rem;
-    margin-left: auto;
-}
+        .lang-option-item .flag {
+            font-size: 1.5rem;
+        }
 
-@media (max-width: 500px) {
-    .lang-options-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        .lang-option-item .lang-native {
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
 
-/* NEW AUTH MODAL STYLES */
-.auth-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    z-index: 10001;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
+        @media (max-width: 500px) {
+            .lang-options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-.auth-modal {
-    background: white;
-    border-radius: 32px;
-    max-width: 450px;
-    width: 100%;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    animation: modalFadeIn 0.3s ease;
-    overflow: hidden;
-}
+        /* NEW AUTH MODAL STYLES */
+        .auth-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-.auth-modal-header {
-    background: linear-gradient(135deg, #2e7d32, #f9a825);
-    padding: 30px;
-    text-align: center;
-    color: white;
-}
+        .auth-modal {
+            background: white;
+            border-radius: 32px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease;
+            overflow: hidden;
+        }
 
-.auth-modal-header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 5px;
-}
+        .auth-modal-header {
+            background: linear-gradient(135deg, #2e7d32, #f9a825);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
 
-.auth-modal-header p {
-    opacity: 0.9;
-    font-size: 0.9rem;
-}
+        .auth-modal-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
 
-.auth-modal-body {
-    padding: 30px;
-}
+        .auth-modal-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
 
-.auth-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #e0e0e0;
-}
+        .auth-modal-body {
+            padding: 30px;
+        }
 
-.auth-tab {
-    flex: 1;
-    padding: 12px;
-    background: none;
-    border: none;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: #666;
-    transition: all 0.3s;
-}
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0;
+        }
 
-.auth-tab.active {
-    color: #2e7d32;
-    border-bottom: 3px solid #2e7d32;
-}
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
 
-.auth-form {
-    display: none;
-}
+        .auth-tab.active {
+            color: #2e7d32;
+            border-bottom: 3px solid #2e7d32;
+        }
 
-.auth-form.active {
-    display: block;
-}
+        .auth-form {
+            display: none;
+        }
 
-.auth-form input {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
+        .auth-form.active {
+            display: block;
+        }
 
-.auth-form input:focus {
-    outline: none;
-    border-color: #2e7d32;
-}
+        .auth-form input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
 
-.auth-form button {
-    width: 100%;
-    padding: 14px;
-    background: #2e7d32;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: background 0.3s;
-}
+        .auth-form input:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
 
-.auth-form button:hover {
-    background: #1b5e20;
-}
+        .auth-form button {
+            width: 100%;
+            padding: 14px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
 
-.auth-form button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
+        .auth-form button:hover {
+            background: #1b5e20;
+        }
 
-.error-message {
-    color: #f44336;
-    font-size: 0.85rem;
-    margin-top: 10px;
-    text-align: center;
-}
+        .auth-form button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
 
-.success-message {
-    color: #4caf50;
-    font-size: 0.85rem;
-    margin-top: 10px;
-    text-align: center;
-}
+        .error-message {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+        }
 
-.loader {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #fff;
-    border-top: 2px solid #2e7d32;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-right: 8px;
-}
+        .success-message {
+            color: #4caf50;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+        }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        .loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top: 2px solid #2e7d32;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
 
-hr {
-    margin: 20px 0;
-    border: none;
-    border-top: 1px solid #eee;
-}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-.verify-title {
-    text-align: center;
-    color: #2e7d32;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-}
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #eee;
+        }
 
-.verify-subtitle {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 15px;
-}
+        .verify-title {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
 
-#verify-code {
-    text-align: center;
-    font-size: 1.3rem;
-    letter-spacing: 8px;
-    font-weight: bold;
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-}
+        .verify-subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
 
-.resend-link {
-    text-align: center;
-    margin-top: 10px;
-}
+        #verify-code {
+            text-align: center;
+            font-size: 1.3rem;
+            letter-spacing: 8px;
+            font-weight: bold;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+        }
 
-.resend-link a {
-    color: #2e7d32;
-    cursor: pointer;
-    font-size: 0.8rem;
-    text-decoration: none;
-}
+        .resend-link {
+            text-align: center;
+            margin-top: 10px;
+        }
 
-.resend-link a:hover {
-    text-decoration: underline;
-}
+        .resend-link a {
+            color: #2e7d32;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
 
-.info-note {
-    text-align: center;
-    font-size: 0.7rem;
-    color: #999;
-    margin-top: 15px;
-}
-</style>
-  
-   
+        .resend-link a:hover {
+            text-decoration: underline;
+        }
+
+        .info-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 15px;
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="loading-screen"><div class="loading-logo"><i class="fas fa-seedling"></i><h1>PatuKrishi</h1></div><div class="loading-bar"><div class="loading-fill"></div></div><p>Smart Farming for Indian Farmers</p></div>
+<div id="loading-screen">
+    <div class="loading-logo"><i class="fas fa-seedling"></i><h1>PatuKrishi</h1></div>
+    <div class="loading-bar"><div class="loading-fill"></div></div>
+    <p>Smart Farming for Indian Farmers</p>
+</div>
 
 <div id="authModal" class="auth-modal-overlay">
     <div class="auth-modal">
@@ -440,7 +422,7 @@ hr {
             <div class="lang-option-item" onclick="changeLanguage('mr'); closeLangModal()">
                 <span class="flag">🇮🇳</span>
                 <span class="lang-name">Marathi</span>
-                <span class="lang-native">മраठी</span>
+                <span class="lang-native">मराठी</span>
             </div>
             <div class="lang-option-item" onclick="changeLanguage('gu'); closeLangModal()">
                 <span class="flag">🇮🇳</span>
@@ -492,59 +474,32 @@ hr {
 </div>
 
 <div id="dashboard" class="dashboard-container">
-
     <header class="main-header">
-
         <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
-
-      <nav class="main-nav"><span class="nav-item active" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" onclick="switchSection('videos')"><span data-translate="videos">Videos</span></span><span class="nav-item" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
-
+        <nav class="main-nav"><span class="nav-item active" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" onclick="switchSection('videos')"><span data-translate="videos">Videos</span></span><span class="nav-item" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
         <div style="display:flex;gap:18px;align-items:center">
-
             <div class="lang-select-container">
-
                 <div class="lang-header" id="langHeader" onclick="toggleLangDropdown()"><span class="flag" id="currentLangFlag">🇬🇧</span><span class="current-lang" id="currentLangName">English</span><i class="fas fa-chevron-down arrow"></i></div>
-
                 <div class="lang-dropdown-grid" id="langDropdown">
-
                     <div class="lang-option active" onclick="changeLanguage('en')"><span class="flag">🇬🇧</span><span class="lang-name">English</span><span class="lang-native">English</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('hi')"><span class="flag">🇮🇳</span><span class="lang-name">Hindi</span><span class="lang-native">हिंदी</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('bn')"><span class="flag">🇮🇳</span><span class="lang-name">Bengali</span><span class="lang-native">বাংলা</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('te')"><span class="flag">🇮🇳</span><span class="lang-name">Telugu</span><span class="lang-native">తెలుగు</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('mr')"><span class="flag">🇮🇳</span><span class="lang-name">Marathi</span><span class="lang-native">मराठी</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('gu')"><span class="flag">🇮🇳</span><span class="lang-name">Gujarati</span><span class="lang-native">ગુજરાતી</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('mwr')"><span class="flag">🇮🇳</span><span class="lang-name">Marwadi</span><span class="lang-native">मारवाड़ी</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('pa')"><span class="flag">🇮🇳</span><span class="lang-name">Punjabi</span><span class="lang-native">ਪੰਜਾਬੀ</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('ta')"><span class="flag">🇮🇳</span><span class="lang-name">Tamil</span><span class="lang-native">தமிழ்</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('ml')"><span class="flag">🇮🇳</span><span class="lang-name">Malayalam</span><span class="lang-native">മലയാളം</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('ur')"><span class="flag">🇮🇳</span><span class="lang-name">Urdu</span><span class="lang-native">اردو</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('kn')"><span class="flag">🇮🇳</span><span class="lang-name">Kannada</span><span class="lang-native">ಕನ್ನಡ</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('or')"><span class="flag">🇮🇳</span><span class="lang-name">Odia</span><span class="lang-native">ଓଡ଼ିଆ</span></div>
-
                     <div class="lang-option" onclick="changeLanguage('sa')"><span class="flag">🇮🇳</span><span class="lang-name">Sanskrit</span><span class="lang-native">संस्कृतम्</span></div>
-
                 </div>
-
             </div>
-
             <button id="theme-toggle" style="background:none;border:none;font-size:1.4rem;color:var(--text1)"><i class="fas fa-moon"></i></button>
-
             <div class="user-profile" onclick="toggleUserDropdown()"><div class="user-avatar" id="header-avatar">U</div><span id="header-name">User</span><i class="fas fa-chevron-down"></i><div class="user-dropdown" id="user-dropdown"><div class="dropdown-item" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> <span data-translate="profile">Profile</span></div><div class="dropdown-item" style="color:var(--danger)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span data-translate="logout">Logout</span></div></div></div>
-
         </div>
-
     </header>
     <main class="main-content">
         <section id="home-section" class="content-section active">
@@ -593,33 +548,33 @@ hr {
 
         <section id="advisory-section" class="content-section"><h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span data-translate="advisory-title">Crop Advisory · Pura Guide</span></h2><div class="card"><div style="display:flex;gap:12px;margin-bottom:20px"><button class="btn-3d" id="generalModeBtn" onclick="setAdvisoryMode('general')" style="flex:1">🌾 <span data-translate="state-season">State/UT + Season</span></button><button class="btn-3d" id="specificModeBtn" onclick="setAdvisoryMode('specific')" style="flex:1;background:#f9a825">🌱 <span data-translate="specific-crop">Specific Crop (3-Step)</span></button></div><div id="generalAdvisoryInputs"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="advisoryStateSelect" class="nice-select" style="flex:1"></select><select id="advisorySeasonSelect" class="nice-select" style="flex:1"><option value="Rabi">Rabi (Winter)</option><option value="Kharif">Kharif (Monsoon)</option><option value="Zaid">Zaid (Summer)</option></select><button class="btn-3d" onclick="showGeneralAdvisory()"><span data-translate="get-advice">Get Advice</span></button></div><div id="generalAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div><div id="specificAdvisoryInputs" style="display:none"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="specificCropSelect" class="nice-select" style="flex:2"></select><button class="btn-3d" onclick="showSpecificAdvisory()"><span data-translate="get-guide">Get 3-Step Guide</span></button></div><div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div></div></section>
 
-<section id="schemes-section" class="content-section">
-    <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
-    <div class="schemes-stats-bar">
-        <div class="stat-item"><i class="fas fa-rupee-sign"></i><span>₹2 Lakh Cr+</span><small>Total Budget</small></div>
-        <div class="stat-item"><i class="fas fa-users"></i><span>18 Cr+</span><small>Farmers Benefited</small></div>
-        <div class="stat-item"><i class="fas fa-building"></i><span>14</span><small>Categories</small></div>
-        <div class="stat-item"><i class="fas fa-calendar-alt"></i><span>2026-27</span><small>Updated</small></div>
-    </div>
-    <div class="schemes-category-strip" id="schemeCategoryStrip">
-        <button class="cat-filter-btn active" onclick="filterSchemesByCategory('all')">📌 All (140)</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('income')">💰 Income</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('insurance')">🛡️ Insurance</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('credit')">💳 Credit</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('irrigation')">💧 Irrigation</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('machinery')">🚜 Machinery</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('soil')">🌱 Soil</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('organic')">🌿 Organic</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('animal')">🐄 Animal</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('horticulture')">🥥 Horticulture</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('digital')">🤖 Digital</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('solar')">☀️ Solar</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('market')">📊 Market</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('disaster')">⚠️ Disaster</button>
-        <button class="cat-filter-btn" onclick="filterSchemesByCategory('employment')">💼 Employment</button>
-    </div>
-    <div id="allSchemesContainer" class="schemes-full-grid"></div>
-</section>
+        <section id="schemes-section" class="content-section">
+            <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
+            <div class="schemes-stats-bar">
+                <div class="stat-item"><i class="fas fa-rupee-sign"></i><span>₹2 Lakh Cr+</span><small>Total Budget</small></div>
+                <div class="stat-item"><i class="fas fa-users"></i><span>18 Cr+</span><small>Farmers Benefited</small></div>
+                <div class="stat-item"><i class="fas fa-building"></i><span>14</span><small>Categories</small></div>
+                <div class="stat-item"><i class="fas fa-calendar-alt"></i><span>2026-27</span><small>Updated</small></div>
+            </div>
+            <div class="schemes-category-strip" id="schemeCategoryStrip">
+                <button class="cat-filter-btn active" onclick="filterSchemesByCategory('all')">📌 All (140)</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('income')">💰 Income</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('insurance')">🛡️ Insurance</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('credit')">💳 Credit</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('irrigation')">💧 Irrigation</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('machinery')">🚜 Machinery</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('soil')">🌱 Soil</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('organic')">🌿 Organic</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('animal')">🐄 Animal</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('horticulture')">🥥 Horticulture</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('digital')">🤖 Digital</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('solar')">☀️ Solar</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('market')">📊 Market</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('disaster')">⚠️ Disaster</button>
+                <button class="cat-filter-btn" onclick="filterSchemesByCategory('employment')">💼 Employment</button>
+            </div>
+            <div id="allSchemesContainer" class="schemes-full-grid"></div>
+        </section>
 
         <section id="videos-section" class="content-section">
             <div class="section-header-with-icon" data-aos="fade-up">
@@ -879,7 +834,7 @@ hr {
         currentPendingEmail = email;
         
         errorDiv.className = 'success-message';
-        errorDiv.innerHTML = '✅ Verification code sent to ' + email + '! Please check your inbox (and spam folder).';
+        errorDiv.innerHTML = '✅ Verification code sent to ' + email + '! Please check your inbox.';
         
         document.getElementById('signup-name').value = '';
         document.getElementById('signup-email').value = '';
@@ -924,7 +879,6 @@ hr {
             return;
         }
         
-        // Verified! Move to users database
         users[email] = {
             name: pending.name,
             email: email,
@@ -1000,7 +954,6 @@ hr {
         errorDiv.innerText = '';
         
         await new Promise(resolve => setTimeout(resolve, 500));
-        
         const user = users[email];
         
         if (!user) {
@@ -1018,7 +971,7 @@ hr {
         }
         
         if (!user.verified) {
-            errorDiv.innerText = 'Please verify your email first. Check your inbox for the verification code.';
+            errorDiv.innerText = 'Please verify your email first.';
             errorDiv.className = 'error-message';
             setButtonLoading('login-btn', false);
             return;
@@ -1031,7 +984,6 @@ hr {
         setTimeout(() => {
             document.getElementById('authModal').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
-            // Update user info in header
             if (typeof loadDashboard === 'function') {
                 loadDashboard();
             } else {
@@ -1040,41 +992,38 @@ hr {
         }, 1000);
     };
     
-    // Check if already logged in
-    const session = localStorage.getItem('patukrishi_session');
-    if (session) {
-        document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('authModal').style.display = 'none';
-    } else {
-        document.getElementById('dashboard').style.display = 'none';
-        document.getElementById('authModal').style.display = 'flex';
-    }
-    
-    // Remove old auth container
-    const oldAuth = document.getElementById('auth-container');
-    if (oldAuth) oldAuth.style.display = 'none';
-    
-    // Check if already logged in (Matches normal users & guests!)
-    const sessionStr = localStorage.getItem('patukrishi_session');
-    if (sessionStr) {
-        const currentSession = JSON.parse(sessionStr);
-        document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('authModal').style.display = 'none';
-        
-        // Populate display variables cleanly on launch sequence hook
-        if(currentSession.isGuest) {
-            document.getElementById('header-name').innerText = "Guest";
-            document.getElementById('welcome-name').innerText = "Guest";
-            document.getElementById('header-avatar').innerText = "G";
+    // Core Unified Initialization Sequence
+    (() => {
+        const sessionStr = localStorage.getItem('patukrishi_session');
+        if (sessionStr) {
+            try {
+                const currentSession = JSON.parse(sessionStr);
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('authModal').style.display = 'none';
+                
+                if (currentSession.isGuest) {
+                    document.getElementById('header-name').innerText = "Guest";
+                    document.getElementById('welcome-name').innerText = "Guest";
+                    document.getElementById('header-avatar').innerText = "G";
+                } else if (currentSession.name) {
+                    document.getElementById('header-name').innerText = currentSession.name.split(' ')[0];
+                    document.getElementById('welcome-name').innerText = currentSession.name.split(' ')[0];
+                    document.getElementById('header-avatar').innerText = currentSession.name.charAt(0).toUpperCase();
+                }
+            } catch(e) {
+                localStorage.removeItem('patukrishi_session');
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('authModal').style.display = 'flex';
+            }
         } else {
-            document.getElementById('header-name').innerText = currentSession.name.split(' ')[0];
-            document.getElementById('welcome-name').innerText = currentSession.name.split(' ')[0];
-            document.getElementById('header-avatar').innerText = currentSession.name.charAt(0).toUpperCase();
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('authModal').style.display = 'flex';
         }
-    } else {
-        document.getElementById('dashboard').style.display = 'none';
-        document.getElementById('authModal').style.display = 'flex';
-    }
+        
+        // Remove old deprecated elements safely
+        const oldAuth = document.getElementById('auth-container');
+        if (oldAuth) oldAuth.style.display = 'none';
+    })();
 </script>
 
 <script>
@@ -1101,30 +1050,47 @@ hr {
                 };
                 
                 const response = await emailjs.send('service_c48sfqj', 'template_xnjx3mg', templateParams);
-                
                 if (response.status === 200) {
-                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Message sent successfully! We\'ll get back to you soon.';
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Message sent successfully!';
                     statusDiv.style.color = '#4caf50';
                     document.getElementById('patuContactForm').reset();
-                    
-                    setTimeout(() => {
-                        statusDiv.innerHTML = '';
-                    }, 5000);
+                    setTimeout(() => statusDiv.innerHTML = '', 5000);
                 } else {
                     throw new Error('Failed to send');
                 }
             } catch (error) {
                 console.error('EmailJS Error:', error);
-                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Failed to send message. Please try again later.';
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Failed to send message.';
                 statusDiv.style.color = '#f44336';
-                
-                setTimeout(() => {
-                    statusDiv.innerHTML = '';
-                }, 5000);
+                setTimeout(() => statusDiv.innerHTML = '', 5000);
             }
         });
     }
 </script>
 
+<script>
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loading-screen');
+        if (loader) {
+            loader.style.transition = 'opacity 0.5s ease';
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    // Fallback timer to force drop loader mask if asset streams lag
+    setTimeout(() => {
+        const loader = document.getElementById('loading-screen');
+        if (loader && loader.style.display !== 'none') {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
+    }, 2000);
+</script>
+
 </body>
-  </html>
+</html>
