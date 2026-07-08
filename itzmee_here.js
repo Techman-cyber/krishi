@@ -3412,4 +3412,32 @@ document.addEventListener('click', function(e) {
         micBtn.classList.remove('listening');
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
-})();s
+    })();
+    // ==================== AUTHENTICATION GUEST INTERCEPTOR ====================
+window.enterAsGuest = () => {
+    const guestSession = { 
+        name: "Guest Farmer 🌾", 
+        email: "guest@patukrishi.internal",
+        isGuest: true 
+    };
+    localStorage.setItem('patukrishi_session', JSON.stringify(guestSession));
+
+    const authScreen = document.getElementById('authModal');
+    const mainDashboard = document.getElementById('dashboard');
+
+    if (authScreen) authScreen.style.display = 'none';
+    if (mainDashboard) mainDashboard.style.display = 'block';
+
+    const headerName = document.getElementById('header-name');
+    const welcomeName = document.getElementById('welcome-name');
+    const avatarImg = document.getElementById('header-avatar');
+    
+    if (headerName) headerName.innerText = "Guest";
+    if (welcomeName) welcomeName.innerText = "Guest";
+    if (avatarImg) avatarImg.innerText = "G";
+
+    if (typeof window.getLocationWeatherData === 'function') {
+        window.getLocationWeatherData();
+    }
+};
+})();
