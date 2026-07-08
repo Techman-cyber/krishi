@@ -87,13 +87,13 @@ if (typeof emailjs !== 'undefined') {
         }
     }
     
- // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
+// ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
     window.getWeatherData = async () => {
         const city = document.getElementById('cityInput').value.trim();
         const resultDiv = document.getElementById('weather-result');
         
         if (!city) {
-            resultDiv.innerHTML = '<p style="color:red">❌ Please enter a city name</p>';
+            resultDiv.innerHTML = '<p style="color:red">❌ Please enter a city name or PIN code</p>';
             resultDiv.style.display = 'block';
             return;
         }
@@ -112,11 +112,14 @@ if (typeof emailjs !== 'undefined') {
             if (data.success) {
                 renderMeteoWeather(data, resultDiv);
             } else {
-                throw new Error(data.reason || 'City not found');
+                throw new Error(data.reason || 'Location not found');
             }
         } catch (error) {
             console.error('Weather tracking failed:', error);
-            resultDiv.innerHTML = `<p style="color:red; text-align:center; padding:20px;">❌ Could not load weather for "${city}". Please verify spelling.</p>`;
+            resultDiv.innerHTML = `<p style="color:red; text-align:center; padding:20px;">
+                ❌ Could not locate "${city}".<br>
+                <span style="font-size:0.85rem; color:#666; display:block; margin-top:5px;">💡 Tip: Try entering your 6-digit area PIN Code (e.g., 500094) for local colonies and villages!</span>
+            </p>`;
         }
     };
     
@@ -154,7 +157,7 @@ if (typeof emailjs !== 'undefined') {
             }
         }, () => {
             alert('Please allow location access to get weather for your area');
-            resultDiv.innerHTML = `<p style="text-align:center; padding:20px;">Please type your city name manually in the input box above.</p>`;
+            resultDiv.innerHTML = `<p style="text-align:center; padding:20px;">Please type your city or PIN code manually above.</p>`;
         });
     };
 
@@ -165,7 +168,7 @@ if (typeof emailjs !== 'undefined') {
         if ([45, 48].includes(code)) return { text: "Foggy Conditions", icon: "🌫️", main: "Fog" };
         if ([51, 53, 55, 61, 63, 65].includes(code)) return { text: "Rain Showers", icon: "🌧️", main: "Rain" };
         if ([71, 73, 75, 77].includes(code)) return { text: "Snowfall", icon: "❄️", main: "Snow" };
-        if ([80, 81, 82, 85, 86].includes(code)) return { text: "Heavy Downpour", icon: "🌧️", main: "Rain" };
+        if ([80, 81, 82, 85, 86].includes(code)) return { text: "Heavy Downpour", icon: "🌧️🚿", main: "Rain" };
         if ([95, 96, 99].includes(code)) return { text: "Thunderstorm Alerts", icon: "⛈️", main: "Thunderstorm" };
         return { text: "Stable Conditions", icon: "🌤️", main: "Clear" };
     }
@@ -175,7 +178,7 @@ if (typeof emailjs !== 'undefined') {
         
         let currentHtml = `
             <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow);">
-                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2> 
+                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
                     <span style="font-size: 5rem; line-height: 1;">${currentCondition.icon}</span>
                     <div>
@@ -192,11 +195,12 @@ if (typeof emailjs !== 'undefined') {
 
         let forecastHtml = `
             <div style="margin-top:25px;">
-                <h3>📅 7-Day Weather Forecast</h3>
+                <h3>📅 5-Day Weather Forecast</h3>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
         `;
         
-        data.daily.slice(0, 7).forEach(day => {
+        // Limits data array down to an exact 5-day view match
+        data.daily.slice(0, 5).forEach(day => {
             const dateObj = new Date(day.date);
             const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
             const dayCondition = getWeatherDesc(day.code);
@@ -223,7 +227,6 @@ if (typeof emailjs !== 'undefined') {
         
         targetDiv.innerHTML = currentHtml + forecastHtml + farmingAdvice;
     }
-    
     // ==================== UPDATED MANDI PRICES FUNCTION WITH REAL API ====================
     window.fetchMandiPrices = async () => {
         const state = document.getElementById('mandiStateSelect').value;
