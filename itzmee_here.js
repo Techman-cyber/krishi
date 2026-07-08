@@ -32,7 +32,62 @@ const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';      // <-- Add your EmailJS Pub
 if (typeof emailjs !== 'undefined') {
     emailjs.init(EMAILJS_PUBLIC_KEY);
 }
- // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO) ====================
+    // ==================== WEATHER HELPER FUNCTIONS ====================
+    function getMostCommon(arr) {
+        return arr.sort((a, b) => arr.filter(v => v === a).length - arr.filter(v => v === b).length).pop();
+    }
+    
+    function formatDate(dateStr) {
+        let date = new Date(dateStr);
+        let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
+    }
+    
+    function getFarmingAdvice(weatherCondition, temperature) {
+        if (weatherCondition.includes('Rain') || weatherCondition.includes('Drizzle')) {
+            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
+                <strong>🌧️ Rain Alert:</strong> Avoid spraying pesticides. Check for waterlogging in fields. Good for irrigation.
+            </div>`;
+        } else if (weatherCondition.includes('Clear') && temperature > 35) {
+            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
+                <strong>☀️ Heat Alert:</strong> Increase irrigation frequency. Provide shade for sensitive crops. Best time for harvesting.
+            </div>`;
+        } else if (weatherCondition.includes('Clear') || weatherCondition.includes('Sun')) {
+            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
+                <strong>🌾 Good Farming Weather:</strong> Ideal for spraying, weeding, and harvesting activities.
+            </div>`;
+        } else if (weatherCondition.includes('Cloud')) {
+            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
+                <strong>☁️ Cloudy Day:</strong> Good for transplanting seedlings. Monitor for pest activity in humid conditions.
+            </div>`;
+        } else if (weatherCondition.includes('Thunderstorm')) {
+            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
+                <strong>⛈️ Storm Alert:</strong> Secure farm equipment. Avoid field work. Ensure proper drainage.
+            </div>`;
+        }
+        return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
+            <strong>🌱 Farming Tip:</strong> Check soil moisture regularly. Maintain proper irrigation schedule.
+        </div>`;
+    }
+    
+    // ==================== REAL MANDI API FUNCTION ====================
+    async function fetchRealMandiPricesFromAPI(state, district, commodity) {
+        try {
+            const url = `${MANDI_API_URL}?api-key=${MANDI_API_KEY}&format=json&filters[state]=${encodeURIComponent(state)}&filters[district]=${encodeURIComponent(district)}&filters[commodity]=${encodeURIComponent(commodity)}&limit=20`;
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data && data.records && data.records.length > 0) {
+                return data.records;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error fetching mandi prices:', error);
+            return null;
+        }
+    }
+    
+// ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
     window.getWeatherData = async () => {
         const city = document.getElementById('cityInput').value.trim();
         const resultDiv = document.getElementById('weather-result');
@@ -121,18 +176,9 @@ if (typeof emailjs !== 'undefined') {
     function renderMeteoWeather(data, targetDiv) {
         const currentCondition = getWeatherDesc(data.current.code);
         
-        // System clock parameters for device local time matching
-        const now = new Date();
-        const currentTimeString = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-        const currentDateString = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-
         let currentHtml = `
-            <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow); position: relative;">
-                <div style="position: absolute; top: 15px; right: 20px; font-size: 0.85rem; color: var(--text2); background: var(--card-bg); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); font-weight: 500;">
-                    🕒 As of: ${currentTimeString} | ${currentDateString}
-                </div>
-                
-                <h2 style="color: #2e7d32; margin-top: 15px;">📍 ${data.locationName}</h2>
+            <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow);">
+                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
                     <span style="font-size: 5rem; line-height: 1;">${currentCondition.icon}</span>
                     <div>
@@ -149,12 +195,12 @@ if (typeof emailjs !== 'undefined') {
 
         let forecastHtml = `
             <div style="margin-top:25px;">
-                <h3>📅 7-Day Farm Forecast</h3>
+                <h3>📅 5-Day Weather Forecast</h3>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
         `;
         
-        // Loop tracks across the complete dataset array matching all 7 days natively
-        data.daily.forEach(day => {
+        // Limits data array down to an exact 5-day view match
+        data.daily.slice(0, 5).forEach(day => {
             const dateObj = new Date(day.date);
             const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
             const dayCondition = getWeatherDesc(day.code);
@@ -180,24 +226,6 @@ if (typeof emailjs !== 'undefined') {
         }
         
         targetDiv.innerHTML = currentHtml + forecastHtml + farmingAdvice;
-    }
-    
-    // ==================== REAL MANDI API FUNCTION ====================
-    async function fetchRealMandiPricesFromAPI(state, district, commodity) {
-        try {
-            const url = `${MANDI_API_URL}?api-key=${MANDI_API_KEY}&format=json&filters[state]=${encodeURIComponent(state)}&filters[district]=${encodeURIComponent(district)}&filters[commodity]=${encodeURIComponent(commodity)}&limit=20`;
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data && data.records && data.records.length > 0) {
-                return data.records;
-            }
-            return null;
-        } catch (error) {
-            console.error('Error fetching mandi prices:', error);
-            return null;
-        }
-    }
-    
     }
     // ==================== UPDATED MANDI PRICES FUNCTION WITH REAL API ====================
     window.fetchMandiPrices = async () => {
