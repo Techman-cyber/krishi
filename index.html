@@ -10,8 +10,6 @@
 
     <title>PatuKrishi · Smart Farming for Indian Farmers</title>
 
-    <!-- External CSS libraries -->
-
     <link rel="icon" type="image/png" href="patukrishi logo.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,11 +20,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <!-- Your custom CSS -->
-
     <link rel="stylesheet" href="techmankapapa.css">
     
-    <!-- EmailJS Library -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
 <style>
@@ -363,7 +358,6 @@ hr {
 
 <div id="loading-screen"><div class="loading-logo"><i class="fas fa-seedling"></i><h1>PatuKrishi</h1></div><div class="loading-bar"><div class="loading-fill"></div></div><p>Smart Farming for Indian Farmers</p></div>
 
-<!-- NEW AUTH MODAL -->
 <div id="authModal" class="auth-modal-overlay">
     <div class="auth-modal">
         <div class="auth-modal-header">
@@ -390,11 +384,19 @@ hr {
                 <p class="info-note">We'll send a 6-digit verification code to your email</p>
             </div>
             <div style="text-align: center; margin-top: 15px;">
-    <span style="color: var(--text2); font-size: 0.9rem;">Or want to explore first?</span>
-    <button type="button" onclick="window.enterAsGuest()" style="display: block; width: 100%; margin-top: 8px; padding: 12px; background: transparent; border: 2px dashed #2e7d32; color: #2e7d32; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
-        ✨ Continue as Guest
-    </button>
-</div>
+                <span style="color: var(--text2); font-size: 0.9rem;">Or want to explore first?</span>
+                <button type="button" onclick="(() => {
+                    localStorage.setItem('patukrishi_session', JSON.stringify({ name: 'Guest Farmer 🌾', email: 'guest@patukrishi.internal', isGuest: true }));
+                    document.getElementById('authModal').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    document.getElementById('header-name').innerText = 'Guest';
+                    document.getElementById('welcome-name').innerText = 'Guest';
+                    document.getElementById('header-avatar').innerText = 'G';
+                    if (window.getLocationWeatherData) { window.getLocationWeatherData(); }
+                })()" style="display: block; width: 100%; margin-top: 8px; padding: 12px; background: transparent; border: 2px dashed #2e7d32; color: #2e7d32; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                    ✨ Continue as Guest
+                </button>
+            </div>
             <div id="verification-section" style="display: none;">
                 <hr>
                 <div class="verify-title">🔐 Verify Your Email</div>
@@ -408,7 +410,6 @@ hr {
     </div>
 </div>
 
-<!-- Language Modal -->
 <div id="langModal" class="lang-modal-overlay">
     <div class="lang-modal-content">
         <div class="lang-modal-header">
@@ -439,7 +440,7 @@ hr {
             <div class="lang-option-item" onclick="changeLanguage('mr'); closeLangModal()">
                 <span class="flag">🇮🇳</span>
                 <span class="lang-name">Marathi</span>
-                <span class="lang-native">मराठी</span>
+                <span class="lang-native">മраठी</span>
             </div>
             <div class="lang-option-item" onclick="changeLanguage('gu'); closeLangModal()">
                 <span class="flag">🇮🇳</span>
@@ -664,7 +665,6 @@ hr {
             <div class="founder-card" data-aos="fade-up"><div style="text-align:center; margin-bottom:40px;"><h1 style="font-size:3rem; color:#f9a825;">Our Team</h1><p style="font-size:1.3rem; opacity:0.9;">The minds behind PatuKrishi</p></div><div class="team-grid"><div class="team-card"><div class="team-avatar"><i class="fas fa-user-tie"></i></div><div class="team-name">Chanakya Sahni</div><div class="team-role">Founder and Developer</div><div class="team-bio">Visionary behind PatuKrishi, dedicated to empowering farmers through technology. Leads full-stack development and product strategy.</div><div class="team-description">Founder and Developer</div></div><div class="team-card"><div class="team-avatar"><i class="fas fa-user-cog"></i></div><div class="team-name">Vinit Gupta</div><div class="team-role">Developer</div><div class="team-bio">Architect and Developer. Transforms ideas into robust, scalable code. Specializes in AI integration and system architecture.</div><div class="team-description">Lead Developer</div></div></div><div style="text-align:center; margin-top:30px;"><p style="font-size:1.2rem; border-top:1px solid rgba(255,255,255,0.2); padding-top:20px;"><i class="fas fa-quote-left" style="color:#f9a825;"></i> Together, we're building a digital friend for every Indian farmer. <i class="fas fa-quote-right" style="color:#f9a825;"></i></p></div></div>
             <div class="card" data-aos="fade-up" style="margin-top:30px"><h3 style="margin-bottom:30px" data-translate="why-choose">❓ Why Farmers Choose PatuKrishi</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px"><div class="value-prop"><div class="value-icon"><i class="fas fa-clock"></i></div><div><strong data-translate="real-time">Real-time Data</strong><br><span data-translate="real-time-desc">Live mandi prices and weather</span></div></div><div class="value-prop"><div class="value-icon"><i class="fas fa-robot"></i></div><div><strong data-translate="ai-powered">AI-Powered</strong><br><span data-translate="ai-powered-desc">Smart disease detection</span></div></div><div class="value-prop"><div class="value-icon"><i class="fas fa-language"></i></div><div><strong data-translate="local-langs">🌐 Local Languages</strong><br><span data-translate="local-langs-desc">English, Hindi, Bengali, Telugu, Marathi, Gujarati, Marwadi, Punjabi, Tamil, Malayalam, Urdu, Kannada, Odia, Sanskrit & more</span></div></div><div class="value-prop"><div class="value-icon"><i class="fas fa-indian-rupee-sign"></i></div><div><strong data-translate="free">100% Free</strong><br><span data-translate="free-desc">Always free for farmers</span></div></div></div></div>
 
-            <!-- WORKING CONTACT FORM - Name, Mobile, Email, Message that sends email automatically -->
             <div class="card" data-aos="fade-up" style="margin-top:30px">
                 <h3 style="margin-bottom:20px; display: flex; align-items: center; gap: 12px; border-left: 5px solid #f9a825; padding-left: 18px;">
                     <i class="fas fa-paper-plane" style="color: var(--primary);"></i>
@@ -755,15 +755,12 @@ hr {
 
 <div id="notification-container"></div>
 
-<!-- External JS libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-<!-- Your custom JavaScript -->
 <script src="itzmee_here.js"></script>
 
-<!-- NEW AUTH SYSTEM SCRIPT -->
 <script>
     // EmailJS Configuration
     const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';
@@ -1056,6 +1053,7 @@ hr {
     // Remove old auth container
     const oldAuth = document.getElementById('auth-container');
     if (oldAuth) oldAuth.style.display = 'none';
+    
     // Check if already logged in (Matches normal users & guests!)
     const sessionStr = localStorage.getItem('patukrishi_session');
     if (sessionStr) {
@@ -1079,7 +1077,6 @@ hr {
     }
 </script>
 
-<!-- Contact Form Handler -->
 <script>
     if (document.getElementById('patuContactForm')) {
         document.getElementById('patuContactForm').addEventListener('submit', async function(event) {
