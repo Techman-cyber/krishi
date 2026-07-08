@@ -32,43 +32,154 @@ const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';      // <-- Add your EmailJS Pub
 if (typeof emailjs !== 'undefined') {
     emailjs.init(EMAILJS_PUBLIC_KEY);
 }
-    // ==================== WEATHER HELPER FUNCTIONS ====================
-    function getMostCommon(arr) {
-        return arr.sort((a, b) => arr.filter(v => v === a).length - arr.filter(v => v === b).length).pop();
-    }
-    
-    function formatDate(dateStr) {
-        let date = new Date(dateStr);
-        let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
-    }
-    
-    function getFarmingAdvice(weatherCondition, temperature) {
-        if (weatherCondition.includes('Rain') || weatherCondition.includes('Drizzle')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>🌧️ Rain Alert:</strong> Avoid spraying pesticides. Check for waterlogging in fields. Good for irrigation.
-            </div>`;
-        } else if (weatherCondition.includes('Clear') && temperature > 35) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>☀️ Heat Alert:</strong> Increase irrigation frequency. Provide shade for sensitive crops. Best time for harvesting.
-            </div>`;
-        } else if (weatherCondition.includes('Clear') || weatherCondition.includes('Sun')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>🌾 Good Farming Weather:</strong> Ideal for spraying, weeding, and harvesting activities.
-            </div>`;
-        } else if (weatherCondition.includes('Cloud')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>☁️ Cloudy Day:</strong> Good for transplanting seedlings. Monitor for pest activity in humid conditions.
-            </div>`;
-        } else if (weatherCondition.includes('Thunderstorm')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>⛈️ Storm Alert:</strong> Secure farm equipment. Avoid field work. Ensure proper drainage.
-            </div>`;
+  // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
+    window.getWeatherData = async () => {
+        const city = document.getElementById('cityInput').value.trim();
+        const resultDiv = document.getElementById('weather-result');
+        
+        if (!city) {
+            resultDiv.innerHTML = '<p style="color:red">❌ Please enter a city name or PIN code</p>';
+            resultDiv.style.display = 'block';
+            return;
         }
-        return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-            <strong>🌱 Farming Tip:</strong> Check soil moisture regularly. Maintain proper irrigation schedule.
-        </div>`;
+        
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fas fa-spinner fa-pulse fa-spin fa-2x"></i><p>Pinging Open-Meteo climate arrays...</p></div>';
+        
+        try {
+            const response = await fetch('/api/weather', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ city })
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                renderMeteoWeather(data, resultDiv);
+            } else {
+                throw new Error(data.reason || 'Location not found');
+            }
+        } catch (error) {
+            console.error('Weather tracking failed:', error);
+            resultDiv.innerHTML = `<p style="color:red; text-align:center; padding:20px;">
+                ❌ Could not locate "${city}".<br>
+                <span style="font-size:0.85rem; color:#666; display:block; margin-top:5px;">💡 Tip: Try entering your 6-digit area PIN Code (e.g., 500094) for local colonies and villages!</span>
+            </p>`;
+        }
+    };
+    
+    window.getLocationWeatherData = () => {
+        const resultDiv = document.getElementById('weather-result');
+        
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser');
+            return;
+        }
+        
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fas fa-location-arrow fa-spin fa-2x"></i><p>Locating farm grid coordinates...</p></div>';
+        
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const response = await fetch('/api/weather', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    renderMeteoWeather(data, resultDiv);
+                } else {
+                    throw new Error(data.reason);
+                }
+            } catch (err) {
+                console.error('Location weather query failure:', err);
+                resultDiv.innerHTML = `<p style="color:red; text-align:center; padding:20px;">❌ Unable to parse GPS cell weather data.</p>`;
+            }
+        }, () => {
+            alert('Please allow location access to get weather for your area');
+            resultDiv.innerHTML = `<p style="text-align:center; padding:20px;">Please type your city or PIN code manually above.</p>`;
+        });
+    };
+
+    // Helper to translate WMO Weather interpretation codes to readable text strings + graphics
+    function getWeatherDesc(code) {
+        if (code === 0) return { text: "Clear Sky", icon: "☀️", main: "Clear" };
+        if ([1, 2, 3].includes(code)) return { text: "Partly Cloudy", icon: "⛅", main: "Clouds" };
+        if ([45, 48].includes(code)) return { text: "Foggy Conditions", icon: "🌫️", main: "Fog" };
+        if ([51, 53, 55, 61, 63, 65].includes(code)) return { text: "Rain Showers", icon: "🌧️", main: "Rain" };
+        if ([71, 73, 75, 77].includes(code)) return { text: "Snowfall", icon: "❄️", main: "Snow" };
+        if ([80, 81, 82, 85, 86].includes(code)) return { text: "Heavy Downpour", icon: "🌧️🚿", main: "Rain" };
+        if ([95, 96, 99].includes(code)) return { text: "Thunderstorm Alerts", icon: "⛈️", main: "Thunderstorm" };
+        return { text: "Stable Conditions", icon: "🌤️", main: "Clear" };
+    }
+
+    function renderMeteoWeather(data, targetDiv) {
+        const currentCondition = getWeatherDesc(data.current.code);
+        
+        // Dynamic Live Time calculation string configuration
+        const now = new Date();
+        const currentTimeString = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const currentDateString = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+        let currentHtml = `
+            <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow); position: relative;">
+                <div style="position: absolute; top: 15px; right: 20px; font-size: 0.85rem; color: var(--text2); background: var(--card-bg); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); font-weight: 500;">
+                    🕒 As of: ${currentTimeString} | ${currentDateString}
+                </div>
+                
+                <h2 style="color: #2e7d32; margin-top: 15px;">📍 ${data.locationName}</h2>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
+                    <span style="font-size: 5rem; line-height: 1;">${currentCondition.icon}</span>
+                    <div>
+                        <div style="font-size: 4rem; font-weight: 700; line-height: 1.1;">${Math.round(data.current.temp)}°C</div>
+                        <div style="font-size: 1.3rem; text-transform: capitalize; margin-top: 5px;">${currentCondition.text}</div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 15px; font-size: 0.95rem;">
+                    <div><i class="fas fa-tint" style="color: #1e88e5;"></i> Humidity: ${data.current.humidity}%</div>
+                    <div><i class="fas fa-wind" style="color: #78909c;"></i> Wind: ${data.current.wind} km/h</div>
+                </div>
+            </div>
+        `;
+
+        let forecastHtml = `
+            <div style="margin-top:25px;">
+                <h3>📅 7-Day Forecast</h3>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
+        `;
+        
+        // Loop prints all 7 layout cards dynamically
+        data.daily.forEach(day => {
+            const dateObj = new Date(day.date);
+            const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
+            const dayCondition = getWeatherDesc(day.code);
+            
+            forecastHtml += `
+                <div style="background: var(--card-bg); border-radius: 20px; padding: 15px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow);">
+                    <div style="font-weight: 700; color: #2e7d32; margin-bottom: 10px; font-size: 0.9rem;">${displayDate}</div>
+                    <span style="font-size: 2.2rem; display:block; margin: 8px 0;">${dayCondition.icon}</span>
+                    <div style="font-size: 1.3rem; font-weight: 700; margin: 4px 0;">${Math.round(day.maxTemp)}°C</div>
+                    <div style="font-size: 0.75rem; color: var(--text2); text-transform: capitalize; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${dayCondition.text}</div>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px; font-size: 0.75rem;">
+                        <span style="color: #f9a825;">↑ ${Math.round(day.maxTemp)}°</span>
+                        <span style="color: #2e7d32;">↓ ${Math.round(day.minTemp)}°</span>
+                    </div>
+                </div>
+            `;
+        });
+        forecastHtml += '</div></div>';
+        
+        let farmingAdvice = '';
+        if (typeof getFarmingAdvice === 'function') {
+            farmingAdvice = getFarmingAdvice(currentCondition.main, data.current.temp);
+        }
+        
+        targetDiv.innerHTML = currentHtml + forecastHtml + farmingAdvice;
     }
     
     // ==================== REAL MANDI API FUNCTION ====================
