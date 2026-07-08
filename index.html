@@ -1056,6 +1056,27 @@ hr {
     // Remove old auth container
     const oldAuth = document.getElementById('auth-container');
     if (oldAuth) oldAuth.style.display = 'none';
+    // Check if already logged in (Matches normal users & guests!)
+    const sessionStr = localStorage.getItem('patukrishi_session');
+    if (sessionStr) {
+        const currentSession = JSON.parse(sessionStr);
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('authModal').style.display = 'none';
+        
+        // Populate display variables cleanly on launch sequence hook
+        if(currentSession.isGuest) {
+            document.getElementById('header-name').innerText = "Guest";
+            document.getElementById('welcome-name').innerText = "Guest";
+            document.getElementById('header-avatar').innerText = "G";
+        } else {
+            document.getElementById('header-name').innerText = currentSession.name.split(' ')[0];
+            document.getElementById('welcome-name').innerText = currentSession.name.split(' ')[0];
+            document.getElementById('header-avatar').innerText = currentSession.name.charAt(0).toUpperCase();
+        }
+    } else {
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('authModal').style.display = 'flex';
+    }
 </script>
 
 <!-- Contact Form Handler -->
