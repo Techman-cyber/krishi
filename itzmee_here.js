@@ -3413,4 +3413,37 @@ document.addEventListener('click', function(e) {
         micBtn.classList.remove('listening');
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
+    // ==================== AUTHENTICATION & GUEST ACCESS SYSTEM ====================
+window.enterAsGuest = () => {
+    // 1. Create a simulated clean temporary profile session object
+    const guestUser = {
+        uid: "guest_" + Math.random().toString(36).substr(2, 9),
+        displayName: "Guest Farmer",
+        isGuest: true,
+        joinedAt: new Date().toISOString()
+    };
+
+    // 2. Commit session to LocalStorage so the app states recognize them as logged in
+    localStorage.setItem('patukrishi_user', JSON.stringify(guestUser));
+    
+    // 3. Trigger user notifications (if your code uses a custom showNotification helper)
+    if (typeof showNotification === 'function') {
+        showNotification('Logged in as Guest! Welcome to PatuKrishi.', 'success');
+    } else {
+        alert('Logged in securely as Guest!');
+    }
+
+    // 4. Update UI context window visibility state fields
+    // Hide auth layer elements, reveal the main home container layout
+    const authContainer = document.getElementById('auth-container'); 
+    const mainDashboard = document.getElementById('main-app-dashboard'); // Replace with your home wrapper ID
+    
+    if (authContainer) authContainer.style.display = 'none';
+    if (mainDashboard) mainDashboard.style.display = 'block';
+
+    // 5. Automatically pull weather metrics using their local GPS grid values
+    if (typeof window.getLocationWeatherData === 'function') {
+        window.getLocationWeatherData();
+    }
+};
 })();
