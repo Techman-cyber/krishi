@@ -87,7 +87,7 @@ if (typeof emailjs !== 'undefined') {
         }
     }
     
-   // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
+ // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
     window.getWeatherData = async () => {
         const city = document.getElementById('cityInput').value.trim();
         const resultDiv = document.getElementById('weather-result');
@@ -175,7 +175,7 @@ if (typeof emailjs !== 'undefined') {
         
         let currentHtml = `
             <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow);">
-                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2>
+                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2> 
                 <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
                     <span style="font-size: 5rem; line-height: 1;">${currentCondition.icon}</span>
                     <div>
@@ -196,7 +196,6 @@ if (typeof emailjs !== 'undefined') {
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
         `;
         
-        // Loop capped at the first 5 entries of the daily prediction array
         data.daily.slice(0, 5).forEach(day => {
             const dateObj = new Date(day.date);
             const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
@@ -217,7 +216,6 @@ if (typeof emailjs !== 'undefined') {
         });
         forecastHtml += '</div></div>';
         
-        // Safely triggers your existing agricultural logic mapping text keys
         let farmingAdvice = '';
         if (typeof getFarmingAdvice === 'function') {
             farmingAdvice = getFarmingAdvice(currentCondition.main, data.current.temp);
