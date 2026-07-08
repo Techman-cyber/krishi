@@ -22,8 +22,6 @@
         userDatabase = JSON.parse(localStorage.getItem('patukrishi_users') || '{}'),
         currentLanguage = 'en';
     
-    // ==================== API KEYS ====================
-    const WEATHER_API_KEY = '20f6a3909724aac57a9b95e4f3e0194c';
     // ==================== NEW STABLE API ROUTE (NO KEY REQUIRED) ====================
 const MANDI_API_URL = 'https://api.ceda.ashoka.edu.in/v1/agmarknet/prices';
   // ========== ADD YOUR NEW APIs HERE ==========
@@ -89,10 +87,10 @@ if (typeof emailjs !== 'undefined') {
         }
     }
     
-    // ==================== MAIN WEATHER FUNCTION (REAL 5-DAY FORECAST) ====================
+   // ==================== AGRI-WEATHER INTELLIGENCE ENGINE (OPEN-METEO MIRROR) ====================
     window.getWeatherData = async () => {
-        let city = document.getElementById('cityInput').value;
-        let resultDiv = document.getElementById('weather-result');
+        const city = document.getElementById('cityInput').value.trim();
+        const resultDiv = document.getElementById('weather-result');
         
         if (!city) {
             resultDiv.innerHTML = '<p style="color:red">❌ Please enter a city name</p>';
@@ -101,173 +99,132 @@ if (typeof emailjs !== 'undefined') {
         }
         
         resultDiv.style.display = 'block';
-        resultDiv.innerHTML = '<div style="text-align:center"><i class="fas fa-spinner fa-pulse fa-2x"></i><p>Fetching weather data...</p></div>';
+        resultDiv.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fas fa-spinner fa-pulse fa-spin fa-2x"></i><p>Pinging Open-Meteo climate arrays...</p></div>';
         
         try {
-            // Fetch CURRENT weather
-            let currentRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=metric`);
-            let currentData = await currentRes.json();
-            
-            if (currentData.cod !== 200) throw new Error(currentData.message);
-            
-            // Fetch 5-DAY FORECAST (every 3 hours)
-            let forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${WEATHER_API_KEY}&units=metric`);
-            let forecastData = await forecastRes.json();
-            
-            if (forecastData.cod !== '200') throw new Error(forecastData.message);
-            
-            // GROUP forecast data by day
-            let dailyForecast = {};
-            forecastData.list.forEach(item => {
-                let date = new Date(item.dt * 1000).toLocaleDateString();
-                if (!dailyForecast[date]) {
-                    dailyForecast[date] = {
-                        temps: [],
-                        icons: [],
-                        conditions: []
-                    };
-                }
-                dailyForecast[date].temps.push(item.main.temp);
-                dailyForecast[date].icons.push(item.weather[0].icon);
-                dailyForecast[date].conditions.push(item.weather[0].description);
+            const response = await fetch('/api/weather', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ city })
             });
             
-            // BUILD 5-DAY FORECAST HTML
-            let forecastHtml = '<div style="margin-top:25px;"><h3>📅 5-Day Weather Forecast</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:15px;margin-top:15px;">';
-            
-            let dayCount = 0;
-            for (let [date, data] of Object.entries(dailyForecast)) {
-                if (dayCount >= 5) break;
-                
-                let avgTemp = (data.temps.reduce((a, b) => a + b, 0) / data.temps.length).toFixed(0);
-                let minTemp = Math.min(...data.temps).toFixed(0);
-                let maxTemp = Math.max(...data.temps).toFixed(0);
-                let mostCommonIcon = getMostCommon(data.icons);
-                let mostCommonCondition = getMostCommon(data.conditions);
-                
-                forecastHtml += `
-                    <div style="background: var(--card-bg); border-radius: 20px; padding: 15px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow);">
-                        <div style="font-weight: 700; color: #2e7d32; margin-bottom: 10px;">${formatDate(date)}</div>
-                        <img src="https://openweathermap.org/img/wn/${mostCommonIcon}@2x.png" alt="weather" style="width: 60px;">
-                        <div style="font-size: 1.6rem; font-weight: 700; margin: 8px 0;">${avgTemp}°C</div>
-                        <div style="font-size: 0.85rem; color: #666; text-transform: capitalize;">${mostCommonCondition}</div>
-                        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px; font-size: 0.8rem;">
-                            <span style="color: #f9a825;">↑ ${maxTemp}°</span>
-                            <span style="color: #2e7d32;">↓ ${minTemp}°</span>
-                        </div>
-                    </div>
-                `;
-                dayCount++;
+            const data = await response.json();
+            if (data.success) {
+                renderMeteoWeather(data, resultDiv);
+            } else {
+                throw new Error(data.reason || 'City not found');
             }
-            forecastHtml += '</div></div>';
-            
-            // BUILD CURRENT WEATHER HTML
-            let currentHtml = `
-                <div style="text-align: center; padding: 20px; background: var(--bg); border-radius: 32px; margin-bottom: 20px;">
-                    <h2 style="color: #2e7d32;">📍 ${currentData.name}, ${currentData.sys.country}</h2>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
-                        <img src="https://openweathermap.org/img/wn/${currentData.weather[0].icon}@4x.png" alt="weather" style="width: 100px;">
-                        <div>
-                            <div style="font-size: 4rem; font-weight: 700;">${Math.round(currentData.main.temp)}°C</div>
-                            <div style="font-size: 1.3rem; text-transform: capitalize;">${currentData.weather[0].description}</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 15px;">
-                        <div><i class="fas fa-thermometer-half"></i> Feels like: ${Math.round(currentData.main.feels_like)}°C</div>
-                        <div><i class="fas fa-tint"></i> Humidity: ${currentData.main.humidity}%</div>
-                        <div><i class="fas fa-wind"></i> Wind: ${currentData.wind.speed} km/h</div>
-                        <div><i class="fas fa-compress-alt"></i> Pressure: ${currentData.main.pressure} hPa</div>
-                    </div>
-                </div>
-            `;
-            
-            let farmingAdvice = getFarmingAdvice(currentData.weather[0].main, currentData.main.temp);
-            resultDiv.innerHTML = currentHtml + forecastHtml + farmingAdvice;
-            
         } catch (error) {
-            resultDiv.innerHTML = `<p style="color:red">❌ Error: ${error.message}. Please check city name and try again.</p>`;
+            console.error('Weather tracking failed:', error);
+            resultDiv.innerHTML = `<p style="color:red; text-align:center; padding:20px;">❌ Could not load weather for "${city}". Please verify spelling.</p>`;
         }
     };
     
-    // ==================== LOCATION WEATHER FUNCTION ====================
     window.getLocationWeatherData = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                let lat = position.coords.latitude;
-                let lon = position.coords.longitude;
-                let resultDiv = document.getElementById('weather-result');
-                
-                resultDiv.style.display = 'block';
-                resultDiv.innerHTML = '<div style="text-align:center"><i class="fas fa-spinner fa-pulse fa-2x"></i><p>Fetching weather for your location...</p></div>';
-                
-                try {
-                    // Current weather by coordinates
-                    let currentRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
-                    let currentData = await currentRes.json();
-                    
-                    // 5-day forecast by coordinates
-                    let forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
-                    let forecastData = await forecastRes.json();
-                    
-                    // Group forecast by day
-                    let dailyForecast = {};
-                    forecastData.list.forEach(item => {
-                        let date = new Date(item.dt * 1000).toLocaleDateString();
-                        if (!dailyForecast[date]) {
-                            dailyForecast[date] = { temps: [], icons: [], conditions: [] };
-                        }
-                        dailyForecast[date].temps.push(item.main.temp);
-                        dailyForecast[date].icons.push(item.weather[0].icon);
-                        dailyForecast[date].conditions.push(item.weather[0].description);
-                    });
-                    
-                    // Build forecast HTML
-                    let forecastHtml = '<div style="margin-top:25px;"><h3>📅 5-Day Forecast</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:15px;">';
-                    let dayCount = 0;
-                    for (let [date, data] of Object.entries(dailyForecast)) {
-                        if (dayCount++ >= 5) break;
-                        let avgTemp = (data.temps.reduce((a,b)=>a+b,0)/data.temps.length).toFixed(0);
-                        let icon = getMostCommon(data.icons);
-                        let condition = getMostCommon(data.conditions);
-                        forecastHtml += `
-                            <div style="background:var(--bg);border-radius:18px;padding:12px;text-align:center;">
-                                <div style="font-weight:600;">${formatDate(date)}</div>
-                                <img src="https://openweathermap.org/img/wn/${icon}.png" width="50">
-                                <div><strong>${avgTemp}°C</strong></div>
-                                <div style="font-size:0.75rem;">${condition}</div>
-                            </div>
-                        `;
-                    }
-                    forecastHtml += '</div></div>';
-                    
-                    // Current weather HTML
-                    let currentHtml = `
-                        <div style="text-align:center;">
-                            <h2 style="color:#2e7d32;">📍 ${currentData.name}</h2>
-                            <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin:15px 0;">
-                                <img src="https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png" width="80">
-                                <div>
-                                    <div style="font-size:3rem;font-weight:700;">${Math.round(currentData.main.temp)}°C</div>
-                                    <div>${currentData.weather[0].description}</div>
-                                </div>
-                            </div>
-                            <div>💧 ${currentData.main.humidity}% | 🌬️ ${currentData.wind.speed} km/h</div>
-                        </div>
-                    `;
-                    
-                    let farmingAdvice = getFarmingAdvice(currentData.weather[0].main, currentData.main.temp);
-                    resultDiv.innerHTML = currentHtml + forecastHtml + farmingAdvice;
-                    
-                } catch (error) {
-                    resultDiv.innerHTML = `<p style="color:red">❌ Unable to fetch location weather. Please try again.</p>`;
-                }
-            }, () => {
-                alert('Please allow location access to get weather for your area');
-            });
-        } else {
+        const resultDiv = document.getElementById('weather-result');
+        
+        if (!navigator.geolocation) {
             alert('Geolocation is not supported by your browser');
+            return;
         }
+        
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fas fa-location-arrow fa-spin fa-2x"></i><p>Locating farm grid coordinates...</p></div>';
+        
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const response = await fetch('/api/weather', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    renderMeteoWeather(data, resultDiv);
+                } else {
+                    throw new Error(data.reason);
+                }
+            } catch (err) {
+                console.error('Location weather query failure:', err);
+                resultDiv.innerHTML = `<p style="color:red; text-align:center; padding:20px;">❌ Unable to parse GPS cell weather data.</p>`;
+            }
+        }, () => {
+            alert('Please allow location access to get weather for your area');
+            resultDiv.innerHTML = `<p style="text-align:center; padding:20px;">Please type your city name manually in the input box above.</p>`;
+        });
     };
+
+    // Helper to translate WMO Weather interpretation codes to readable text strings + graphics
+    function getWeatherDesc(code) {
+        if (code === 0) return { text: "Clear Sky", icon: "☀️", main: "Clear" };
+        if ([1, 2, 3].includes(code)) return { text: "Partly Cloudy", icon: "⛅", main: "Clouds" };
+        if ([45, 48].includes(code)) return { text: "Foggy Conditions", icon: "🌫️", main: "Fog" };
+        if ([51, 53, 55, 61, 63, 65].includes(code)) return { text: "Rain Showers", icon: "🌧️", main: "Rain" };
+        if ([71, 73, 75, 77].includes(code)) return { text: "Snowfall", icon: "❄️", main: "Snow" };
+        if ([80, 81, 82, 85, 86].includes(code)) return { text: "Heavy Downpour", icon: "🌧️", main: "Rain" };
+        if ([95, 96, 99].includes(code)) return { text: "Thunderstorm Alerts", icon: "⛈️", main: "Thunderstorm" };
+        return { text: "Stable Conditions", icon: "🌤️", main: "Clear" };
+    }
+
+    function renderMeteoWeather(data, targetDiv) {
+        const currentCondition = getWeatherDesc(data.current.code);
+        
+        let currentHtml = `
+            <div style="text-align: center; padding: 25px; background: var(--bg); border-radius: 32px; margin-bottom: 25px; box-shadow: var(--shadow);">
+                <h2 style="color: #2e7d32;">📍 ${data.locationName}</h2>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; flex-wrap: wrap;">
+                    <span style="font-size: 5rem; line-height: 1;">${currentCondition.icon}</span>
+                    <div>
+                        <div style="font-size: 4rem; font-weight: 700; line-height: 1.1;">${Math.round(data.current.temp)}°C</div>
+                        <div style="font-size: 1.3rem; text-transform: capitalize; margin-top: 5px;">${currentCondition.text}</div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-top: 15px; font-size: 0.95rem;">
+                    <div><i class="fas fa-tint" style="color: #1e88e5;"></i> Humidity: ${data.current.humidity}%</div>
+                    <div><i class="fas fa-wind" style="color: #78909c;"></i> Wind: ${data.current.wind} km/h</div>
+                </div>
+            </div>
+        `;
+
+        let forecastHtml = `
+            <div style="margin-top:25px;">
+                <h3>📅 5-Day Weather Forecast</h3>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
+        `;
+        
+        // Loop capped at the first 5 entries of the daily prediction array
+        data.daily.slice(0, 5).forEach(day => {
+            const dateObj = new Date(day.date);
+            const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
+            const dayCondition = getWeatherDesc(day.code);
+            
+            forecastHtml += `
+                <div style="background: var(--card-bg); border-radius: 20px; padding: 15px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow);">
+                    <div style="font-weight: 700; color: #2e7d32; margin-bottom: 10px; font-size: 0.9rem;">${displayDate}</div>
+                    <span style="font-size: 2.2rem; display:block; margin: 8px 0;">${dayCondition.icon}</span>
+                    <div style="font-size: 1.3rem; font-weight: 700; margin: 4px 0;">${Math.round(day.maxTemp)}°C</div>
+                    <div style="font-size: 0.75rem; color: var(--text2); text-transform: capitalize; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${dayCondition.text}</div>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px; font-size: 0.75rem;">
+                        <span style="color: #f9a825;">↑ ${Math.round(day.maxTemp)}°</span>
+                        <span style="color: #2e7d32;">↓ ${Math.round(day.minTemp)}°</span>
+                    </div>
+                </div>
+            `;
+        });
+        forecastHtml += '</div></div>';
+        
+        // Safely triggers your existing agricultural logic mapping text keys
+        let farmingAdvice = '';
+        if (typeof getFarmingAdvice === 'function') {
+            farmingAdvice = getFarmingAdvice(currentCondition.main, data.current.temp);
+        }
+        
+        targetDiv.innerHTML = currentHtml + forecastHtml + farmingAdvice;
+    }
     
     // ==================== UPDATED MANDI PRICES FUNCTION WITH REAL API ====================
     window.fetchMandiPrices = async () => {
