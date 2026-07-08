@@ -367,15 +367,7 @@
             </div>
             <div style="text-align: center; margin-top: 15px;">
                 <span style="color: var(--text2); font-size: 0.9rem;">Or want to explore first?</span>
-                <button type="button" onclick="(() => {
-                    localStorage.setItem('patukrishi_session', JSON.stringify({ name: 'Guest Farmer 🌾', email: 'guest@patukrishi.internal', isGuest: true }));
-                    document.getElementById('authModal').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
-                    document.getElementById('header-name').innerText = 'Guest';
-                    document.getElementById('welcome-name').innerText = 'Guest';
-                    document.getElementById('header-avatar').innerText = 'G';
-                    if (window.getLocationWeatherData) { window.getLocationWeatherData(); }
-                })()" style="display: block; width: 100%; margin-top: 8px; padding: 12px; background: transparent; border: 2px dashed #2e7d32; color: #2e7d32; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                <button type="button" id="guest-login-btn" onclick="handleGuestLogin()" style="display: block; width: 100%; margin-top: 8px; padding: 12px; background: transparent; border: 2px dashed #2e7d32; color: #2e7d32; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
                     ✨ Continue as Guest
                 </button>
             </div>
