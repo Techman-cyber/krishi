@@ -8,44 +8,61 @@ module.exports = async function handler(req, res) {
     let { city, lat, lon } = params || {};
     let resolvedPlaceName = '';
 
-    // Case 1: Searching via City Text String Input
+    // Advanced Local Search System
     if (city && (!lat || !lon)) {
+        const cleanInput = city.trim();
+        const isPinCode = /^[1-9][0-9]{5}$/.test(cleanInput);
+
         try {
-            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+            let geoUrl = '';
+            if (isPinCode) {
+                // If the user types a 6-digit PIN code, use openstreetmap postal search
+                geoUrl = `https://nominatim.openstreetmap.org/search?postalcode=${cleanInput}&country=india&format=json&limit=1`;
+            } else {
+                // Regular city search optimized with an Indian focus area
+                geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanInput)}&count=3&language=en&format=json`;
+            }
+
+            const geoRes = await fetch(geoUrl, { headers: { 'User-Agent': 'PatuKrishiAgriApp/1.0' } });
             const geoData = await geoRes.json();
-            
-            if (geoData.results && geoData.results.length > 0) {
+
+            if (isPinCode && geoData && geoData.length > 0) {
+                lat = geoData[0].lat;
+                lon = geoData[0].lon;
+                resolvedPlaceName = `PIN: ${cleanInput} (${geoData[0].display_name.split(',')[0]})`;
+            } else if (!isPinCode && geoData.results && geoData.results.length > 0) {
                 lat = geoData.results[0].latitude;
                 lon = geoData.results[0].longitude;
-                // Capture clean name, state/region, and country if available
-                const name = geoData.results[0].name || city;
+                const name = geoData.results[0].name;
                 const region = geoData.results[0].admin1 ? `, ${geoData.results[0].admin1}` : '';
-                const country = geoData.results[0].country_code ? ` (${geoData.results[0].country_code.toUpperCase()})` : '';
-                resolvedPlaceName = name + region + country;
+                resolvedPlaceName = `${name}${region}`;
             } else {
-                return res.status(404).json({ success: false, reason: 'city_not_found' });
+                // Fallback: If it's a micro-location name, query OpenStreetMap directly
+                const osmRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cleanInput + ', India')}&format=json&limit=1`, { headers: { 'User-Agent': 'PatuKrishiAgriApp/1.0' } });
+                const osmData = await osmRes.json();
+                if (osmData && osmData.length > 0) {
+                    lat = osmData[0].lat;
+                    lon = osmData[0].lon;
+                    resolvedPlaceName = osmData[0].display_name.split(',')[0] + ", TS";
+                } else {
+                    return res.status(404).json({ success: false, reason: 'location_not_found' });
+                }
             }
         } catch (err) {
             return res.status(500).json({ success: false, reason: 'geocoding_failed' });
         }
     }
 
-    // Case 2: Searching via My Location GPS coordinates
+    // Reverse Geocoding for "My Location" GPS button
     if (lat && lon && !resolvedPlaceName) {
         try {
-            // Reverse geocode the raw coordinates to find the place name
             const reverseGeoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
             if (reverseGeoRes.ok) {
                 const geoData = await reverseGeoRes.json();
-                const cityPart = geoData.city || geoData.locality || geoData.principalSubdivision || '';
-                const countryPart = geoData.countryCode ? ` (${geoData.countryCode.toUpperCase()})` : '';
-                resolvedPlaceName = cityPart ? `${cityPart}${countryPart}` : '';
+                const localSpot = geoData.locality || geoData.city || '';
+                resolvedPlaceName = localSpot ? `${localSpot}, India` : 'Your Farm Location';
             }
         } catch (e) {
-            console.warn("Reverse lookup failed, falling back to raw coordinates display string");
-        }
-        
-        if (!resolvedPlaceName) {
             resolvedPlaceName = `${parseFloat(lat).toFixed(2)}°N, ${parseFloat(lon).toFixed(2)}°E`;
         }
     }
@@ -56,10 +73,7 @@ module.exports = async function handler(req, res) {
 
     try {
         const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
-        
         const response = await fetch(meteoUrl);
-        if (!response.ok) throw new Error('Open-Meteo server down');
-        
         const data = await response.json();
 
         return res.status(200).json({
@@ -78,7 +92,6 @@ module.exports = async function handler(req, res) {
                 code: data.daily.weather_code[index]
             }))
         });
-
     } catch (error) {
         return res.status(500).json({ success: false, reason: 'weather_fetch_failed' });
     }
