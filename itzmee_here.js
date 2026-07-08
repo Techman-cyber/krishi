@@ -192,11 +192,11 @@ if (typeof emailjs !== 'undefined') {
 
         let forecastHtml = `
             <div style="margin-top:25px;">
-                <h3>📅 5-Day Weather Forecast</h3>
+                <h3>📅 7-Day Weather Forecast</h3>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:15px;">
         `;
         
-        data.daily.slice(0, 5).forEach(day => {
+        data.daily.slice(0, 7).forEach(day => {
             const dateObj = new Date(day.date);
             const displayDate = typeof formatDate === 'function' ? formatDate(dateObj.toLocaleDateString()) : dateObj.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
             const dayCondition = getWeatherDesc(day.code);
