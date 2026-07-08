@@ -1,4 +1,6 @@
 // /api/weather.js
+// Secure backend serverless proxy connecting to Open-Meteo (7-Day Micro-Location Array)
+
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST' && req.method !== 'GET') {
         return res.status(405).json({ success: false, reason: 'method_not_allowed' });
@@ -8,7 +10,7 @@ module.exports = async function handler(req, res) {
     let { city, lat, lon } = params || {};
     let resolvedPlaceName = '';
 
-    // Advanced Local Search System
+    // Advanced Local Neighborhood & PIN Code Search Engine
     if (city && (!lat || !lon)) {
         const cleanInput = city.trim();
         const isPinCode = /^[1-9][0-9]{5}$/.test(cleanInput);
@@ -16,10 +18,8 @@ module.exports = async function handler(req, res) {
         try {
             let geoUrl = '';
             if (isPinCode) {
-                // If the user types a 6-digit PIN code, use openstreetmap postal search
                 geoUrl = `https://nominatim.openstreetmap.org/search?postalcode=${cleanInput}&country=india&format=json&limit=1`;
             } else {
-                // Regular city search optimized with an Indian focus area
                 geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanInput)}&count=3&language=en&format=json`;
             }
 
@@ -37,13 +37,13 @@ module.exports = async function handler(req, res) {
                 const region = geoData.results[0].admin1 ? `, ${geoData.results[0].admin1}` : '';
                 resolvedPlaceName = `${name}${region}`;
             } else {
-                // Fallback: If it's a micro-location name, query OpenStreetMap directly
+                // Fallback for sub-districts or small local colonies (e.g. Sainikpuri)
                 const osmRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cleanInput + ', India')}&format=json&limit=1`, { headers: { 'User-Agent': 'PatuKrishiAgriApp/1.0' } });
                 const osmData = await osmRes.json();
                 if (osmData && osmData.length > 0) {
                     lat = osmData[0].lat;
                     lon = osmData[0].lon;
-                    resolvedPlaceName = osmData[0].display_name.split(',')[0] + ", TS";
+                    resolvedPlaceName = osmData[0].display_name.split(',')[0];
                 } else {
                     return res.status(404).json({ success: false, reason: 'location_not_found' });
                 }
@@ -53,7 +53,7 @@ module.exports = async function handler(req, res) {
         }
     }
 
-    // Reverse Geocoding for "My Location" GPS button
+    // Reverse Geocoding for "My Location" GPS coordinates tracker
     if (lat && lon && !resolvedPlaceName) {
         try {
             const reverseGeoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
@@ -72,7 +72,9 @@ module.exports = async function handler(req, res) {
     }
 
     try {
+        // Core Open-Meteo execution url string
         const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
+        
         const response = await fetch(meteoUrl);
         const data = await response.json();
 
