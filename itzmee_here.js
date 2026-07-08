@@ -1,5 +1,4 @@
 
-(function(){
     // ==================== SWIPER INITIALIZATION ====================
     const swiper = new Swiper('.mySwiper', {
         loop: !0,
@@ -472,47 +471,6 @@ translations = {
         localStorage.removeItem('patukrishi_session');
         location.reload();
     };
-    // ==================== AUTHENTICATION GUEST INTERCEPTOR ====================
-window.enterAsGuest = () => {
-    console.log("Guest entry engine initialized...");
-
-    // 1. Match your exact HTML session keys
-    const guestSession = { 
-        name: "Guest Farmer 🌾", 
-        email: "guest@patukrishi.internal",
-        isGuest: true 
-    };
-    localStorage.setItem('patukrishi_session', JSON.stringify(guestSession));
-
-    // 2. Target the exact container IDs present in your HTML markup
-    const authScreen = document.getElementById('authModal');
-    const mainDashboard = document.getElementById('dashboard');
-
-    // 3. Switch layout views safely
-    if (authScreen) authScreen.style.display = 'none';
-    if (mainDashboard) mainDashboard.style.display = 'block';
-
-    // 4. Update elements to show Guest status cleanly in the header
-    const headerName = document.getElementById('header-name');
-    const welcomeName = document.getElementById('welcome-name');
-    const avatarImg = document.getElementById('header-avatar');
-    
-    if (headerName) headerName.innerText = "Guest";
-    if (welcomeName) welcomeName.innerText = "Guest";
-    if (avatarImg) avatarImg.innerText = "G";
-
-    // 5. Fire your new Open-Meteo GPS weather sync automatically
-    if (typeof window.getLocationWeatherData === 'function') {
-        window.getLocationWeatherData();
-    }
-    
-    // Custom notification trigger fallback
-    if (typeof showNotification === 'function') {
-        showNotification('Welcome! Logged in as Guest.', 'success');
-    } else {
-        alert('Welcome! Logged in as Guest.');
-    }
-};
     
     // ==================== DASHBOARD FUNCTIONS ====================
     
@@ -3449,53 +3407,9 @@ document.addEventListener('click', function(e) {
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
 
-recognition.onerror = () => {
-        listening = false;
-        micBtn.classList.remove('listening');
-        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-    };
-
     recognition.onend = () => {
         listening = false;
         micBtn.classList.remove('listening');
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
-})(); // <--- SAFELY CLOSES VOICE INPUT FIRST!
-
-// ==================== AUTHENTICATION GUEST INTERCEPTOR ====================
-window.enterAsGuest = () => {
-    console.log("Guest entry engine initialized...");
-
-    // 1. Build session layout matching your HTML keys precisely
-    const guestSession = { 
-        name: "Guest Farmer 🌾", 
-        email: "guest@patukrishi.internal",
-        isGuest: true 
-    };
-    localStorage.setItem('patukrishi_session', JSON.stringify(guestSession));
-
-    // 2. Target the exact HTML container IDs from your markup
-    const authScreen = document.getElementById('authModal');
-    const mainDashboard = document.getElementById('dashboard');
-
-    // 3. Switch layout views instantly
-    if (authScreen) authScreen.style.display = 'none';
-    if (mainDashboard) mainDashboard.style.display = 'block';
-
-    // 4. Update elements to show Guest status cleanly in your layout headers
-    const headerName = document.getElementById('header-name');
-    const welcomeName = document.getElementById('welcome-name');
-    const avatarImg = document.getElementById('header-avatar');
-    
-    if (headerName) headerName.innerText = "Guest";
-    if (welcomeName) welcomeName.innerText = "Guest";
-    if (avatarImg) avatarImg.innerText = "G";
-
-    // 5. Fire your new Open-Meteo GPS weather metrics automatically
-    if (typeof window.getLocationWeatherData === 'function') {
-        window.getLocationWeatherData();
-    }
-    
-    alert('Logged in successfully as Guest!');
-};
-})();
+})();s
