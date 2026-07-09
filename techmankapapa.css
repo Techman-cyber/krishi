@@ -1903,22 +1903,3 @@ hr {
     color: #999;
     margin-top: 15px;
 }
-
-/* ==================== VILLAGE PULSE ==================== */
-.pulse-card{margin-bottom:30px}
-.pulse-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.pulse-eyebrow{font-size:.85rem;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
-.pulse-streak{font-size:.9rem;font-weight:700;color:#f9a825;display:flex;align-items:center;gap:6px}
-.pulse-question-row{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
-.pulse-icon{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:var(--hover-bg);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:1.2rem}
-.pulse-prompt{font-size:1.15rem;font-weight:700;color:var(--text1);margin-bottom:2px}
-.pulse-sub{font-size:.85rem;color:var(--text2)}
-.pulse-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.pulse-option-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 6px;border-radius:20px;background:var(--bg);border:2px solid var(--border);cursor:pointer;font-size:.9rem;font-weight:600;color:var(--text1);transition:.2s}
-.pulse-option-btn:hover{border-color:var(--primary);background:var(--hover-bg)}
-.pulse-option-btn:active{transform:scale(.96)}
-.pulse-option-btn i{font-size:1.1rem;color:var(--primary)}
-.pulse-thanks{font-size:1rem;font-weight:600;color:var(--text1);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.pulse-stat-box{display:flex;align-items:center;gap:14px;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:16px}
-.pulse-stat-icon{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:rgba(249,168,37,.15);display:flex;align-items:center;justify-content:center;color:#f9a825}
-.pulse-stat-text{font-size:.9rem;color:var(--text2);line-height:1.5}
