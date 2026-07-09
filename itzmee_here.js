@@ -1,5 +1,4 @@
 // ========== COMPLETE DEV TOOLS & SOURCE PROTECTION ==========
-
 // 1. Disable Right Click
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
