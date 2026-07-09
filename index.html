@@ -498,6 +498,33 @@
             <div class="swiper mySwiper"><div class="swiper-wrapper"><div class="swiper-slide"><img src="https://i.pinimg.com/736x/af/70/f8/af70f8299a42ca31fea7dc2e254fe66e.jpg" alt="Farmer in field"></div><div class="swiper-slide"><img src="https://i.pinimg.com/736x/e8/b5/7b/e8b57b30c2b24b7cb981707444b225b8.jpg" alt="Agriculture drone"></div><div class="swiper-slide"><img src="https://i.pinimg.com/736x/e3/cb/7a/e3cb7ab73c4f58fd3e0c1b5eb4e7d4d6.jpg" alt="Tractor"></div><div class="swiper-slide"><img src="https://i.pinimg.com/736x/95/46/8a/95468af98e9bb4db89dfa9009c4ed12b.jpg" alt="Vegetables"></div></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div>
             <div class="tip-container" data-aos="fade-up"><div class="tip-header"><div class="time-badge-large"><i class="far fa-clock"></i><span id="current-time"></span></div><div class="tip-number-badge" id="tip-number">#01</div></div><div class="tip-text" id="tip-of-the-day">🌱 Always test your soil before sowing for better yield.</div></div>
             <div class="hero-section" data-aos="fade-up"><h1><span data-translate="namaste">Namaste</span>, <span id="welcome-name">Farmer</span> 🌾</h1><p data-translate="hero-text">Aapka apna kisan dost – smart farming ke saath</p></div>
+
+            <div class="card pulse-card" data-aos="fade-up" id="pulseCard">
+                <div class="pulse-header">
+                    <span class="pulse-eyebrow"><i class="fas fa-seedling"></i> Aaj ki Baat</span>
+                    <span class="pulse-streak"><i class="fas fa-fire"></i> <span id="pulseStreakCount">0</span> din</span>
+                </div>
+
+                <div id="pulseQuestionView">
+                    <div class="pulse-question-row">
+                        <div class="pulse-icon"><i class="fas fa-cloud-rain" id="pulseIconEl"></i></div>
+                        <div>
+                            <p class="pulse-prompt" id="pulsePrompt">Aaj baarish hui?</p>
+                            <p class="pulse-sub" id="pulseSub">Did it rain in your field today?</p>
+                        </div>
+                    </div>
+                    <div class="pulse-options" id="pulseOptions"></div>
+                </div>
+
+                <div id="pulseResultView" style="display:none;">
+                    <p class="pulse-thanks"><i class="fas fa-check-circle" style="color:var(--primary)"></i> Shukriya! Aapka jawaab darj ho gaya</p>
+                    <div class="pulse-stat-box">
+                        <div class="pulse-stat-icon"><i class="fas fa-users"></i></div>
+                        <p class="pulse-stat-text">Aapke ilaake mein <strong><span id="pulseStatCount">0</span> kisano</strong> ne aaj yahi bataya — <span id="pulseStatLabel"></span>.</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="card" style="margin-bottom:30px" data-aos="fade-up"><h2 style="color:var(--primary);margin-bottom:15px" data-translate="sustainable-title">🌱 PatuKrishi – Smart Farming</h2><p class="big-friendly" data-translate="sustainable-text">🇮🇳 India mein kisanon ko samay par sahi jaankari milna bahut zaroori hai. PatuKrishi aapko deta hai live mandi bhav, mausam ka poorv anuman, crop lens (rogo ki pehchan aur ilaaj), aur step-by-step sowing se harvest tak ki salah. Hum aapke khet ki paidaawar ko munafa mein badalne ke liye yahan hain. Chahe aap Punjab ke wheat farmer ho ya Tamil Nadu ke rice grower, PatuKrishi har kisan ke liye hai. Ab farming hui smart, aur munafa hua sure! 💚</p></div>
             <div class="dashboard-grid"><div class="card click-card" onclick="switchSection('weather')"><i class="fas fa-cloud-sun fa-2x" style="color:var(--primary)"></i><h3 data-translate="weather">Weather</h3><p data-translate="weather-desc">Live forecast · crop recommendation</p></div><div class="card click-card" onclick="switchSection('mandi')"><i class="fas fa-chart-line fa-2x" style="color:var(--primary)"></i><h3 data-translate="mandi">Mandi Prices</h3><p data-translate="mandi-desc">All states & UTs · districts · multiple rates</p></div><div class="card click-card" onclick="switchSection('advisory')"><i class="fas fa-leaf fa-2x" style="color:var(--primary)"></i><h3 data-translate="advisory">Advisory</h3><p data-translate="advisory-desc">State/UT + crop · 3-step guide</p></div></div>
         </section>
