@@ -1,3 +1,148 @@
+// ========== COMPLETE DEV TOOLS & SOURCE PROTECTION ==========
+
+// 1. Disable Right Click
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// 2. Disable Drag and Drop
+document.addEventListener('dragstart', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// 3. Disable Text Selection
+document.body.style.userSelect = 'none';
+document.body.style.webkitUserSelect = 'none';
+document.body.style.msUserSelect = 'none';
+
+// 4. Disable Image Dragging (including dynamically added images)
+const disableDragging = function() {
+  const images = document.querySelectorAll('img');
+  images.forEach(img => {
+    img.setAttribute('draggable', 'false');
+  });
+};
+disableDragging();
+new MutationObserver(disableDragging).observe(document.body, { childList: true, subtree: true });
+
+// 5. Disable ALL Keyboard Shortcuts
+document.addEventListener('keydown', function(e) {
+  // F12
+  if (e.key === 'F12') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+I (Inspect)
+  if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+J (Console)
+  if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+C (Inspect Element)
+  if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+U (View Source)
+  if (e.ctrlKey && e.key === 'u') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+S (Save)
+  if (e.ctrlKey && e.key === 's') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+P (Print)
+  if (e.ctrlKey && e.key === 'p') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+K (Firefox Console)
+  if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+E (Firefox Inspector)
+  if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+M (Firefox Responsive)
+  if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+    e.preventDefault();
+    return false;
+  }
+  // Ctrl+Shift+P (Firefox Command)
+  if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+    e.preventDefault();
+    return false;
+  }
+});
+
+// 6. Detect Dev Tools via Debugger
+let devToolsOpen = false;
+
+function detectDevTools() {
+  const start = performance.now();
+  debugger;
+  const end = performance.now();
+  
+  if (end - start > 100) {
+    if (!devToolsOpen) {
+      devToolsOpen = true;
+      // Clear page and show warning
+      document.body.innerHTML = `
+        <div style="text-align:center; padding:50px; min-height:100vh; background:#1a1a2e; color:white; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+          <h1 style="font-size:3rem;">🔒 Access Denied</h1>
+          <p style="font-size:1.2rem; margin-top:1rem;">Developer Tools are not allowed on this site.</p>
+          <p>Please close Dev Tools and refresh the page.</p>
+        </div>
+      `;
+      document.body.style.margin = '0';
+      document.body.style.padding = '0';
+    }
+    return true;
+  }
+  devToolsOpen = false;
+  return false;
+}
+
+// Run immediately
+detectDevTools();
+
+// Keep checking every second
+setInterval(detectDevTools, 1000);
+
+// 7. Disable Console Methods
+console.log = function() {};
+console.error = function() {};
+console.warn = function() {};
+console.table = function() {};
+console.debug = function() {};
+console.info = function() {};
+console.clear = function() {};
+
+// 8. Clear Console on interval
+setInterval(function() {
+  if (typeof console !== 'undefined') {
+    console.clear();
+  }
+}, 100);
+
+// 9. Block view-source: URL
+if (window.location.protocol === 'view-source:') {
+  window.location.href = 'about:blank';
+}
+
+console.log('Protection Active');
+
 (function(){
     // ==================== SWIPER INITIALIZATION ====================
     const swiper = new Swiper('.mySwiper', {
@@ -1277,9 +1422,7 @@ function displayActionButtons() {
             <button onclick="resetCropLens()" style="background: #666; color: white; padding: 12px 25px; border: none; border-radius: 40px; cursor: pointer; font-weight: bold;">
                 <i class="fas fa-sync-alt"></i> New Analysis
             </button>
-            <button onclick="downloadReport()" style="background: #2196f3; color: white; padding: 12px 25px; border: none; border-radius: 40px; cursor: pointer; font-weight: bold;">
-                <i class="fas fa-download"></i> Download Report
-            </button>
+           
             <button onclick="viewHistory()" style="background: #9c27b0; color: white; padding: 12px 25px; border: none; border-radius: 40px; cursor: pointer; font-weight: bold;">
                 <i class="fas fa-history"></i> View History
             </button>
@@ -4330,3 +4473,76 @@ document.addEventListener('click', function(e) {
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
 })();
+
+// ==================== VILLAGE PULSE (appended) ====================
+// ==================== VILLAGE PULSE ====================
+const PULSE_QUESTIONS = [
+    { id: "rain", icon: "fa-cloud-rain", prompt: "Aaj baarish hui?", sub: "Did it rain in your field today?",
+      options: [{ label: "Haan", value: "yes" }, { label: "Nahi", value: "no" }, { label: "Halki", value: "light" }] },
+    { id: "pest", icon: "fa-bug", prompt: "Koi keet ya rog dikha?", sub: "Spotted any pest or disease?",
+      options: [{ label: "Nahi", value: "no" }, { label: "Thoda", value: "some" }, { label: "Kaafi", value: "lots" }] },
+    { id: "mood", icon: "fa-face-smile", prompt: "Fasal kaisi lag rahi hai?", sub: "How's your crop looking?",
+      options: [{ label: "Achi", value: "good", icon: "fa-face-smile" }, { label: "Theek", value: "okay", icon: "fa-face-meh" }, { label: "Chinta", value: "worried", icon: "fa-face-frown" }] }
+];
+
+const PULSE_MOCK_STATS = {
+    rain: { count: 14, label: "kisano ne aaj baarish batayi" },
+    pest: { count: 6, label: "kisano ne keet dekha hai" },
+    mood: { count: 22, label: "kisano ne fasal achi batayi" }
+};
+
+function pulseTodayString() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function initVillagePulse() {
+    const card = document.getElementById('pulseCard');
+    if (!card) return;
+
+    const question = PULSE_QUESTIONS[new Date().getDate() % PULSE_QUESTIONS.length];
+    const answeredKey = `patukrishi_pulse_answered_${pulseTodayString()}`;
+    const alreadyAnswered = localStorage.getItem(answeredKey);
+
+    document.getElementById('pulseIconEl').className = `fas ${question.icon}`;
+    document.getElementById('pulsePrompt').innerText = question.prompt;
+    document.getElementById('pulseSub').innerText = question.sub;
+
+    const optionsWrap = document.getElementById('pulseOptions');
+    optionsWrap.innerHTML = '';
+    question.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'pulse-option-btn';
+        btn.innerHTML = opt.icon ? `<i class="fas ${opt.icon}"></i><span>${opt.label}</span>` : `<span>${opt.label}</span>`;
+        btn.onclick = () => handlePulseAnswer(question, opt.value);
+        optionsWrap.appendChild(btn);
+    });
+
+    const streak = parseInt(localStorage.getItem('patukrishi_pulse_streak') || '0', 10);
+    document.getElementById('pulseStreakCount').innerText = streak;
+
+    if (alreadyAnswered) showPulseResult(question);
+}
+
+function handlePulseAnswer(question, value) {
+    const answeredKey = `patukrishi_pulse_answered_${pulseTodayString()}`;
+    localStorage.setItem(answeredKey, value);
+
+    const streak = parseInt(localStorage.getItem('patukrishi_pulse_streak') || '0', 10) + 1;
+    localStorage.setItem('patukrishi_pulse_streak', streak);
+    document.getElementById('pulseStreakCount').innerText = streak;
+
+    // TODO: replace with a Firestore/DB write once you have a backend:
+    // { userId, district, questionId: question.id, value, date: pulseTodayString() }
+
+    showPulseResult(question);
+}
+
+function showPulseResult(question) {
+    document.getElementById('pulseQuestionView').style.display = 'none';
+    document.getElementById('pulseResultView').style.display = 'block';
+    const stats = PULSE_MOCK_STATS[question.id];
+    document.getElementById('pulseStatCount').innerText = stats.count;
+    document.getElementById('pulseStatLabel').innerText = stats.label;
+}
+
+document.addEventListener('DOMContentLoaded', initVillagePulse);
