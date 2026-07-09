@@ -190,29 +190,17 @@ if (typeof emailjs !== 'undefined') {
     
     function getFarmingAdvice(weatherCondition, temperature) {
         if (weatherCondition.includes('Rain') || weatherCondition.includes('Drizzle')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>🌧️ Rain Alert:</strong> Avoid spraying pesticides. Check for waterlogging in fields. Good for irrigation.
-            </div>`;
+            return getFarmingAdviceTranslated('rain');
         } else if (weatherCondition.includes('Clear') && temperature > 35) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>☀️ Heat Alert:</strong> Increase irrigation frequency. Provide shade for sensitive crops. Best time for harvesting.
-            </div>`;
+            return getFarmingAdviceTranslated('heat');
         } else if (weatherCondition.includes('Clear') || weatherCondition.includes('Sun')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>🌾 Good Farming Weather:</strong> Ideal for spraying, weeding, and harvesting activities.
-            </div>`;
+            return getFarmingAdviceTranslated('clear');
         } else if (weatherCondition.includes('Cloud')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>☁️ Cloudy Day:</strong> Good for transplanting seedlings. Monitor for pest activity in humid conditions.
-            </div>`;
+            return getFarmingAdviceTranslated('cloud');
         } else if (weatherCondition.includes('Thunderstorm')) {
-            return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-                <strong>⛈️ Storm Alert:</strong> Secure farm equipment. Avoid field work. Ensure proper drainage.
-            </div>`;
+            return getFarmingAdviceTranslated('storm');
         }
-        return `<div style="margin-top:25px;padding:20px;background:linear-gradient(135deg,#2e7d32,#f9a825);border-radius:25px;color:white;">
-            <strong>🌱 Farming Tip:</strong> Check soil moisture regularly. Maintain proper irrigation schedule.
-        </div>`;
+        return getFarmingAdviceTranslated('tip');
     }
     
     // ==================== REAL MANDI API FUNCTION ====================
@@ -306,14 +294,14 @@ if (typeof emailjs !== 'undefined') {
     };
 
     function getWeatherDesc(code) {
-        if (code === 0) return { text: "Clear Sky", icon: "☀️", main: "Clear" };
-        if ([1, 2, 3].includes(code)) return { text: "Partly Cloudy", icon: "⛅", main: "Clouds" };
-        if ([45, 48].includes(code)) return { text: "Foggy Conditions", icon: "🌫️", main: "Fog" };
-        if ([51, 53, 55, 61, 63, 65].includes(code)) return { text: "Rain Showers", icon: "🌧️", main: "Rain" };
-        if ([71, 73, 75, 77].includes(code)) return { text: "Snowfall", icon: "❄️", main: "Snow" };
-        if ([80, 81, 82, 85, 86].includes(code)) return { text: "Heavy Downpour", icon: "🌧️🚿", main: "Rain" };
-        if ([95, 96, 99].includes(code)) return { text: "Thunderstorm Alerts", icon: "⛈️", main: "Thunderstorm" };
-        return { text: "Stable Conditions", icon: "🌤️", main: "Clear" };
+        if (code === 0) return { text: translateWeatherDesc("Clear", "Clear Sky"), icon: "☀️", main: "Clear" };
+        if ([1, 2, 3].includes(code)) return { text: translateWeatherDesc("Clouds", "Partly Cloudy"), icon: "⛅", main: "Clouds" };
+        if ([45, 48].includes(code)) return { text: translateWeatherDesc("Fog", "Foggy Conditions"), icon: "🌫️", main: "Fog" };
+        if ([51, 53, 55, 61, 63, 65].includes(code)) return { text: translateWeatherDesc("Rain", "Rain Showers"), icon: "🌧️", main: "Rain" };
+        if ([71, 73, 75, 77].includes(code)) return { text: translateWeatherDesc("Snow", "Snowfall"), icon: "❄️", main: "Snow" };
+        if ([80, 81, 82, 85, 86].includes(code)) return { text: translateWeatherDesc("HeavyRain", "Heavy Downpour"), icon: "🌧️🚿", main: "Rain" };
+        if ([95, 96, 99].includes(code)) return { text: translateWeatherDesc("Thunderstorm", "Thunderstorm Alerts"), icon: "⛈️", main: "Thunderstorm" };
+        return { text: translateWeatherDesc("Default", "Stable Conditions"), icon: "🌤️", main: "Clear" };
     }
 
     function renderMeteoWeather(data, targetDiv) {
@@ -450,9 +438,11 @@ if (typeof emailjs !== 'undefined') {
             const changeClass = change >= 0 ? 'price-up' : 'price-down';
             const card = document.createElement('div');
             card.className = 'market-card';
+            const translatedMarketName = typeof translateMarketName === 'function' ? translateMarketName(marketName) : marketName;
+            const translatedCropName = typeof translateCropName === 'function' ? translateCropName(crop) : crop;
             card.innerHTML = `
-                <h4>🏪 ${marketName}</h4>
-                <p><strong>🌾 Crop:</strong> ${crop}</p>
+                <h4>🏪 ${translatedMarketName}</h4>
+                <p><strong>🌾 Crop:</strong> ${translatedCropName}</p>
                 <p><strong>💰 Price (₹/q):</strong> <span style="font-size:1.4rem; color:#2e7d32;">₹${price.toLocaleString()}</span></p>
                 <p><strong>📊 Range:</strong> ₹${minPrice} - ₹${maxPrice}</p>
                 <p><strong>📈 Change:</strong> <span class="${changeClass}">${change}%</span></p>
@@ -4473,76 +4463,3 @@ document.addEventListener('click', function(e) {
         micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
     };
 })();
-
-// ==================== VILLAGE PULSE (appended) ====================
-// ==================== VILLAGE PULSE ====================
-const PULSE_QUESTIONS = [
-    { id: "rain", icon: "fa-cloud-rain", prompt: "Aaj baarish hui?", sub: "Did it rain in your field today?",
-      options: [{ label: "Haan", value: "yes" }, { label: "Nahi", value: "no" }, { label: "Halki", value: "light" }] },
-    { id: "pest", icon: "fa-bug", prompt: "Koi keet ya rog dikha?", sub: "Spotted any pest or disease?",
-      options: [{ label: "Nahi", value: "no" }, { label: "Thoda", value: "some" }, { label: "Kaafi", value: "lots" }] },
-    { id: "mood", icon: "fa-face-smile", prompt: "Fasal kaisi lag rahi hai?", sub: "How's your crop looking?",
-      options: [{ label: "Achi", value: "good", icon: "fa-face-smile" }, { label: "Theek", value: "okay", icon: "fa-face-meh" }, { label: "Chinta", value: "worried", icon: "fa-face-frown" }] }
-];
-
-const PULSE_MOCK_STATS = {
-    rain: { count: 14, label: "kisano ne aaj baarish batayi" },
-    pest: { count: 6, label: "kisano ne keet dekha hai" },
-    mood: { count: 22, label: "kisano ne fasal achi batayi" }
-};
-
-function pulseTodayString() {
-    return new Date().toISOString().slice(0, 10);
-}
-
-function initVillagePulse() {
-    const card = document.getElementById('pulseCard');
-    if (!card) return;
-
-    const question = PULSE_QUESTIONS[new Date().getDate() % PULSE_QUESTIONS.length];
-    const answeredKey = `patukrishi_pulse_answered_${pulseTodayString()}`;
-    const alreadyAnswered = localStorage.getItem(answeredKey);
-
-    document.getElementById('pulseIconEl').className = `fas ${question.icon}`;
-    document.getElementById('pulsePrompt').innerText = question.prompt;
-    document.getElementById('pulseSub').innerText = question.sub;
-
-    const optionsWrap = document.getElementById('pulseOptions');
-    optionsWrap.innerHTML = '';
-    question.options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'pulse-option-btn';
-        btn.innerHTML = opt.icon ? `<i class="fas ${opt.icon}"></i><span>${opt.label}</span>` : `<span>${opt.label}</span>`;
-        btn.onclick = () => handlePulseAnswer(question, opt.value);
-        optionsWrap.appendChild(btn);
-    });
-
-    const streak = parseInt(localStorage.getItem('patukrishi_pulse_streak') || '0', 10);
-    document.getElementById('pulseStreakCount').innerText = streak;
-
-    if (alreadyAnswered) showPulseResult(question);
-}
-
-function handlePulseAnswer(question, value) {
-    const answeredKey = `patukrishi_pulse_answered_${pulseTodayString()}`;
-    localStorage.setItem(answeredKey, value);
-
-    const streak = parseInt(localStorage.getItem('patukrishi_pulse_streak') || '0', 10) + 1;
-    localStorage.setItem('patukrishi_pulse_streak', streak);
-    document.getElementById('pulseStreakCount').innerText = streak;
-
-    // TODO: replace with a Firestore/DB write once you have a backend:
-    // { userId, district, questionId: question.id, value, date: pulseTodayString() }
-
-    showPulseResult(question);
-}
-
-function showPulseResult(question) {
-    document.getElementById('pulseQuestionView').style.display = 'none';
-    document.getElementById('pulseResultView').style.display = 'block';
-    const stats = PULSE_MOCK_STATS[question.id];
-    document.getElementById('pulseStatCount').innerText = stats.count;
-    document.getElementById('pulseStatLabel').innerText = stats.label;
-}
-
-document.addEventListener('DOMContentLoaded', initVillagePulse);
