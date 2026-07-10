@@ -20,112 +20,8 @@
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), auto;
         }
 
-        button, .click-card, .nav-item, .lang-header, .user-profile {
+        button, .click-card, .nav-item, .user-profile {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), pointer;
-        }
-
-        /* Language Modal - Full Screen Blur */
-        .lang-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lang-modal-overlay.show {
-            display: flex;
-        }
-
-        .lang-modal-content {
-            background: white;
-            border-radius: 32px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 25px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .lang-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f9a825;
-        }
-
-        .lang-modal-header h3 {
-            margin: 0;
-            color: #2e7d32;
-        }
-
-        .lang-modal-close {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .lang-modal-close:hover {
-            color: #d32f2f;
-        }
-
-        .lang-options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .lang-option-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: #f5f5f5;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .lang-option-item:hover {
-            background: #2e7d32;
-            color: white;
-        }
-
-        .lang-option-item.active {
-            background: #2e7d32;
-            color: white;
-        }
-
-        .lang-option-item .flag {
-            font-size: 1.5rem;
-        }
-
-        .lang-option-item .lang-native {
-            font-size: 0.8rem;
-            margin-left: auto;
-        }
-
-        @media (max-width: 500px) {
-            .lang-options-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         /* NEW AUTH MODAL STYLES */
@@ -276,6 +172,11 @@
             100% { transform: rotate(360deg); }
         }
 
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         hr {
             margin: 20px 0;
             border: none;
@@ -329,6 +230,27 @@
             font-size: 0.7rem;
             color: #999;
             margin-top: 15px;
+        }
+
+        /* Google Translate Element Styling Overrides */
+        #google_translate_element {
+            margin-right: 15px;
+            display: inline-block;
+        }
+        .goog-te-gadget-simple {
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--border) !important;
+            padding: 6px 12px !important;
+            border-radius: 20px !important;
+            font-family: 'Quicksand', sans-serif !important;
+        }
+        .goog-te-gadget-icon {
+            display: none !important;
+        }
+        .goog-te-menu-value span {
+            color: var(--text1) !important;
+            font-size: 0.9rem !important;
+            font-weight: 500 !important;
         }
     </style>
 </head>
@@ -384,25 +306,81 @@
     </div>
 </div>
 
-
-
 <div id="dashboard" class="dashboard-container">
     <header class="main-header">
-        <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi logo.png" alt="PatuKrishi Logo"><span class="logo-text" data-translate="logo">PatuKrishi</span></div>
-        <nav class="main-nav"><span class="nav-item active" onclick="switchSection('home')"><span data-translate="home">Home</span></span><span class="nav-item" onclick="switchSection('weather')"><span data-translate="weather">Weather</span></span><span class="nav-item" onclick="switchSection('mandi')"><span data-translate="mandi">Mandi</span></span><span class="nav-item" onclick="switchSection('lens')"><span data-translate="lens">Crop Lens</span></span><span class="nav-item" onclick="switchSection('advisory')"><span data-translate="advisory">Advisory</span></span><span class="nav-item" onclick="switchSection('schemes')"><span data-translate="govtSchemes">Government Schemes</span></span><span class="nav-item" onclick="switchSection('videos')"><span data-translate="videos">Videos</span></span><span class="nav-item" onclick="switchSection('about')"><span data-translate="about">About</span></span></nav>
-       
-            </div>
+        <div class="logo click-card" onclick="switchSection('home')"><img src="patukrishi logo.png" alt="PatuKrishi Logo"><span class="logo-text">PatuKrishi</span></div>
+        <nav class="main-nav">
+            <span class="nav-item active" onclick="switchSection('home')">Home</span>
+            <span class="nav-item" onclick="switchSection('weather')">Weather</span>
+            <span class="nav-item" onclick="switchSection('mandi')">Mandi</span>
+            <span class="nav-item" onclick="switchSection('lens')">Crop Lens</span>
+            <span class="nav-item" onclick="switchSection('advisory')">Advisory</span>
+            <span class="nav-item" onclick="switchSection('schemes')">Government Schemes</span>
+            <span class="nav-item" onclick="switchSection('videos')">Videos</span>
+            <span class="nav-item" onclick="switchSection('about')">About</span>
+        </nav>
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div id="google_translate_element"></div>
+            
             <button id="theme-toggle" style="background:none;border:none;font-size:1.4rem;color:var(--text1)"><i class="fas fa-moon"></i></button>
-            <div class="user-profile" onclick="toggleUserDropdown()"><div class="user-avatar" id="header-avatar">U</div><span id="header-name">User</span><i class="fas fa-chevron-down"></i><div class="user-dropdown" id="user-dropdown"><div class="dropdown-item" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> <span data-translate="profile">Profile</span></div><div class="dropdown-item" style="color:var(--danger)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span data-translate="logout">Logout</span></div></div></div>
+            <div class="user-profile" onclick="toggleUserDropdown()">
+                <div class="user-avatar" id="header-avatar">U</div>
+                <span id="header-name">User</span>
+                <i class="fas fa-chevron-down"></i>
+                <div class="user-dropdown" id="user-dropdown">
+                    <div class="dropdown-item" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> <span>Profile</span></div>
+                    <div class="dropdown-item" style="color:var(--danger)" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></div>
+                </div>
+            </div>
         </div>
     </header>
+
     <main class="main-content">
         <section id="home-section" class="content-section active">
-            <div class="swiper mySwiper"><div class="swiper-wrapper"><div class="swiper-slide"><img src="https://i.pinimg.com/736x/af/70/f8/af70f8299a42ca31fea7dc2e254fe66e.jpg" alt="Farmer in field"></div><div class="swiper-slide"><img src="https://i.pinimg.com/736x/e8/b5/7b/e8b57b30c2b24b7cb981707444b225b8.jpg" alt="Agriculture drone"></div><div class="swiper-slide"><img src="https://i.pinimg.com/736x/e3/cb/7a/e3cb7ab73c4f58fd3e0c1b5eb4e7d4d6.jpg" alt="Tractor"></div><div class="swiper-slide"><img src="https://i.pinimg.com/736x/95/46/8a/95468af98e9bb4db89dfa9009c4ed12b.jpg" alt="Vegetables"></div></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div>
-            <div class="tip-container" data-aos="fade-up"><div class="tip-header"><div class="time-badge-large"><i class="far fa-clock"></i><span id="current-time"></span></div><div class="tip-number-badge" id="tip-number">#01</div></div><div class="tip-text" id="tip-of-the-day">🌱 Always test your soil before sowing for better yield.</div></div>
-            <div class="hero-section" data-aos="fade-up"><h1><span data-translate="namaste">Namaste</span>, <span id="welcome-name">Farmer</span> 🌾</h1><p data-translate="hero-text">Aapka apna kisan dost – smart farming ke saath</p></div>
-            <div class="card" style="margin-bottom:30px" data-aos="fade-up"><h2 style="color:var(--primary);margin-bottom:15px" data-translate="sustainable-title">🌱 PatuKrishi – Smart Farming</h2><p class="big-friendly" data-translate="sustainable-text">🇮🇳 India mein kisanon ko samay par sahi jaankari milna bahut zaroori hai. PatuKrishi aapko deta hai live mandi bhav, mausam ka poorv anuman, crop lens (rogo ki pehchan aur ilaaj), aur step-by-step sowing se harvest tak ki salah. Hum aapke khet ki paidaawar ko munafa mein badalne ke liye yahan hain. Chahe aap Punjab ke wheat farmer ho ya Tamil Nadu ke rice grower, PatuKrishi har kisan ke liye hai. Ab farming hui smart, aur munafa hua sure! 💚</p></div>
-            <div class="dashboard-grid"><div class="card click-card" onclick="switchSection('weather')"><i class="fas fa-cloud-sun fa-2x" style="color:var(--primary)"></i><h3 data-translate="weather">Weather</h3><p data-translate="weather-desc">Live forecast · crop recommendation</p></div><div class="card click-card" onclick="switchSection('mandi')"><i class="fas fa-chart-line fa-2x" style="color:var(--primary)"></i><h3 data-translate="mandi">Mandi Prices</h3><p data-translate="mandi-desc">All states & UTs · districts · multiple rates</p></div><div class="card click-card" onclick="switchSection('advisory')"><i class="fas fa-leaf fa-2x" style="color:var(--primary)"></i><h3 data-translate="advisory">Advisory</h3><p data-translate="advisory-desc">State/UT + crop · 3-step guide</p></div></div>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/af/70/f8/af70f8299a42ca31fea7dc2e254fe66e.jpg" alt="Farmer in field"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/e8/b5/7b/e8b57b30c2b24b7cb981707444b225b8.jpg" alt="Agriculture drone"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/e3/cb/7a/e3cb7ab73c4f58fd3e0c1b5eb4e7d4d6.jpg" alt="Tractor"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/95/46/8a/95468af98e9bb4db89dfa9009c4ed12b.jpg" alt="Vegetables"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <div class="tip-container" data-aos="fade-up">
+                <div class="tip-header">
+                    <div class="time-badge-large"><i class="far fa-clock"></i><span id="current-time"></span></div>
+                    <div class="tip-number-badge" id="tip-number">#01</div>
+                </div>
+                <div class="tip-text" id="tip-of-the-day">Always test your soil before sowing for better yield.</div>
+            </div>
+            <div class="hero-section" data-aos="fade-up">
+                <h1>Namaste, <span id="welcome-name">Farmer</span> 🌾</h1>
+                <p>Your own farmer friend – with smart farming</p>
+            </div>
+            <div class="card" style="margin-bottom:30px" data-aos="fade-up">
+                <h2 style="color:var(--primary);margin-bottom:15px">PatuKrishi – Smart Farming</h2>
+                <p class="big-friendly">In India, getting the right information at the right time is crucial for farmers. PatuKrishi provides you with live mandi prices, weather forecasts, crop lens (disease identification and treatment), and step-by-step guidance from sowing to harvest. We are here to convert your farm's output into profit. Whether you are a wheat farmer in Punjab or a rice grower in Tamil Nadu, PatuKrishi is for every farmer. Now farming is smart, and profit is sure! 💚</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="card click-card" onclick="switchSection('weather')">
+                    <i class="fas fa-cloud-sun fa-2x" style="color:var(--primary)"></i>
+                    <h3>Weather</h3>
+                    <p>Live forecast · crop recommendation</p>
+                </div>
+                <div class="card click-card" onclick="switchSection('mandi')">
+                    <i class="fas fa-chart-line fa-2x" style="color:var(--primary)"></i>
+                    <h3>Mandi Prices</h3>
+                    <p>All states & UTs · districts · multiple rates</p>
+                </div>
+                <div class="card click-card" onclick="switchSection('advisory')">
+                    <i class="fas fa-leaf fa-2x" style="color:var(--primary)"></i>
+                    <h3>Advisory</h3>
+                    <p>State/UT + crop · 3-step guide</p>
+                </div>
+            </div>
         </section>
 
         <section id="weather-section" class="content-section">
@@ -417,7 +395,19 @@
             </div>
         </section>
 
-        <section id="mandi-section" class="content-section"><h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span data-translate="mandi-title">Mandi Prices · Kai Bhav</span></h2><div class="card"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px"><select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select><select id="mandiDistrictSelect" class="nice-select"></select><select id="mandiCropSelect" class="nice-select"></select><button class="btn-3d" onclick="fetchMandiPrices()"><span data-translate="show-prices">Show Prices</span></button></div><div id="mandi-multiple-list" style="margin-bottom:20px"></div><div id="mandi-cards-container" class="mandi-card-grid"></div></div></section>
+        <section id="mandi-section" class="content-section">
+            <h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span>Mandi Prices · Market Rates</span></h2>
+            <div class="card">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px">
+                    <select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select>
+                    <select id="mandiDistrictSelect" class="nice-select"></select>
+                    <select id="mandiCropSelect" class="nice-select"></select>
+                    <button class="btn-3d" onclick="fetchMandiPrices()"><span>Show Prices</span></button>
+                </div>
+                <div id="mandi-multiple-list" style="margin-bottom:20px"></div>
+                <div id="mandi-cards-container" class="mandi-card-grid"></div>
+            </div>
+        </section>
 
         <div id="lens-section" class="content-section">
             <div class="section-header">
@@ -441,10 +431,37 @@
             </div>
         </div>
 
-        <section id="advisory-section" class="content-section"><h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span data-translate="advisory-title">Crop Advisory · Pura Guide</span></h2><div class="card"><div style="display:flex;gap:12px;margin-bottom:20px"><button class="btn-3d" id="generalModeBtn" onclick="setAdvisoryMode('general')" style="flex:1">🌾 <span data-translate="state-season">State/UT + Season</span></button><button class="btn-3d" id="specificModeBtn" onclick="setAdvisoryMode('specific')" style="flex:1;background:#f9a825">🌱 <span data-translate="specific-crop">Specific Crop (3-Step)</span></button></div><div id="generalAdvisoryInputs"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="advisoryStateSelect" class="nice-select" style="flex:1"></select><select id="advisorySeasonSelect" class="nice-select" style="flex:1"><option value="Rabi">Rabi (Winter)</option><option value="Kharif">Kharif (Monsoon)</option><option value="Zaid">Zaid (Summer)</option></select><button class="btn-3d" onclick="showGeneralAdvisory()"><span data-translate="get-advice">Get Advice</span></button></div><div id="generalAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div><div id="specificAdvisoryInputs" style="display:none"><div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px"><select id="specificCropSelect" class="nice-select" style="flex:2"></select><button class="btn-3d" onclick="showSpecificAdvisory()"><span data-translate="get-guide">Get 3-Step Guide</span></button></div><div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div></div></div></section>
+        <section id="advisory-section" class="content-section">
+            <h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span>Crop Advisory · Full Guide</span></h2>
+            <div class="card">
+                <div style="display:flex;gap:12px;margin-bottom:20px">
+                    <button class="btn-3d" id="generalModeBtn" onclick="setAdvisoryMode('general')" style="flex:1">🌾 <span>State/UT + Season</span></button>
+                    <button class="btn-3d" id="specificModeBtn" onclick="setAdvisoryMode('specific')" style="flex:1;background:#f9a825">🌱 <span>Specific Crop (3-Step)</span></button>
+                </div>
+                <div id="generalAdvisoryInputs">
+                    <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
+                        <select id="advisoryStateSelect" class="nice-select" style="flex:1"></select>
+                        <select id="advisorySeasonSelect" class="nice-select" style="flex:1">
+                            <option value="Rabi">Rabi (Winter)</option>
+                            <option value="Kharif">Kharif (Monsoon)</option>
+                            <option value="Zaid">Zaid (Summer)</option>
+                        </select>
+                        <button class="btn-3d" onclick="showGeneralAdvisory()"><span>Get Advice</span></button>
+                    </div>
+                    <div id="generalAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div>
+                </div>
+                <div id="specificAdvisoryInputs" style="display:none">
+                    <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
+                        <select id="specificCropSelect" class="nice-select" style="flex:2"></select>
+                        <button class="btn-3d" onclick="showSpecificAdvisory()"><span>Get 3-Step Guide</span></button>
+                    </div>
+                    <div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div>
+                </div>
+            </div>
+        </section>
 
         <section id="schemes-section" class="content-section">
-            <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span data-translate="govtSchemes">Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
+            <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span>Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
             <div class="schemes-stats-bar">
                 <div class="stat-item"><i class="fas fa-rupee-sign"></i><span>₹2 Lakh Cr+</span><small>Total Budget</small></div>
                 <div class="stat-item"><i class="fas fa-users"></i><span>18 Cr+</span><small>Farmers Benefited</small></div>
@@ -474,7 +491,7 @@
         <section id="videos-section" class="content-section">
             <div class="section-header-with-icon" data-aos="fade-up">
                 <i class="fas fa-video" style="font-size: 2rem; color: #f9a825;"></i>
-                <h2><span data-translate="videos">PatuKrishi Video Library</span></h2>
+                <h2><span>PatuKrishi Video Library</span></h2>
             </div>
             <div class="video-gallery" data-aos="fade-up">
                 <div class="video-card">
@@ -506,34 +523,64 @@
         </section>
 
         <section id="about-section" class="content-section">
-            <h2 class="agri-border"><i class="fas fa-info-circle"></i> <span data-translate="about-title">About Us · Hamari Kahani</span></h2>
+            <h2 class="agri-border"><i class="fas fa-info-circle"></i> <span>About Us · Our Story</span></h2>
             <div class="dashboard-grid" data-aos="fade-up">
-                <div class="card"><i class="fas fa-bullseye fa-2x" style="color:var(--primary);margin-bottom:20px"></i><h3 data-translate="mission">Our Mission</h3><p class="big-friendly" data-translate="mission-text">To empower every Indian farmer with technology-driven solutions for sustainable and profitable farming. We bridge the gap between traditional wisdom and modern innovation.</p></div>
-                <div class="card"><i class="fas fa-eye fa-2x" style="color:var(--primary);margin-bottom:20px"></i><h3 data-translate="vision">Our Vision</h3><p class="big-friendly" data-translate="vision-text">Create a digital ecosystem where every farmer has access to real-time market data, weather intelligence, and expert guidance - making farming smarter and more profitable.</p></div>
-                <div class="card"><i class="fas fa-hand-holding-heart fa-2x" style="color:var(--primary);margin-bottom:20px"></i><h3 data-translate="values">Our Values</h3><p class="big-friendly" data-translate="values-text">Integrity, Innovation, Inclusivity. We believe in putting farmers first and creating solutions that truly make a difference in their lives.</p></div>
+                <div class="card"><i class="fas fa-bullseye fa-2x" style="color:var(--primary);margin-bottom:20px"></i><h3>Our Mission</h3><p class="big-friendly">To empower every Indian farmer with technology-driven solutions for sustainable and profitable farming. We bridge the gap between traditional wisdom and modern innovation.</p></div>
+                <div class="card"><i class="fas fa-eye fa-2x" style="color:var(--primary);margin-bottom:20px"></i><h3>Our Vision</h3><p class="big-friendly">Create a digital ecosystem where every farmer has access to real-time market data, weather intelligence, and expert guidance - making farming smarter and more profitable.</p></div>
+                <div class="card"><i class="fas fa-hand-holding-heart fa-2x" style="color:var(--primary);margin-bottom:20px"></i><h3>Our Values</h3><p class="big-friendly">Integrity, Innovation, Inclusivity. We believe in putting farmers first and creating solutions that truly make a difference in their lives.</p></div>
             </div>
-            <div class="founder-card" data-aos="fade-up"><div style="text-align:center; margin-bottom:40px;"><h1 style="font-size:3rem; color:#f9a825;">Our Team</h1><p style="font-size:1.3rem; opacity:0.9;">The minds behind PatuKrishi</p></div><div class="team-grid"><div class="team-card"><div class="team-avatar"><i class="fas fa-user-tie"></i></div><div class="team-name">Chanakya Sahni</div><div class="team-role">Founder and Developer</div><div class="team-bio">Visionary behind PatuKrishi, dedicated to empowering farmers through technology. Leads full-stack development and product strategy.</div><div class="team-description">Founder and Developer</div></div><div class="team-card"><div class="team-avatar"><i class="fas fa-user-cog"></i></div><div class="team-name">Vinit Gupta</div><div class="team-role">Developer</div><div class="team-bio">Architect and Developer. Transforms ideas into robust, scalable code. Specializes in AI integration and system architecture.</div><div class="team-description">Lead Developer</div></div></div><div style="text-align:center; margin-top:30px;"><p style="font-size:1.2rem; border-top:1px solid rgba(255,255,255,0.2); padding-top:20px;"><i class="fas fa-quote-left" style="color:#f9a825;"></i> Together, we're building a digital friend for every Indian farmer. <i class="fas fa-quote-right" style="color:#f9a825;"></i></p></div></div>
-            <div class="card" data-aos="fade-up" style="margin-top:30px"><h3 style="margin-bottom:30px" data-translate="why-choose">❓ Why Farmers Choose PatuKrishi</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px"><div class="value-prop"><div class="value-icon"><i class="fas fa-clock"></i></div><div><strong data-translate="real-time">Real-time Data</strong><br><span data-translate="real-time-desc">Live mandi prices and weather</span></div></div><div class="value-prop"><div class="value-icon"><i class="fas fa-robot"></i></div><div><strong data-translate="ai-powered">AI-Powered</strong><br><span data-translate="ai-powered-desc">Smart disease detection</span></div></div><div class="value-prop"><div class="value-icon"><i class="fas fa-language"></i></div><div><strong data-translate="local-langs">🌐 Local Languages</strong><br><span data-translate="local-langs-desc">English, Hindi, Bengali, Telugu, Marathi, Gujarati, Marwadi, Punjabi, Tamil, Malayalam, Urdu, Kannada, Odia, Sanskrit & more</span></div></div><div class="value-prop"><div class="value-icon"><i class="fas fa-indian-rupee-sign"></i></div><div><strong data-translate="free">100% Free</strong><br><span data-translate="free-desc">Always free for farmers</span></div></div></div></div>
+            <div class="founder-card" data-aos="fade-up">
+                <div style="text-align:center; margin-bottom:40px;">
+                    <h1 style="font-size:3rem; color:#f9a825;">Our Team</h1>
+                    <p style="font-size:1.3rem; opacity:0.9;">The minds behind PatuKrishi</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-avatar"><i class="fas fa-user-tie"></i></div>
+                        <div class="team-name">Chanakya Sahni</div>
+                        <div class="team-role">Founder and Developer</div>
+                        <div class="team-bio">Visionary behind PatuKrishi, dedicated to empowering farmers through technology. Leads full-stack development and product strategy.</div>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-avatar"><i class="fas fa-user-cog"></i></div>
+                        <div class="team-name">Vinit Gupta</div>
+                        <div class="team-role">Lead Developer</div>
+                        <div class="team-bio">Architect and Developer. Transforms ideas into robust, scalable code. Specializes in AI integration and system architecture.</div>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:30px;">
+                    <p style="font-size:1.2rem; border-top:1px solid rgba(255,255,255,0.2); padding-top:20px;"><i class="fas fa-quote-left" style="color:#f9a825;"></i> Together, we're building a digital friend for every Indian farmer. <i class="fas fa-quote-right" style="color:#f9a825;"></i></p>
+                </div>
+            </div>
+            <div class="card" data-aos="fade-up" style="margin-top:30px">
+                <h3 style="margin-bottom:30px">Why Farmers Choose PatuKrishi</h3>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px">
+                    <div class="value-prop"><div class="value-icon"><i class="fas fa-clock"></i></div><div><strong>Real-time Data</strong><br><span>Live mandi prices and weather</span></div></div>
+                    <div class="value-prop"><div class="value-icon"><i class="fas fa-robot"></i></div><div><strong>AI-Powered</strong><br><span>Smart disease detection</span></div></div>
+                    <div class="value-prop"><div class="value-icon"><i class="fas fa-language"></i></div><div><strong>Regional Support</strong><br><span>Dynamically translated into English, Hindi, Bengali, Telugu, Marathi, Gujarati, Punjabi, Tamil, Malayalam, Urdu, Kannada, Odia, Sanskrit & more via Google Cloud.</span></div></div>
+                    <div class="value-prop"><div class="value-icon"><i class="fas fa-indian-rupee-sign"></i></div><div><strong>100% Free</strong><br><span>Always free for farmers</span></div></div>
+                </div>
+            </div>
 
             <div class="card" data-aos="fade-up" style="margin-top:30px">
                 <h3 style="margin-bottom:20px; display: flex; align-items: center; gap: 12px; border-left: 5px solid #f9a825; padding-left: 18px;">
                     <i class="fas fa-paper-plane" style="color: var(--primary);"></i>
-                    <span data-translate="send-message">Send Us A Message</span>
+                    <span>Send Us A Message</span>
                 </h3>
-                <p style="margin-bottom:20px" data-translate="message-desc">Have questions? Fill out the form below and we'll get back to you within 24 hours.</p>
+                <p style="margin-bottom:20px">Have questions? Fill out the form below and we'll get back to you within 24 hours.</p>
                 
                 <form id="patuContactForm">
                     <div style="margin-bottom: 15px;">
-                        <input type="text" id="patuName" placeholder="👤 Your Full Name" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
+                        <input type="text" id="patuName" placeholder="Your Full Name" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
                     </div>
                     <div style="margin-bottom: 15px;">
-                        <input type="tel" id="patuMobile" placeholder="📱 Mobile Number" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
+                        <input type="tel" id="patuMobile" placeholder="Mobile Number" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
                     </div>
                     <div style="margin-bottom: 15px;">
-                        <input type="email" id="patuEmail" placeholder="📧 Email Address" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
+                        <input type="email" id="patuEmail" placeholder="Email Address" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
                     </div>
                     <div style="margin-bottom: 20px;">
-                        <textarea id="patuMessage" rows="4" placeholder="💬 Your Message..." required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem; resize: vertical;"></textarea>
+                        <textarea id="patuMessage" rows="4" placeholder="Your Message..." required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem; resize: vertical;"></textarea>
                     </div>
                     <button type="submit" class="btn-3d" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <i class="fas fa-paper-plane"></i> Send Message
@@ -548,7 +595,7 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="footer-logo"><img src="patukrishi logo.png" alt="PatuKrishi Logo"></div>
-                <p data-translate="footer-tagline">Smart Farming for Indian farmers.</p>
+                <p>Smart Farming for Indian farmers.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/people/PatuKrishi-Sustainable-Farming/pfbid02Q7jES5tykPXi4f11KRiXoDqdwLFkTGkBCaETi4fom8F533PWk2gt34KToLJF5woPl/" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/_patukrishi_/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -558,50 +605,71 @@
                 </div>
             </div>
             <div class="footer-col">
-                <h4 data-translate="quick-links">Quick Links</h4>
+                <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="#" onclick="switchSection('home')" data-translate="home">Home</a></li>
-                    <li><a href="#" onclick="switchSection('weather')" data-translate="weather">Weather</a></li>
-                    <li><a href="#" onclick="switchSection('mandi')" data-translate="mandi">Mandi Prices</a></li>
-                    <li><a href="#" onclick="switchSection('lens')" data-translate="lens">Crop Lens</a></li>
-                    <li><a href="#" onclick="switchSection('advisory')" data-translate="advisory">Advisory</a></li>
-                    <li><a href="#" onclick="switchSection('schemes')" data-translate="govtSchemes">Govt Schemes</a></li>
-                    <li><a href="#" onclick="switchSection('about')" data-translate="about">About Us</a></li>
+                    <li><a href="#" onclick="switchSection('home')">Home</a></li>
+                    <li><a href="#" onclick="switchSection('weather')">Weather</a></li>
+                    <li><a href="#" onclick="switchSection('mandi')">Mandi Prices</a></li>
+                    <li><a href="#" onclick="switchSection('lens')">Crop Lens</a></li>
+                    <li><a href="#" onclick="switchSection('advisory')">Advisory</a></li>
+                    <li><a href="#" onclick="switchSection('schemes')">Govt Schemes</a></li>
+                    <li><a href="#" onclick="switchSection('about')">About Us</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4 data-translate="policies">Policies & Legal</h4>
+                <h4>Policies & Legal</h4>
                 <ul>
-                    <li data-translate="privacy"><strong>Privacy Policy:</strong> We respect your data. No third-party sharing.</li>
-                    <li data-translate="terms"><strong>Terms & Conditions:</strong> Use of this site implies acceptance.</li>
-                    <li data-translate="cookie"><strong>Cookie Policy:</strong> We use essential cookies for functionality.</li>
-                    <li data-translate="disclaimer"><strong>Disclaimer:</strong> Information is for guidance only. Verify locally.</li>
-                    <li data-translate="refund"><strong>Refund Policy:</strong> Not applicable as services are free.</li>
+                    <li><strong>Privacy Policy:</strong> We respect your data. No third-party sharing.</li>
+                    <li><strong>Terms & Conditions:</strong> Use of this site implies acceptance.</li>
+                    <li><strong>Cookie Policy:</strong> We use essential cookies for functionality.</li>
+                    <li><strong>Disclaimer:</strong> Information is for guidance only. Verify locally.</li>
+                    <li><strong>Refund Policy:</strong> Not applicable as services are free.</li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4 data-translate="support">Support & Info</h4>
+                <h4>Support & Info</h4>
                 <ul>
-                    <li data-translate="faq"><strong>FAQ:</strong> Visit our Help section.</li>
-                    <li data-translate="contact"><strong>Contact:</strong> patukrishi@gmail.com</li>
-                    <li data-translate="careers"><strong>Careers:</strong> Join our mission.</li>
-                    <li data-translate="press"><strong>Press:</strong> Media inquiries welcome.</li>
-                    <li data-translate="office"><strong>Office:</strong> Digital platform - Serving pan-India</li>
+                    <li><strong>FAQ:</strong> Visit our Help section.</li>
+                    <li><strong>Contact:</strong> patukrishi@gmail.com</li>
+                    <li><strong>Careers:</strong> Join our mission.</li>
+                    <li><strong>Press:</strong> Media inquiries welcome.</li>
+                    <li><strong>Office:</strong> Digital platform - Serving pan-India</li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p data-translate="copyright">© 2026 PatuKrishi – All rights reserved. Made with 💚 for Indian farmers by PatuKrishi.</p>
+            <p>© 2026 PatuKrishi – All rights reserved. Made with 💚 for Indian farmers by PatuKrishi.</p>
             <p style="margin-top:10px">📧 patukrishi@gmail.com | 📞 +91 91825 38141</p>
         </div>
     </footer>
 </div>
 
-<div class="modal-overlay" id="profile-modal"><div class="modal-content"><h3 style="margin-bottom:20px" data-translate="edit-profile">Edit Profile</h3><div class="form-group"><input class="form-input" id="edit-name" placeholder="Name" data-translate="name-placeholder"></div><div style="display:flex;gap:12px"><button class="btn-3d" onclick="saveProfile()" data-translate="save">Save</button><button class="btn-3d" style="background:gray" onclick="closeProfileModal()" data-translate="cancel">Cancel</button></div></div></div>
+<div class="modal-overlay" id="profile-modal">
+    <div class="modal-content">
+        <h3 style="margin-bottom:20px">Edit Profile</h3>
+        <div class="form-group">
+            <input class="form-input" id="edit-name" placeholder="Your Name">
+        </div>
+        <div style="display:flex;gap:12px">
+            <button class="btn-3d" onclick="saveProfile()">Save</button>
+            <button class="btn-3d" style="background:gray" onclick="closeProfileModal()">Cancel</button>
+        </div>
+    </div>
+</div>
 
 <button class="chatbot-btn" onclick="toggleChatbot()"><i class="fas fa-robot"></i></button>
 
-<div class="chatbot-window" id="chat-window"><div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px"><i class="fas fa-robot"></i><span data-translate="krishi-bot">Krishi Bot</span><i class="fas fa-times" style="margin-left:auto;cursor:pointer" onclick="toggleChatbot()"></i></div><div class="chat-messages" id="chat-messages"><div class="message msg-bot" data-translate="bot-welcome">🙏 Namaskar! Main aapka Krishi Bot hoon. Poochhiye - mandi bhav, mausam, crop lens, advisory, analytics ya kuch bhi!</div></div><div class="chat-input-area"><input id="chat-input" placeholder="Yahan likhiye..." onkeypress="if(event.key==='Enter') sendMessage()" data-translate="chat-placeholder"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button></div></div>
+<div class="chatbot-window" id="chat-window">
+    <div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px">
+        <i class="fas fa-robot"></i><span>Krishi Bot</span><i class="fas fa-times" style="margin-left:auto;cursor:pointer" onclick="toggleChatbot()"></i>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+        <div class="message msg-bot">Greetings! I am your Krishi Bot. Ask me anything about mandi rates, weather, crop lens diagnostic tools, or general guidelines!</div>
+    </div>
+    <div class="chat-input-area">
+        <input id="chat-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendMessage()"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
 
 <div id="notification-container"></div>
 
@@ -609,28 +677,18 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-<script src="i18n-extended.js"></script>
 <script src="itzmee_here.js"></script>
 
 <script>
-    // EmailJS Configuration
-    const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';
-    const EMAILJS_SERVICE_ID = 'service_c48sfqj';
-    const EMAILJS_TEMPLATE_ID = 'template_tzsa9yh';
-    
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    
     // Database
     let users = JSON.parse(localStorage.getItem('patukrishi_users') || '{}');
     let pendingVerifications = JSON.parse(localStorage.getItem('patukrishi_pending') || '{}');
     let currentPendingEmail = null;
     
-    // Generate 6-digit verification code
     function generateCode() {
         return Math.floor(100000 + Math.random() * 900000).toString();
     }
     
-    // Send verification email
     async function sendVerificationEmail(email, name, code) {
         try {
             const templateParams = {
@@ -650,7 +708,6 @@
         }
     }
     
-    // Show loading state on button
     function setButtonLoading(buttonId, isLoading) {
         const btn = document.getElementById(buttonId);
         if (btn) {
@@ -664,7 +721,6 @@
         }
     }
     
-    // Switch between login and signup tabs
     window.switchAuthTabNew = (tab) => {
         document.querySelectorAll('#authModal .auth-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('#authModal .auth-form').forEach(f => f.classList.remove('active'));
@@ -680,7 +736,6 @@
         }
     };
     
-    // Handle Signup
     window.handleSignupNew = async () => {
         const name = document.getElementById('signup-name').value;
         const email = document.getElementById('signup-email').value;
@@ -742,7 +797,6 @@
         setButtonLoading('signup-btn', false);
     };
     
-    // Verify Code
     window.verifyCodeNew = () => {
         const code = document.getElementById('verify-code').value;
         const email = currentPendingEmail;
@@ -798,7 +852,6 @@
         }, 2000);
     };
     
-    // Resend verification code
     window.resendCodeNew = async () => {
         const email = currentPendingEmail;
         const errorDiv = document.getElementById('verify-error');
@@ -809,7 +862,6 @@
         }
         
         const pending = pendingVerifications[email];
-        
         if (!pending) {
             errorDiv.innerText = 'No pending verification found. Please sign up again.';
             return;
@@ -834,7 +886,6 @@
         }
     };
     
-    // Handle Login
     window.handleLoginNew = async () => {
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
@@ -888,7 +939,6 @@
         }, 1000);
     };
     
-    // Core Unified Initialization Sequence
     (() => {
         const sessionStr = localStorage.getItem('patukrishi_session');
         if (sessionStr) {
@@ -916,7 +966,6 @@
             document.getElementById('authModal').style.display = 'flex';
         }
         
-        // Remove old deprecated elements safely
         const oldAuth = document.getElementById('auth-container');
         if (oldAuth) oldAuth.style.display = 'none';
     })();
@@ -976,7 +1025,6 @@
         }
     });
 
-    // Fallback timer to force drop loader mask if asset streams lag
     setTimeout(() => {
         const loader = document.getElementById('loading-screen');
         if (loader && loader.style.display !== 'none') {
@@ -985,19 +1033,18 @@
                 loader.style.display = 'none';
             }, 500);
         }
-    }, 2000);
+    });
 </script>
-<div id="google_translate_element"></div>
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en', 
-    includedLanguages: 'ta,ml,ur,kn,or,hi' // Add the specific language codes you want
+    includedLanguages: 'en,hi,bn,te,mr,gu,pa,ta,ml,ur,kn,or,sa'
   }, 'google_translate_element');
 }
 </script>
-
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
