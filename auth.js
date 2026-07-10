@@ -46,6 +46,36 @@ export const AuthSystem = (function() {
             }
         },
 
+        // New Unified Login Verification Handler
+        handleLogin: function() {
+            const email = document.getElementById('login-email')?.value.trim();
+            const password = document.getElementById('login-password')?.value.trim();
+            const errorDiv = document.getElementById('login-error');
+            
+            if (!email || !password) {
+                if (errorDiv) errorDiv.innerText = '⚠️ Please enter email and password.';
+                return;
+            }
+
+            // Always pull the freshest copy from storage to check real accounts
+            users = JSON.parse(localStorage.getItem('patukrishi_users') || '{}');
+            const user = users[email];
+            
+            if (user && user.password === password) {
+                localStorage.setItem('patukrishi_session', JSON.stringify({ name: user.name, email: user.email }));
+                
+                const authModal = document.getElementById('authModal');
+                const dashboard = document.getElementById('dashboard');
+                
+                if (authModal) authModal.style.display = 'none';
+                if (dashboard) dashboard.style.display = 'block';
+                
+                location.reload(); // Hard reload locks state across modules cleanly
+            } else {
+                if (errorDiv) errorDiv.innerText = '❌ Incorrect email address or password.';
+            }
+        },
+
         // Handles secure user registration workflow
         handleSignup: async function(serviceId, templateId) {
             const name = document.getElementById('signup-name')?.value.trim();
@@ -57,6 +87,8 @@ export const AuthSystem = (function() {
                 if (errorDiv) errorDiv.innerText = '⚠️ Please fill out all required fields.';
                 return;
             }
+            
+            users = JSON.parse(localStorage.getItem('patukrishi_users') || '{}');
             if (users[email]) {
                 if (errorDiv) errorDiv.innerText = '⚠️ Email is already registered. Please Login.';
                 return;
@@ -81,7 +113,7 @@ export const AuthSystem = (function() {
                         name: name,
                         password: password,
                         code: code,
-                        expires: Date.now() + 15 * 60 * 1000 // 15 Minute Validation Limit
+                        expires: Date.now() + 15 * 60 * 1000
                     };
                     localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
                     currentPendingEmail = email;
@@ -108,6 +140,11 @@ export const AuthSystem = (function() {
             const email = currentPendingEmail;
             const errorDiv = document.getElementById('verify-error');
             
+            if (!email) {
+                if (errorDiv) errorDiv.innerText = '❌ No active registration trace context found.';
+                return;
+            }
+
             const pending = pendingVerifications[email];
             if (pending && pending.code === code && pending.expires > Date.now()) {
                 users[email] = { name: pending.name, email: email, password: pending.password, verified: true };
