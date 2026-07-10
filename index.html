@@ -505,6 +505,14 @@
         document.getElementById('resend-code-trigger')?.addEventListener('click', () => {
             if (typeof resendCodeNew === 'function') resendCodeNew();
         });
+        document.getElementById('forgot-password-btn')?.addEventListener('click', () => {
+            const emailInput = document.getElementById('login-email').value.trim();
+            if (!emailInput) {
+                alert("🔒 Please enter your registered Email Address in the input field above first, then click forgot password.");
+            } else {
+                alert(`📧 Password recovery logic triggered for: ${emailInput}. A password reset link or dynamic passcode window will build here next!`);
+            }
+        });
 
         // Guest session linkage engine listener loop mapping
         document.getElementById('guest-login-btn')?.addEventListener('click', () => {
