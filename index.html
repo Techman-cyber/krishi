@@ -13,6 +13,17 @@
     <link rel="stylesheet" href="techmankapapa.css">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <style>
+        /* Custom Cursor Integration */
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), auto;
+        }
+
+        button, .click-card, .nav-item, .user-profile {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -100,16 +111,8 @@
             <span class="nav-item" onclick="switchSection('about')">About</span>
         </nav>
         
-       <script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en', 
-    /* Consolidated map of all spoken & written Indian languages on Google */
-    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
-  }, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div id="google_translate_element"></div>
             
             <button id="theme-toggle" style="background:none;border:none;font-size:1.4rem;color:var(--text1)"><i class="fas fa-moon"></i></button>
             <div class="user-profile" onclick="toggleUserDropdown()">
@@ -506,12 +509,12 @@ function googleTranslateElementInit() {
         document.getElementById('tab-login-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('login'));
         document.getElementById('tab-signup-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('signup'));
         document.getElementById('login-btn')?.addEventListener('click', () => {
-    AuthSystem.handleLogin();
-});
+            AuthSystem.handleLogin();
+        });
         document.getElementById('signup-btn')?.addEventListener('click', () => AuthSystem.handleSignup(SERVICE_ID, SIGNUP_TEMPLATE_ID));
         document.getElementById('verify-submit-btn')?.addEventListener('click', () => AuthSystem.verifyPasscode());
         document.getElementById('resend-code-trigger')?.addEventListener('click', () => {
-            if (typeof resendCodeNew === 'function') resendCodeNew();
+            AuthSystem.resendCode();
         });
         document.getElementById('forgot-password-btn')?.addEventListener('click', () => {
             const emailInput = document.getElementById('login-email').value.trim();
@@ -541,7 +544,7 @@ function googleTranslateElementInit() {
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en', 
-    includedLanguages: 'en,hi,bn,te,mr,gu,pa,ta,ml,ur,kn,or,sa'
+    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
   }, 'google_translate_element');
 }
 </script>
