@@ -37,6 +37,13 @@
             <div id="login-form-new" class="auth-form active">
                 <input type="email" id="login-email" placeholder="Email Address" required>
                 <input type="password" id="login-password" placeholder="Password" required>
+                
+                <div class="compact-forgot-row">
+                    <button type="button" id="forgot-password-btn" class="minimal-auth-link">
+                        Forgot Password?
+                    </button>
+                </div>
+                
                 <button id="login-btn">Login</button>
                 <div id="login-error" class="error-message"></div>
             </div>
@@ -54,7 +61,7 @@
             </div>
             
             <div class="compact-guest-row">
-                <span>New here?</span>
+                <span>Want to browse first?</span>
                 <button type="button" id="guest-login-btn" class="minimal-guest-link">
                     Continue as Guest Account
                 </button>
@@ -67,7 +74,13 @@
                 <input type="text" id="verify-code" placeholder="000000" maxlength="6">
                 <button id="verify-submit-btn" style="background: #f9a825;">Verify Account</button>
                 <div id="verify-error" class="error-message"></div>
-                <div class="resend-link"><a id="resend-code-trigger">Didn't receive code? Resend</a></div>
+                
+                <div class="compact-resend-row">
+                    <span>Didn't receive code?</span>
+                    <button type="button" id="resend-code-trigger" class="minimal-auth-link">
+                        Resend Code
+                    </button>
+                </div>
             </div>
         </div>
     </div>
