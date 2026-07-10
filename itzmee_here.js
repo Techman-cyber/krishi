@@ -480,17 +480,7 @@ if (typeof emailjs !== 'undefined') {
         updateTipOfTheDay();
     }
 
-    function updateLangHeader() {
-        const e = document.getElementById('currentLangFlag'),
-            t = document.getElementById('currentLangName'),
-            n = { en: '🇬🇧', hi: '🇮🇳', bn: '🇮🇳', te: '🇮🇳', mr: '🇮🇳', gu: '🇮🇳', mwr: '🇮🇳', pa: '🇮🇳', ta: '🇮🇳', ml: '🇮🇳', ur: '🇮🇳', kn: '🇮🇳', or: '🇮🇳', sa: '🇮🇳', bho: '🇮🇳', doi: '🇮🇳' },
-            l = { en: 'English', hi: 'हिंदी', bn: 'বাংলা', te: 'తెలుగు', mr: 'मराठी', gu: 'ગુજરાતી', mwr: 'मारवाड़ी', pa: 'ਪੰਜਾਬੀ', ta: 'தமிழ்', ml: 'മലയാളം', ur: 'اردو', kn: 'ಕನ್ನಡ', or: 'ଓଡ଼ିଆ', sa: 'संस्कृतम्', bho: 'भोजपुरी', doi: 'डोगरी' };
-        e.textContent = n[currentLanguage];
-        t.textContent = l[currentLanguage];
-        document.querySelectorAll('.lang-option').forEach(e => {
-            e.classList.toggle('active', e.getAttribute('onclick').includes(currentLanguage));
-        });
-    }
+    
 
    
     window.addEventListener('load', () => {
@@ -4375,13 +4365,6 @@ document.addEventListener('click', function(e) {
     const recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = false;
-
-    // Map site language to a speech-recognition locale (best-effort; falls back to Hindi/English)
-    const speechLangMap = {
-        en: 'en-IN', hi: 'hi-IN', bn: 'bn-IN', te: 'te-IN', mr: 'mr-IN',
-        gu: 'gu-IN', pa: 'pa-IN', ta: 'ta-IN', ml: 'ml-IN', ur: 'ur-IN',
-        kn: 'kn-IN', or: 'or-IN', mwr: 'hi-IN', sa: 'hi-IN'
-    };
 
     let listening = false;
 
