@@ -1281,3 +1281,9 @@ button, .click-card, .nav-item, .user-profile {
 .minimal-auth-link:active {
     transform: scale(0.97);
 }
+
+/* CORRECTED VERSION - Removes .skiptranslate from the hidden rule */
+.goog-te-banner-frame, .goog-te-banner, #goog-gt-tt {
+    display: none !important;
+    visibility: hidden !important;
+}
