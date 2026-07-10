@@ -445,17 +445,14 @@
     import { AuthSystem } from './auth.js';
     import { MessageSystem } from './message.js';
 
-    // Global environmental variables (Decoupled safely away from HTML injections)
     const SERVICE_ID = 'service_c48sfqj';
     const SIGNUP_TEMPLATE_ID = 'template_tzsa9yh';
     const CONTACT_TEMPLATE_ID = 'template_xnjx3mg';
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Run background configuration listeners
         AuthSystem.initSession();
         MessageSystem.bindContactForm(SERVICE_ID, CONTACT_TEMPLATE_ID);
 
-        // Bind secure UI interactions directly to global window triggers
         document.getElementById('tab-login-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('login'));
         document.getElementById('tab-signup-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('signup'));
         document.getElementById('signup-btn')?.addEventListener('click', () => AuthSystem.handleSignup(SERVICE_ID, SIGNUP_TEMPLATE_ID));
@@ -464,7 +461,6 @@
 </script>
 
 <script>
-    // System Loader Window Handlers
     window.addEventListener('load', () => {
         const loader = document.getElementById('loading-screen');
         if (loader) {
