@@ -100,8 +100,16 @@
             <span class="nav-item" onclick="switchSection('about')">About</span>
         </nav>
         
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div id="google_translate_element"></div>
+       <script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en', 
+    /* Consolidated map of all spoken & written Indian languages on Google */
+    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
             
             <button id="theme-toggle" style="background:none;border:none;font-size:1.4rem;color:var(--text1)"><i class="fas fa-moon"></i></button>
             <div class="user-profile" onclick="toggleUserDropdown()">
