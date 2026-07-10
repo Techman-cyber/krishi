@@ -1234,3 +1234,50 @@ button, .click-card, .nav-item, .user-profile {
 .minimal-guest-link:active {
     transform: scale(0.98);
 }
+/* ==========================================================================
+   FORGOT PASSWORD & RESEND LINK STYLING REFACTORS
+   ========================================================================== */
+
+/* Align forgot password button to the right side underneath inputs */
+.compact-forgot-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: -4px 0 12px 0;
+    padding: 0 4px;
+}
+
+/* Align resend button text cleanly underneath verification status */
+.compact-resend-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text2, #666);
+}
+
+/* Master class wrapper for subtle text buttons inside modal */
+.minimal-auth-link {
+    background: none !important;
+    border: none !important;
+    color: var(--primary, #2e7d32) !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    min-height: auto !important;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.minimal-auth-link:hover {
+    color: var(--secondary, #f9a825) !important;
+    transform: translateY(-0.5px);
+}
+
+.minimal-auth-link:active {
+    transform: scale(0.97);
+}
