@@ -22,51 +22,51 @@
     <p>Smart Farming for Indian Farmers</p>
 </div>
 
-<div id="authModal" class="auth-modal-overlay">
-    <div class="auth-modal">
-        <div class="auth-modal-header">
-            <h1>🌾 PatuKrishi</h1>
-            <p>Your Farmer Friend</p>
+<div class="auth-modal-body">
+    <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login-trigger">Login</button>
+        <button class="auth-tab" id="tab-signup-trigger">Sign Up</button>
+    </div>
+    
+    <div id="login-form-new" class="auth-form active">
+        <input type="email" id="login-email" placeholder="Email Address" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button id="login-btn">Login</button>
+        <div id="login-error" class="error-message"></div>
+    </div>
+    
+    <div id="signup-form-new" class="auth-form">
+        <input type="text" id="signup-name" placeholder="Full Name" required>
+        <input type="email" id="signup-email" placeholder="Email Address" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <button id="signup-btn">Create Account</button>
+        <div id="signup-error" class="error-message"></div>
+        
+        <div class="secure-info-badge">
+            <i class="fas fa-info-circle"></i>
+            <span>We'll send a 6-digit verification code to your inbox to protect your account.</span>
         </div>
-        <div class="auth-modal-body">
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tab-login-trigger">Login</button>
-                <button class="auth-tab" id="tab-signup-trigger">Sign Up</button>
-            </div>
-            
-            <div id="login-form-new" class="auth-form active">
-                <input type="email" id="login-email" placeholder="Email Address" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button id="login-btn">Login</button>
-                <div id="login-error" class="error-message"></div>
-            </div>
-            
-            <div id="signup-form-new" class="auth-form">
-                <input type="text" id="signup-name" placeholder="Full Name" required>
-                <input type="email" id="signup-email" placeholder="Email Address" required>
-                <input type="password" id="signup-password" placeholder="Password" required>
-                <button id="signup-btn">Create Account</button>
-                <div id="signup-error" class="error-message"></div>
-                <p class="info-note">We'll send a 6-digit verification code to your email</p>
-            </div>
-            
-            <div style="text-align: center; margin-top: 15px;">
-                <span style="color: var(--text2); font-size: 0.9rem;">Or want to explore first?</span>
-                <button type="button" id="guest-login-btn">
-                    ✨ Continue as Guest
-                </button>
-            </div>
-            
-            <div id="verification-section" style="display: none;">
-                <hr>
-                <div class="verify-title">🔐 Verify Your Email</div>
-                <div class="verify-subtitle">Enter the 6-digit code sent to your email</div>
-                <input type="text" id="verify-code" placeholder="000000" maxlength="6">
-                <button id="verify-submit-btn" style="background: #f9a825;">Verify Account</button>
-                <div id="verify-error" class="error-message"></div>
-                <div class="resend-link"><a id="resend-code-trigger">Didn't receive code? Resend</a></div>
-            </div>
+    </div>
+    
+    <div class="guest-login-wrapper">
+        <div class="auth-divider">
+            <span>or</span>
         </div>
+        <button type="button" id="guest-login-btn" class="premium-guest-btn">
+            <i class="fas fa-user-shield"></i> Explore as Guest Account
+        </button>
+    </div>
+    
+    <div id="verification-section" style="display: none;">
+        <hr>
+        <div class="verify-title">🔐 Verify Your Email</div>
+        <div class="verify-subtitle">Enter the 6-digit code sent to your email</div>
+        <input type="text" id="verify-code" placeholder="000000" maxlength="6">
+        <button id="verify-submit-btn" style="background: #f9a825;">Verify Account</button>
+        <div id="verify-error" class="error-message"></div>
+        <div class="resend-link"><a id="resend-code-trigger">Didn't receive code? Resend</a></div>
+    </div>
+</div>
     </div>
 </div>
 
