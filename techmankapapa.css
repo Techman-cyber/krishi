@@ -1139,3 +1139,145 @@ body {
     box-shadow: none !important;
     box-sizing: border-box !important;
 }
+/* ==========================================================================
+   FIX FOR UNCOLLAPSED AUTHENTICATION MODAL WINDOWS
+   ========================================================================== */
+
+/* Main Full Screen Overlay Wrapper */
+.auth-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    display: none; /* Controlled dynamically by auth JS initialization scripts */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Modal Surface Sheet Box */
+.auth-modal {
+    background: var(--card-bg, #ffffff) !important;
+    border-radius: 32px;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: var(--shadow, 0 12px 30px rgba(0,60,0,0.1));
+    animation: modalFadeIn 0.3s ease;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.auth-modal-header {
+    background: linear-gradient(135deg, var(--primary, #2e7d32), var(--secondary, #f9a825));
+    padding: 30px;
+    text-align: center;
+    color: white;
+}
+
+.auth-modal-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: #ffffff !important;
+}
+
+.auth-modal-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+    color: #ffffff !important;
+}
+
+.auth-modal-body {
+    padding: 30px;
+}
+
+/* Horizontal Selection Tabs */
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border);
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text2, #666);
+    transition: all 0.3s ease;
+}
+
+.auth-tab.active {
+    color: var(--primary, #2e7d32);
+    border-bottom: 3px solid var(--primary, #2e7d32);
+}
+
+/* Form Visibility Containers */
+.auth-form {
+    display: none !important; /* Kept completely hidden by default */
+}
+
+.auth-form.active {
+    display: block !important; /* Uncollapse only the active form segment */
+}
+
+/* Text Inputs Configuration */
+.auth-form input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background: var(--bg);
+    color: var(--text1);
+    transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--primary, #2e7d32);
+}
+
+/* Modal Submission Buttons */
+.auth-form button {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary, #2e7d32);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.auth-form button:hover {
+    background: var(--primary-dark, #1b5e20);
+}
+
+.auth-form button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.info-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text2);
+    margin-top: 15px;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
