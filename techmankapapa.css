@@ -1114,3 +1114,28 @@ iframe.goog-te-banner-frame {
     border-color: var(--primary);
     box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
 }
+/* ==========================================================================
+   GOOGLE TRANSLATE INTRUSIVE TOOLBAR CLEANUP
+   ========================================================================== */
+
+/* Hide the top translation banner completely */
+.goog-te-banner-frame, 
+.goog-te-banner,
+.skiptranslate,
+#goog-gt-tt {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Fix the body displacement gap pushed down by the Google top bar */
+body {
+    top: 0 !important;
+    position: static !important;
+}
+
+/* Hide the automatic tooltips that pop up over translated text */
+.goog-text-highlight {
+    background: transparent !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+}
