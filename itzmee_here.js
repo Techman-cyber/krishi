@@ -1885,4 +1885,1242 @@ if (window.location.protocol === 'view-source:') {
         micBtn.classList.remove('listening');
     };
 
+    // ==================== DATABASES ====================
+const districtDB = {
+    // ==========================================
+    // STATES
+    // ==========================================
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Kurnool", "Nellore", "Anantapur", "Tirupati", "Kadapa", "Kakinada", "Rajahmundry", "Eluru", "Vizianagaram", "Srikakulam", "Prakasam"],
+    "Arunachal Pradesh": ["Tawang", "West Kameng", "East Kameng", "Papum Pare", "Kurung Kumey", "Kra Daadi", "Lower Subansiri", "Upper Subansiri", "West Siang", "East Siang", "Siang", "Upper Siang", "Lower Siang", "Lower Dibang Valley", "Dibang Valley", "Anjaw", "Lohit", "Namsai", "Changlang", "Tirap", "Longding"],
+    "Assam": ["Guwahati (Kamrup Metropolitan)", "Kamrup", "Barpeta", "Bongaigaon", "Cachar", "Darrang", "Dhemaji", "Dhubri", "Dibrugarh", "Goalpara", "Golaghat", "Hailakandi", "Jorhat", "Karimganj", "Lakhimpur", "Nagaon", "Nalbari", "Sivasagar", "Sonitpur", "Tinsukia"],
+    "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga", "Purnia", "Araria", "Aurangabad", "Banka", "Begusarai", "Bhojpur", "Buxar", "East Champaran", "West Champaran", "Katihar", "Khagaria", "Kishanganj", "Madhubani", "Munger", "Nalanda", "Rohtas", "Samastipur", "Saran", "Sitamarhi", "Siwan", "Vaishali"],
+    "Chhattisgarh": ["Raipur", "Bilaspur", "Durg", "Korba", "Rajnandgaon", "Raigarh", "Bastar", "Surguja", "Janjgir-Champa", "Balod", "Baloda Bazar", "Bemetara", "Bijapur", "Dantewada", "Dhamtari", "Gariaband", "Jagdalpur", "Kondagaon", "Mahasamund", "Mungeli", "Sukma", "Surajpur"],
+    "Goa": ["North Goa", "South Goa"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Gandhinagar", "Junagadh", "Anand", "Bharuch", "Navsari", "Morbi", "Surendranagar", "Mehsana", "Patan", "Banaskantha", "Sabarkantha", "Kutch", "Amreli", "Porbandar", "Dahod", "Panchmahal"],
+    "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Rohtak", "Hisar", "Karnal", "Sonipat", "Panchkula", "Sirsa", "Yamunanagar", "Bhiwani", "Jhajjar", "Jind", "Kaithal", "Kurukshetra", "Mahendragarh", "Nuh", "Palwal", "Rewari", "Fatehabad"],
+    "Himachal Pradesh": ["Shimla", "Kangra", "Mandi", "Kullu", "Solan", "Sirmaur", "Una", "Hamirpur", "Bilaspur", "Chamba", "Kinnaur", "Lahaul and Spiti"],
+    "Jharkhand": ["Ranchi", "Dhanbad", "Jamshedpur (East Singhbhum)", "Bokaro", "Deoghar", "Hazaribagh", "Giridih", "Ramgarh", "Palamu", "Dumka", "Chatra", "Garhwa", "Godda", "Gumla", "Jamtara", "Khunti", "Koderma", "Latehar", "Lohardaga", "Pakur", "Sahebganj", "Seraikela Kharsawan", "Simdega", "West Singhbhum"],
+    "Karnataka": ["Bengaluru Urban", "Bengaluru Rural", "Mysuru", "Hubballi-Dharwad", "Mangaluru (Dakshina Kannada)", "Belagavi", "Kalaburagi", "Ballari", "Tumakuru", "Udupi", "Shivamogga", "Davanagere", "Hassan", "Vijayapura", "Raichur", "Bidar", "Chitradurga", "Kolar", "Mandya", "Chikkamagaluru", "Kodagu", "Bagalkote", "Gadag", "Haveri", "Koppal"],
+    "Kerala": ["Thiruvananthapuram", "Kochi (Ernakulam)", "Kozhikode", "Thrissur", "Kollam", "Alappuzha", "Palakkad", "Kannur", "Kottayam", "Malappuram", "Pathanamthitta", "Idukki", "Wayanad", "Kasaragod"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur", "Ujjain", "Sagar", "Rewa", "Satna", "Ratlam", "Chhindwara", "Khandwa", "Burhanpur", "Dewas", "Vidisha", "Shivpuri", "Chhatarpur", "Damoh", "Mandsaur", "Khargone", "Neemuch", "Pithampur", "Hoshangabad", "Itarsi", "Sehore", "Guna"],
+    "Maharashtra": ["Mumbai City", "Mumbai Suburban", "Pune", "Nagpur", "Nashik", "Chhatrapati Sambhajinagar (Aurangabad)", "Solapur", "Kolhapur", "Thane", "Kalyan-Dombivli", "Vasai-Virar", "Navi Mumbai", "Amravati", "Jalgaon", "Akola", "Latur", "Dhule", "Ahmednagar", "Chandrapur", "Parbhani", "Jalna", "Beed", "Nanded", "Sangli", "Satara", "Ratnagiri", "Sindhudurg"],
+    "Manipur": ["Imphal West", "Imphal East", "Thoubal", "Bishnupur", "Churachandpur", "Kakching", "Ukhrul", "Senapati", "Kangpokpi", "Tamenglong", "Chandel", "Tengnoupal", "Kamjong", "Noney", "Pherzawl", "Jiribam"],
+    "Meghalaya": ["East Khasi Hills (Shillong)", "West Garo Hills (Tura)", "Jaintia Hills", "Ri-Bhoi", "West Khasi Hills", "East Garo Hills", "South Garo Hills", "South West Khasi Hills", "North Garo Hills", "East Jaintia Hills", "South West Garo Hills", "Eastern West Khasi Hills"],
+    "Mizoram": ["Aizawl", "Lunglei", "Kolasib", "Champhai", "Serchhip", "Siaha", "Lawngtlai", "Mamit", "Hnahthial", "Khawzawl", "Saitual"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Tuensang", "Wokha", "Zunheboto", "Phek", "Mon", "Kiphire", "Longleng", "Peren", "Noklak", "Chumoukedima", "Niuland", "Tseminyu", "Shamator"],
+    "Odisha": ["Bhubaneswar (Khordha)", "Cuttack", "Rourkela (Sundargarh)", "Berhampur (Ganjam)", "Sambalpur", "Puri", "Balasore", "Bhadrak", "Baripada (Mayurbhanj)", "Jharsuguda", "Bargarh", "Angul", "Kendrapara", "Jajpur", "Dhenkanal", "Koraput", "Rayagada", "Kalahandi", "Keonjhar", "Bolangir", "Nayagarh"],
+    "Punjab": ["Amritsar", "Ludhiana", "Jalandhar", "Patiala", "Bathinda", "Firozpur", "Moga", "Hoshiarpur", "Pathankot", "SAS Nagar (Mohali)", "Tarn Taran", "Kapurthala", "Faridkot", "Muktsar", "Barnala", "Mansa", "Rupnagar", "Sangrur", "Fazilka", "Gurdaspur", "Nawanshahr", "Malerkotla"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Udaipur", "Ajmer", "Alwar", "Bhilwara", "Sikar", "Pali", "Sri Ganganagar", "Bharatpur", "Churu", "Hanumangarh", "Jhunjhunu", "Sirohi", "Tonk", "Jaisalmer", "Barmer", "Jalor", "Chittorgarh", "Rajsamand", "Sawai Madhopur", "Dausa"],
+    "Sikkim": ["Gangtok (East Sikkim)", "Gyalshing (West Sikkim)", "Mangan (North Sikkim)", "Namchi (South Sikkim)", "Pakyong", "Soreng"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli", "Erode", "Tirunelveli", "Vellore", "Tiruppur", "Thoothukudi", "Thanjavur", "Dindigul", "Ranipet", "Kanyakumari", "Kanchipuram", "Chengalpattu", "Tiruvallur", "Cuddalore", "Kumbakonam", "Karur", "Hosur", "Nagercoil"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Khammam", "Karimnagar", "Ramagundam", "Mahbubnagar", "Nalgonda", "Adilabad", "Suryapet", "Miryalaguda", "Siddipet", "Jagtial", "Mancherial", "Kothagudem", "Sangareddy", "Kamareddy", "Medak", "Bhongir", "Vikarabad"],
+    "Tripura": ["West Tripura (Agartala)", "Gomati", "South Tripura", "North Tripura", "Dhalai", "Khowai", "Sepahijala", "Unakoti"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi", "Meerut", "Aligarh", "Bareilly", "Ghaziabad", "Noida (Gautam Buddha Nagar)", "Prayagraj", "Gorakhpur", "Moradabad", "Saharanpur", "Jhansi", "Mathura", "Ayodhya", "Shahjahanpur", "Firozabad", "Muzaffarnagar", "Budaun", "Rampur", "Mirzapur", "Etawah", "Farrukhabad", "Hapur"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani (Nainital)", "Rudrapur (Udham Singh Nagar)", "Kashipur", "Rishikesh", "Pauri Garhwal", "Tehri Garhwal", "Almora", "Pithoragarh", "Chamoli", "Uttarkashi", "Rudraprayag", "Champawat", "Bageshwar"],
+    "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Jalpaiguri", "Hooghly", "Malda", "Bankura", "North 24 Parganas", "South 24 Parganas", "Purba Medinipur", "Paschim Medinipur", "Purba Bardhaman", "Paschim Bardhaman", "Nadia", "Murshidabad", "Birbhum", "Purulia", "Cooch Behar", "Alipurduar", "Dakshin Dinajpur", "Uttar Dinajpur", "Kalimpong", "Jhargram"],
+
+    // ==========================================
+    // UNION TERRITORIES (UTs)
+    // ==========================================
+    "Andaman and Nicobar Islands": ["Port Blair (South Andaman)", "North and Middle Andaman", "Nicobar"],
+    "Chandigarh": ["Chandigarh"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Daman", "Diu", "Dadra and Nagar Haveli (Silvassa)"],
+    "Delhi": ["New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi", "Central Delhi", "North East Delhi", "North West Delhi", "South East Delhi", "South West Delhi", "Shahdara"],
+    "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla", "Kathua", "Rajouri", "Udhampur", "Pulwama", "Kupwara", "Shopian", "Bandipora", "Budgam", "Doda", "Ganderbal", "Kulgam", "Poonch", "Ramban", "Reasi", "Samba", "Kishtwar"],
+    "Ladakh": ["Leh", "Kargil"],
+    "Lakshadweep": ["Kavaratti", "Agatti", "Minicoy", "Amini", "Andrott"],
+    "Puducherry": ["Puducherry", "Karaikal", "Mahe", "Yanam"]
+};
+    
+    const crops = [
+        { name: 'Wheat', basePrice: 2450 }, { name: 'Rice', basePrice: 2150 }, { name: 'Tomato', basePrice: 45 },
+        { name: 'Potato', basePrice: 2850 }, { name: 'Onion', basePrice: 3900 }, { name: 'Cotton', basePrice: 7200 },
+        { name: 'Maize', basePrice: 2100 }, { name: 'Sugarcane', basePrice: 380 }, { name: 'Soybean', basePrice: 4600 },
+        { name: 'Mustard', basePrice: 5600 }
+    ];
+    
+   const advisoryDB = {
+    "Punjab": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - PUNJAB**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu/Kanak) - 100-125 kg/ha seed rate, 120-150 days\n• Mustard (Sarson) - 5-6 kg/ha, sow in October, 120-140 days\n• Barley (Jau) - 110-130 days duration\n• Chickpea (Chana/Bengal Gram) - 110-130 days\n• Green Peas (Matar/Hara Mattar) - 80-100 days\n• Potato (Aloo) - October-November planting, 80-110 days\n• Onion (Pyaz) - October-November nursery, 120-150 days\n• Garlic (Lahsun) - October-November planting, 120-140 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi/Band Gobhi) - 70-90 days\n• Carrot (Gajar) - 90-110 days\n• Radish (Mooli) - 50-60 days\n• Beetroot (Chukandar) - 60-70 days\n• Turnip (Shalgam) - 50-60 days\n• Spinach (Palak) - 40-50 days\n• Coriander (Dhaniya) - 40-50 days\n\n📅 **SOWING TIME**: October 25 to November 15\n💧 **FIRST IRRIGATION**: At crown root initiation (20-25 days after sowing)\n💊 **FERTILIZER**: 120:60:40 NPK kg/ha\n⚠️ **PEST ALERT**: Yellow rust in wheat, aphids in mustard\n💡 **FARMER TIP**: Use zero-till drill for wheat; don't burn paddy straw; apply DAP at sowing", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - PUNJAB**\n\n✅ **MAIN CROPS**:\n• Paddy/Basmati (Dhan/Chawal) - May nursery, June transplanting, 120-160 days\n• Cotton (Kapas) - April-May sowing, 90x60 cm spacing, 160-180 days\n• Maize (Makka/Bhutta) - June-July sowing, 90-110 days\n• Sugarcane (Ganna) - Spring planting, 10-12 months duration\n• Groundnut (Moongphali) - June-July sowing, 110-130 days\n• Pearl Millet (Bajra) - June-July sowing, 70-90 days\n• Pigeonpea (Arhar/Toor Dal) - 150-180 days\n• Green Gram (Moong) - 70-80 days\n• Black Gram (Urad) - 80-90 days\n• Soybean (Soyabean) - June-July sowing, 100-120 days\n• Okra (Bhindi/Ladies Finger) - 50-60 days\n• Bitter Gourd (Karela) - 55-65 days\n• Bottle Gourd (Lauki) - 60-70 days\n\n🌱 **SEED RATE**: Paddy - 40-50 kg/ha, Cotton - 15-20 kg/ha (hybrids)\n💧 **IRRIGATION**: Paddy - maintain 5 cm standing water; Cotton - 5-6 irrigations\n🐛 **PEST CONTROL**: Stem borer in paddy, pink bollworm in cotton\n💡 **FARMER TIP**: Use basmati varieties for export; install pheromone traps for cotton pests", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - PUNJAB**\n\n✅ **MAIN CROPS**:\n• Green Gram (Moong) - March-April sowing, 70-80 days\n• Watermelon (Tarbooj) - February-March sowing, 80-100 days\n• Muskmelon (Kharbooja) - February-March sowing, 70-90 days\n• Cucumber (Kheera) - February-March sowing, 50-60 days\n• Bottle Gourd (Lauki) - February-March sowing, 60-70 days\n• Bitter Gourd (Karela) - February-March sowing, 55-65 days\n• Sponge Gourd (Tori) - February-March sowing, 50-60 days\n• Ridge Gourd (Turai) - February-March sowing, 50-60 days\n• Pumpkin (Kaddu) - February-March sowing, 80-100 days\n• Fodder Crops (Chara) - for livestock\n\n🌱 **SEED RATE**: Moong - 20-25 kg/ha, Melons - 3-4 kg/ha\n💧 **IRRIGATION**: Light irrigation every 7-10 days; drip recommended\n💡 **FARMER TIP**: Grow moong as green manure for soil enrichment" 
+    },
+    
+    "Rajasthan": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - RAJASTHAN**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-110 kg/ha, limited irrigation, 120-150 days\n• Mustard (Sarson) - 5-6 kg/ha, apply sulfur 20-25 kg/ha, 120-140 days\n• Chickpea (Chana/Bengal Gram) - drought tolerant, 110-130 days\n• Barley (Jau) - drought tolerant, 110-130 days\n• Isabgol (Psyllium Husk) - cash crop for export\n• Green Peas (Matar) - 80-100 days\n• Garlic (Lahsun) - 120-140 days\n• Onion (Pyaz) - 120-150 days\n• Coriander (Dhaniya) - 90-110 days\n• Cumin (Jeera) - 100-120 days\n• Fennel (Saunf) - 120-140 days\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: 3-4 irrigations only (water scarcity area)\n💊 **FERTILIZER**: 80:40:40 NPK kg/ha for wheat\n⚠️ **PEST ALERT**: Aphids in mustard, termites in wheat\n💡 **FARMER TIP**: Use drought-tolerant varieties; practice mulching to conserve moisture", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to September) - RAJASTHAN**\n\n✅ **MAIN CROPS**:\n• Pearl Millet (Bajra) - 5-6 kg/ha, 70-90 days, drought tolerant\n• Sorghum (Jowar) - 100-120 days, rainfed\n• Green Gram (Moong) - 20-25 kg/ha, 70-80 days\n• Groundnut (Moongphali) - 110-130 days\n• Cluster Bean (Guar) - 80-90 days\n• Moth Bean (Moth) - 70-80 days, extremely drought tolerant\n• Sesame (Til) - 80-90 days\n• Castor (Arandi) - 150-180 days\n• Cowpea (Lobia) - 70-80 days\n• Pigeonpea (Arhar) - 150-180 days\n\n📅 **SOWING TIME**: June-July (with monsoon onset)\n💧 **WATER MANAGEMENT**: Rainfed; provide life-saving irrigation if dry spell >15 days\n🌱 **FERTILIZER**: 60:30:30 NPK kg/ha\n💡 **FARMER TIP**: Intercrop bajra with moong or guar for better returns and soil health", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - RAJASTHAN**\n\n✅ **MAIN CROPS**:\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Pumpkin (Kaddu) - 80-100 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Cucumber (Kheera) - 50-60 days\n• Sponge Gourd (Tori) - 50-60 days\n• Ridge Gourd (Turai) - 50-60 days\n• Bitter Gourd (Karela) - 55-65 days\n• Snap Melon (Tinda) - 60-70 days\n• Round Gourd (Ghia Tori) - 60-70 days\n• Fodder Crops (Chara)\n\n🌱 **SOIL**: Sandy loam with good drainage\n💧 **IRRIGATION**: Drip irrigation recommended for water conservation\n💡 **FARMER TIP**: Use plastic mulching to reduce evaporation and control weeds" 
+    },
+    
+    "Maharashtra": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - MAHARASHTRA**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-110 kg/ha, 120-150 days\n• Chickpea (Chana/Harbara) - 110-130 days, black soil\n• Safflower (Kardai) - 120-140 days, oilseed crop\n• Bengal Gram (Chana) - 110-130 days\n• Sorghum (Jowar - Rabi) - 100-120 days\n• Green Peas (Matar) - 80-100 days\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan/Eggplant) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n\n📅 **SOWING TIME**: October-November\n🌱 **SOIL TYPE**: Deep black cotton soil (regur) ideal\n💧 **IRRIGATION**: 2-3 irrigations; conserve soil moisture\n💊 **FERTILIZER**: Chickpea - 80:40:40 NPK, Wheat - 100:50:50 NPK kg/ha\n⚠️ **PEST ALERT**: Wilt in chickpea, rust in wheat\n💡 **FARMER TIP**: Practice conservation tillage in black soils; apply gypsum for better yield", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - MAHARASHTRA**\n\n✅ **MAIN CROPS**:\n• Cotton (Kapus) - 15-20 kg/ha (hybrids), 160-180 days\n• Soybean (Soyabean) - 70-80 kg/ha, 100-120 days\n• Pigeonpea (Tur/Arhar) - 150-180 days\n• Groundnut (Shengdana) - 110-130 days\n• Pearl Millet (Bajra) - 70-90 days\n• Sorghum (Jowar) - 100-120 days\n• Maize (Makka) - 90-110 days\n• Red Gram (Toor Dal) - 150-180 days\n• Sesame (Til) - 80-90 days\n• Sunflower (Surajmukhi) - 90-110 days\n• Green Gram (Moong) - 70-80 days\n• Black Gram (Urad) - 80-90 days\n\n📅 **SOWING TIME**: June-July (with monsoon onset)\n🐛 **PEST CONTROL**: Pink bollworm in cotton, yellow mosaic in soybean\n💧 **WATER**: Rainfed; irrigation if dry spell >15 days\n💡 **FARMER TIP**: Use Bt cotton hybrids; practice intercropping cotton with pigeonpea", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - MAHARASHTRA**\n\n✅ **MAIN CROPS**:\n• Groundnut (Shengdana) - 5-6 irrigations\n• Leafy Vegetables (Bhaji) - various greens\n• Brinjal (Baingan/Eggplant) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n• Chilli (Mirch) - 90-120 days\n• Bitter Gourd (Karela) - 55-65 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Ridge Gourd (Turai) - 50-60 days\n• Sponge Gourd (Tori) - 50-60 days\n• Snake Gourd (Padwal) - 60-70 days\n• Green Gram (Moong) - 70-80 days\n• Cowpea (Lobia) - 70-80 days\n• Fodder Crops (Chara)\n\n📅 **SOWING TIME**: January-February for summer groundnut\n💧 **IRRIGATION**: Drip irrigation for vegetables\n🌱 **SOIL PREPARATION**: Deep plowing to break hard pan\n💡 **FARMER TIP**: Summer groundnut requires 5-6 irrigations; harvest before heavy rains" 
+    },
+    
+    "Uttar Pradesh": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - UTTAR PRADESH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-125 kg/ha, 120-150 days\n• Barley (Jau) - 110-130 days\n• Green Peas (Matar) - 80-100 days\n• Lentil (Masoor) - 100-120 days\n• Chickpea (Chana) - 110-130 days\n• Mustard (Sarson) - 5-6 kg/ha, 120-140 days\n• Potato (Aloo) - 25-30 q/ha tubers, 80-110 days\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Carrot (Gajar) - 90-110 days\n• Radish (Mooli) - 50-60 days\n• Beetroot (Chukandar) - 60-70 days\n• Turnip (Shalgam) - 50-60 days\n• Spinach (Palak) - 40-50 days\n• Fenugreek (Methi) - 80-90 days\n• Coriander (Dhaniya) - 40-50 days\n\n📅 **SOWING TIME**: October to mid-November\n💊 **FERTILIZER**: Wheat - 120:60:40 NPK; Potato - 150:100:150 NPK kg/ha\n💧 **IRRIGATION**: Wheat - 5-6 irrigations; Potato - 5-7 irrigations\n⚠️ **PEST ALERT**: Yellow rust in wheat, late blight in potato, aphids in mustard\n💡 **FARMER TIP**: Use certified seeds; apply zinc in wheat for better yield", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - UTTAR PRADESH**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - 40-50 kg/ha, 120-160 days\n• Maize (Makka) - 20-25 kg/ha, 90-110 days\n• Pigeonpea (Arhar) - 150-180 days\n• Sugarcane (Ganna) - 10-12 months\n• Pearl Millet (Bajra) - 70-90 days\n• Sorghum (Jowar) - 100-120 days\n• Cotton (Kapas) - 160-180 days\n• Soybean (Soyabean) - 100-120 days\n• Groundnut (Moongphali) - 110-130 days\n• Sesame (Til) - 80-90 days\n• Green Gram (Moong) - 70-80 days\n• Black Gram (Urad) - 80-90 days\n• Okra (Bhindi) - 50-60 days\n\n📅 **SOWING TIME**: Rice nursery in May-June, transplant June-July; Maize - June-July\n💧 **WATER MANAGEMENT**: Rice - 5 cm standing water; Maize - 4-5 irrigations\n🐛 **PEST ALERT**: Stem borer in rice, shoot fly in maize\n💡 **FARMER TIP**: Use SRI (System of Rice Intensification) method to save water and increase yield", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - UTTAR PRADESH**\n\n✅ **MAIN CROPS**:\n• Cucumber (Kheera) - 50-60 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Bitter Gourd (Karela) - 55-65 days\n• Sponge Gourd (Tori) - 50-60 days\n• Ridge Gourd (Turai) - 50-60 days\n• Pumpkin (Kaddu) - 80-100 days\n• Green Gram (Moong) - 70-80 days\n• Cowpea (Lobia) - 70-80 days\n• Fodder Crops (Chara)\n\n📅 **SOWING TIME**: February-March\n💧 **IRRIGATION**: Frequent light irrigations\n🌱 **FERTILIZER**: 60:40:40 NPK kg/ha\n💡 **FARMER TIP**: Grow moong as green manure after wheat harvest for soil enrichment" 
+    },
+    
+    "West Bengal": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - WEST BENGAL**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-120 kg/ha\n• Mustard (Sarson) - 5-6 kg/ha\n• Lentil (Masoor) - 100-120 days\n• Potato (Aloo) - October-November planting, 80-110 days\n• Green Peas (Matar) - 80-100 days\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan/Eggplant) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Radish (Mooli) - 50-60 days\n• Carrot (Gajar) - 90-110 days\n• Spinach (Palak) - 40-50 days\n\n📅 **SOWING TIME**: October-November\n⚠️ **PRECAUTION**: Avoid waterlogging in heavy rainfall areas\n💧 **IRRIGATION**: Manage drainage properly; raised beds recommended\n💡 **FARMER TIP**: Use raised beds for vegetables to prevent waterlogging; apply organic manure", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - WEST BENGAL**\n\n✅ **MAIN CROPS**:\n• Rice - Aman (Dhan) - main crop, 120-160 days\n• Jute (Pat) - fiber crop, 120-150 days\n• Maize (Makka) - 90-110 days\n• Sesame (Til) - 80-90 days\n• Groundnut (Moongphali) - 110-130 days\n• Green Gram (Moong) - 70-80 days\n• Black Gram (Urad) - 80-90 days\n• Pigeonpea (Arhar) - 150-180 days\n• Sweet Potato (Shakarkand) - 90-120 days\n• Taro (Arbi) - 90-120 days\n\n📅 **SOWING TIME**: June-July\n💧 **WATER MANAGEMENT**: Deep water rice varieties for flood-prone areas\n🐛 **PEST ALERT**: Stem borer, leaf folder, brown plant hopper in rice\n💡 **FARMER TIP**: Use flood-tolerant rice varieties in low-lying areas; apply need-based pesticides", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - WEST BENGAL**\n\n✅ **MAIN CROPS**:\n• Green Gram (Moong) - 70-80 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Bitter Gourd (Karela) - 55-65 days\n• Pumpkin (Kaddu) - 80-100 days\n• Ridge Gourd (Turai) - 50-60 days\n• Sponge Gourd (Tori) - 50-60 days\n• Brinjal (Baingan) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Okra (Bhindi) - 50-60 days\n• Fodder Crops (Chara)\n\n📅 **SOWING TIME**: March-April\n💧 **IRRIGATION**: Regular irrigation required\n🌱 **FERTILIZER**: Apply organic manure for better yield\n💡 **FARMER TIP**: Grow short-duration vegetable varieties for quick returns before monsoon" 
+    },
+    
+    "Bihar": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - BIHAR**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-125 kg/ha, 120-150 days\n• Mustard (Sarson) - 5-6 kg/ha, 120-140 days\n• Chickpea (Chana) - 110-130 days\n• Maize (Makka) - 90-110 days\n• Green Peas (Matar) - 80-100 days\n• Lentil (Masoor) - 100-120 days\n• Potato (Aloo) - 80-110 days\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Carrot (Gajar) - 90-110 days\n• Radish (Mooli) - 50-60 days\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Timely irrigation critical; 4-5 irrigations for wheat\n💡 **FARMER TIP**: Use improved varieties suitable for Bihar climate; practice integrated pest management", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - BIHAR**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - 120-160 days\n• Maize (Makka) - 90-110 days\n• Pearl Millet (Bajra) - 70-90 days\n• Pigeonpea (Arhar) - 150-180 days\n• Black Gram (Urad) - 80-90 days\n• Green Gram (Moong) - 70-80 days\n• Groundnut (Moongphali) - 110-130 days\n• Sesame (Til) - 80-90 days\n• Jute (Pat) - fiber crop\n• Okra (Bhindi) - 50-60 days\n• Bitter Gourd (Karela) - 55-65 days\n\n📅 **SOWING TIME**: June-July\n🐛 **PEST ALERT**: Stem borer in rice, shoot fly in maize, pod borer in arhar\n💡 **FARMER TIP**: Use hybrid rice varieties for higher yield; apply need-based pesticides", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - BIHAR**\n\n✅ **MAIN CROPS**:\n• Cucumber (Kheera) - 50-60 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Bitter Gourd (Karela) - 55-65 days\n• Sponge Gourd (Tori) - 50-60 days\n• Ridge Gourd (Turai) - 50-60 days\n• Pumpkin (Kaddu) - 80-100 days\n• Green Gram (Moong) - 70-80 days\n• Cowpea (Lobia) - 70-80 days\n• Fodder Crops (Chara)\n\n📅 **SOWING TIME**: February-March\n💧 **IRRIGATION**: Regular irrigation required; light irrigation every 7-10 days\n💡 **FARMER TIP**: Practice mulching for moisture conservation; use raised beds" 
+    },
+    
+    "Tamil Nadu": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - TAMIL NADU**\n\n✅ **MAIN CROPS**:\n• Maize (Makka) - 90-110 days\n• Sorghum (Jowar/Cholam) - 100-120 days\n• Black Gram (Uzhundu) - 80-90 days\n• Green Gram (Payaru) - 70-80 days\n• Groundnut (Kadalai) - 110-130 days\n• Sunflower (Surajmukhi) - 90-110 days\n• Onion (Vengayam) - 120-150 days\n• Tomato (Thakkali) - 70-90 days\n• Brinjal (Kathirikai) - 90-120 days\n• Chilli (Milagai) - 90-120 days\n• Cabbage (Muttai Kosu) - 70-90 days\n• Cauliflower (Pookosu) - 70-90 days\n\n💧 **IRRIGATION**: Irrigation needed for all crops; drip recommended\n💡 **FARMER TIP**: Use drip irrigation for vegetables to save water; apply mulching", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - TAMIL NADU**\n\n✅ **MAIN CROPS**:\n• Rice (Nel/Dhan) - main crop, 120-160 days\n• Sugarcane (Karumbu) - 10-12 months\n• Cotton (Paruthi) - 160-180 days\n• Pearl Millet (Kambu) - 70-90 days\n• Sorghum (Cholam) - 100-120 days\n• Finger Millet (Ragi) - 90-100 days\n• Groundnut (Kadalai) - 110-130 days\n• Pigeonpea (Thuvarai) - 150-180 days\n• Turmeric (Manjal) - 210-240 days\n• Banana (Vazhai) - 12-14 months\n\n📅 **SOWING TIME**: June-July (with monsoon onset)\n🌾 **REGION**: Delta regions for rice (Cauvery Delta)\n💡 **FARMER TIP**: Use short-duration rice varieties in Cauvery delta; practice system of rice intensification", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - TAMIL NADU**\n\n✅ **MAIN CROPS**:\n• Bitter Gourd (Pavakkai) - 55-65 days\n• Snake Gourd (Pudalangai) - 60-70 days\n• Bottle Gourd (Suraikkai) - 60-70 days\n• Ridge Gourd (Peerkangai) - 50-60 days\n• Sponge Gourd (Nurai) - 50-60 days\n• Brinjal (Kathirikai) - 90-120 days\n• Tomato (Thakkali) - 70-90 days\n• Chilli (Milagai) - 90-120 days\n• Onion (Vengayam) - 120-150 days\n• Watermelon (Tharbusini) - 80-100 days\n• Muskmelon (Mulampazham) - 70-90 days\n• Fodder Crops (Mei poondu)\n\n💧 **IRRIGATION**: Drip irrigation recommended for all summer vegetables\n💡 **FARMER TIP**: Grow vegetables in raised beds with mulching; use shade nets for high summer" 
+    },
+    
+    "Madhya Pradesh": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - MADHYA PRADESH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-125 kg/ha, 120-150 days\n• Chickpea (Chana) - 110-130 days\n• Mustard (Sarson) - 5-6 kg/ha, 120-140 days\n• Lentil (Masoor) - 100-120 days\n• Green Peas (Matar) - 80-100 days\n• Potato (Aloo) - 80-110 days\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Coriander (Dhaniya) - 90-110 days\n• Fenugreek (Methi) - 80-90 days\n• Cumin (Jeera) - 100-120 days\n\n📅 **SOWING TIME**: October-November\n💊 **FERTILIZER**: Seed treatment essential for disease control\n💡 **FARMER TIP**: Apply sulfur for mustard, zinc for wheat; practice seed treatment with fungicides", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - MADHYA PRADESH**\n\n✅ **MAIN CROPS**:\n• Soybean (Soyabean) - 70-80 kg/ha, 100-120 days\n• Cotton (Kapas) - 160-180 days\n• Maize (Makka) - 90-110 days\n• Pigeonpea (Arhar) - 150-180 days\n• Groundnut (Moongphali) - 110-130 days\n• Sesame (Til) - 80-90 days\n• Pearl Millet (Bajra) - 70-90 days\n• Sorghum (Jowar) - 100-120 days\n• Green Gram (Moong) - 70-80 days\n• Black Gram (Urad) - 80-90 days\n\n📅 **SOWING TIME**: June-July\n🐛 **PEST ALERT**: Yellow mosaic in soybean, pink bollworm in cotton\n💡 **FARMER TIP**: Use certified seeds for soybean and cotton; practice integrated pest management", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - MADHYA PRADESH**\n\n✅ **MAIN CROPS**:\n• Green Gram (Moong) - 70-80 days\n• Sesame (Til) - 80-90 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Bitter Gourd (Karela) - 55-65 days\n• Pumpkin (Kaddu) - 80-100 days\n• Ridge Gourd (Turai) - 50-60 days\n• Sponge Gourd (Tori) - 50-60 days\n• Fodder Crops (Chara)\n\n📅 **SOWING TIME**: March-April\n💧 **IRRIGATION**: Light irrigation; drip recommended\n💡 **FARMER TIP**: Summer moong gives good returns; harvest before monsoon" 
+    },
+    
+    "Gujarat": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - GUJARAT**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-110 kg/ha, 120-150 days\n• Mustard (Sarson) - 5-6 kg/ha, 120-140 days\n• Chickpea (Chana) - 110-130 days\n• Potato (Aloo) - 80-110 days\n• Isabgol (Psyllium Husk) - export crop, 120-140 days\n• Fennel (Saunf) - 120-140 days\n• Cumin (Jeera) - 100-120 days\n• Coriander (Dhaniya) - 90-110 days\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Green Peas (Matar) - 80-100 days\n\n💧 **IRRIGATION**: Light irrigation due to limited water; drip recommended\n💡 **FARMER TIP**: Use drip irrigation for spices and vegetables; practice mulching for moisture conservation", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - GUJARAT**\n\n✅ **MAIN CROPS**:\n• Cotton (Kapas) - 160-180 days\n• Groundnut (Moongphali) - 110-130 days\n• Pearl Millet (Bajra) - 70-90 days\n• Castor (Arandi) - 150-180 days\n• Sesame (Til) - 80-90 days\n• Pigeonpea (Arhar) - 150-180 days\n• Green Gram (Moong) - 70-80 days\n• Sorghum (Jowar) - 100-120 days\n\n📅 **SOWING TIME**: May-June (before monsoon)\n💧 **WATER**: Rainfed; supplemental irrigation if needed\n💡 **FARMER TIP**: Use Bt cotton hybrids for bollworm resistance; practice intercropping", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - GUJARAT**\n\n✅ **MAIN CROPS**:\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n• Chilli (Mirch) - 90-120 days\n• Okra (Bhindi/Ladies Finger) - 50-60 days\n• Cluster Bean (Guar) - 80-90 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Bitter Gourd (Karela) - 55-65 days\n• Ridge Gourd (Turai) - 50-60 days\n\n💧 **IRRIGATION**: Drip irrigation for vegetables\n💡 **FARMER TIP**: Summer groundnut can be grown with 5-6 irrigations; use plastic mulching" 
+    },
+    
+    "Karnataka": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - KARNATAKA**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-110 kg/ha, 120-150 days\n• Sorghum (Jowar) - 100-120 days\n• Chickpea (Chana) - 110-130 days\n• Safflower (Kardai) - 120-140 days\n• Sunflower (Surajmukhi) - 90-110 days\n• Maize (Makka) - 90-110 days\n• Onion (Pyaz) - 120-150 days\n• Potato (Aloo) - 80-110 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n\n🌱 **SOIL**: Rainfed areas, conserve moisture\n💡 **FARMER TIP**: Practice conservation tillage; apply farmyard manure for soil health", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - KARNATAKA**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - 120-160 days\n• Maize (Makka) - 90-110 days\n• Finger Millet (Ragi) - 90-100 days\n• Cotton (Kapas) - 160-180 days\n• Groundnut (Moongphali) - 110-130 days\n• Pigeonpea (Tur) - 150-180 days\n• Green Gram (Moong) - 70-80 days\n• Black Gram (Urad) - 80-90 days\n• Sunflower (Surajmukhi) - 90-110 days\n\n📅 **SOWING TIME**: June-July\n💡 **FARMER TIP**: Ragi is a staple crop; use improved varieties; practice intercropping", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - KARNATAKA**\n\n✅ **MAIN CROPS**:\n• Groundnut (Moongphali) - 110-130 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Okra (Bhindi) - 50-60 days\n• Cucumber (Kheera) - 50-60 days\n• Bitter Gourd (Karela) - 55-65 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Ridge Gourd (Turai) - 50-60 days\n• Fodder Crops (Chara)\n\n💧 **IRRIGATION**: Drip irrigation recommended\n💡 **FARMER TIP**: Summer groundnut requires 5-6 irrigations; use organic mulching" 
+    },
+    
+    "Haryana": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - HARYANA**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 100-125 kg/ha, 120-150 days\n• Mustard (Sarson) - 5-6 kg/ha, 120-140 days\n• Barley (Jau) - 110-130 days\n• Chickpea (Chana) - 110-130 days\n• Potato (Aloo) - 80-110 days\n• Onion (Pyaz) - 120-150 days\n• Green Peas (Matar) - 80-100 days\n• Garlic (Lahsun) - 120-140 days\n\n📅 **SOWING TIME**: October-November\n⚠️ **PEST ALERT**: Aphids in mustard, termites in wheat\n💡 **FARMER TIP**: Timely sowing critical for wheat; apply first irrigation at crown root initiation", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - HARYANA**\n\n✅ **MAIN CROPS**:\n• Paddy (Dhan) - transplant in July, 120-160 days\n• Pearl Millet (Bajra) - 70-90 days\n• Cotton (Kapas) - 160-180 days\n• Maize (Makka) - 90-110 days\n• Cluster Bean (Guar) - 80-90 days\n• Green Gram (Moong) - 70-80 days\n\n📅 **SOWING TIME**: June-July\n💧 **WATER**: Paddy transplanting in July\n💡 **FARMER TIP**: Use short-duration paddy varieties to save water; practice direct seeded rice", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - HARYANA**\n\n✅ **MAIN CROPS**:\n• Green Gram (Moong) - 70-80 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Bitter Gourd (Karela) - 55-65 days\n• Fodder Crops (Chara)\n\n📅 **SOWING TIME**: March-April\n💧 **IRRIGATION**: Light irrigation\n💡 **FARMER TIP**: Grow moong as green manure after wheat; practice zero tillage" 
+    },
+    
+    "Telangana": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - TELANGANA**\n\n✅ **MAIN CROPS**:\n• Maize (Makka) - 90-110 days\n• Sorghum (Jowar) - 100-120 days\n• Black Gram (Urad) - 80-90 days\n• Green Gram (Moong) - 70-80 days\n• Sunflower (Surajmukhi) - 90-110 days\n• Groundnut (Moongphali) - 110-130 days\n• Onion (Pyaz) - 120-150 days\n• Tomato (Tamatar) - 70-90 days\n\n💧 **IRRIGATION**: Irrigated crops; critical irrigation at flowering\n💡 **FARMER TIP**: Use hybrid maize varieties; apply balanced fertilization", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - TELANGANA**\n\n✅ **MAIN CROPS**:\n• Cotton (Kapas) - 160-180 days\n• Rice (Dhan) - 120-160 days\n• Soybean (Soyabean) - 100-120 days\n• Pigeonpea (Tur) - 150-180 days\n• Maize (Makka) - 90-110 days\n• Green Gram (Moong) - 70-80 days\n\n📅 **SOWING TIME**: June\n💡 **FARMER TIP**: Use Bt cotton for bollworm control; practice intercropping", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - TELANGANA**\n\n✅ **MAIN CROPS**:\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Okra (Bhindi) - 50-60 days\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Watermelon (Tarbooj) - 80-100 days\n\n💧 **IRRIGATION**: Drip irrigation for vegetables\n💡 **FARMER TIP**: Grow vegetables in summer with protective irrigation; use shade nets" 
+    },
+    
+    "Andhra Pradesh": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - ANDHRA PRADESH**\n\n✅ **MAIN CROPS**:\n• Maize (Makka) - 90-110 days\n• Black Gram (Urad) - 80-90 days\n• Green Gram (Moong) - 70-80 days\n• Groundnut (Moongphali) - 110-130 days\n• Sunflower (Surajmukhi) - 90-110 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n\n💧 **IRRIGATION**: Rabi under irrigation; critical at flowering\n💡 **FARMER TIP**: Use short-duration varieties; practice integrated pest management", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - ANDHRA PRADESH**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - delta areas, 120-160 days\n• Cotton (Kapas) - 160-180 days\n• Sugarcane (Ganna) - 10-12 months\n• Groundnut (Moongphali) - 110-130 days\n• Pigeonpea (Tur) - 150-180 days\n• Green Gram (Moong) - 70-80 days\n\n📅 **SOWING TIME**: June-July\n🌾 **REGION**: Delta areas for rice (Godavari-Krishna Delta)\n💡 **FARMER TIP**: Use delta-specific rice varieties; practice system of rice intensification", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - ANDHRA PRADESH**\n\n✅ **MAIN CROPS**:\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n• Chilli (Mirch) - 90-120 days\n• Okra (Bhindi) - 50-60 days\n• Watermelon (Tarbooj) - 80-100 days\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n\n💧 **IRRIGATION**: Drip irrigation for vegetables\n💡 **FARMER TIP**: Summer vegetables give good prices; use mulching for moisture conservation" 
+    },
+    
+    "Delhi": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - DELHI**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - peri-urban areas\n• Mustard (Sarson) - limited areas\n• Green Peas (Matar) - fresh market\n• Potato (Aloo) - 80-110 days\n• Onion (Pyaz) - 120-150 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Carrot (Gajar) - 90-110 days\n• Radish (Mooli) - 50-60 days\n• Spinach (Palak) - 40-50 days\n• Coriander (Dhaniya) - 40-50 days\n• Fenugreek (Methi) - 80-90 days\n\n💡 **FARMER TIP**: Focus on vegetable farming for urban markets; use high-yielding varieties", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - DELHI**\n\n✅ **MAIN CROPS**:\n• Pearl Millet (Bajra) - 70-90 days\n• Maize (Makka) - 90-110 days\n• Okra (Bhindi) - 50-60 days\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n• Chilli (Mirch) - 90-120 days\n• Bitter Gourd (Karela) - 55-65 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Sponge Gourd (Tori) - 50-60 days\n\n💡 **FARMER TIP**: Grow vegetables for fresh Delhi markets; practice organic farming", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - DELHI**\n\n✅ **MAIN CROPS**:\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Sponge Gourd (Tori) - 50-60 days\n• Ridge Gourd (Turai) - 50-60 days\n• Bitter Gourd (Karela) - 55-65 days\n• Watermelon (Tarbooj) - 80-100 days\n• Muskmelon (Kharbooja) - 70-90 days\n• Pumpkin (Kaddu) - 80-100 days\n\n💡 **FARMER TIP**: High demand for summer vegetables in Delhi market; use drip irrigation" 
+    },
+    
+    "Jammu and Kashmir": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - JAMMU & KASHMIR**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - low altitude areas\n• Barley (Jau) - low altitude areas\n• Saffron (Kesar) - specific regions (Pampore)\n• Onion (Pyaz) - 120-150 days\n• Garlic (Lahsun) - 120-140 days\n• Green Peas (Matar) - 80-100 days\n• Potato (Aloo) - 80-110 days\n\n💡 **FARMER TIP**: Saffron requires specific soil and climate; protect from frost", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - JAMMU & KASHMIR**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - main crop in Kashmir valley\n• Maize (Makka) - hilly areas\n• Apple (Seb) - horticulture crop\n• Pear (Nashpati) - horticulture\n• Walnut (Akhrot) - dry fruit\n• Cabbage (Patta Gobhi) - 70-90 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Tomato (Tamatar) - 70-90 days\n\n💡 **FARMER TIP**: Apple is major cash crop; focus on quality and pest management", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - JAMMU & KASHMIR**\n\n✅ **MAIN CROPS**:\n• Green Peas (Matar) - 80-100 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Tomato (Tamatar) - 70-90 days\n• Brinjal (Baingan) - 90-120 days\n• Pulses - limited areas\n\n💡 **FARMER TIP**: Short growing season; use early-maturing varieties; protect from frost" 
+    },
+    
+    "Ladakh": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - LADAKH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - limited valleys\n• Barley (Jau) - limited valleys\n• Cold desert agriculture\n• Peas (Matar) - 80-100 days\n\n💡 **FARMER TIP**: Extremely cold climate; limited cropping season; use cold-tolerant varieties", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - LADAKH**\n\n✅ **MAIN CROPS**:\n• Barley (Jau) - main crop\n• Wheat (Gehu) - limited areas\n• Green Peas (Matar) - 80-100 days\n• Potato (Aloo) - 80-110 days\n• Buckwheat (Kuttu) - 70-80 days\n• Turnip (Shalgam) - 50-60 days\n• Radish (Mooli) - 50-60 days\n\n💡 **FARMER TIP**: Use only short-duration varieties due to short summer; protect from cold winds", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - LADAKH**\n\n✅ **MAIN CROPS**:\n• Tomato (Tamatar) - greenhouse\n• Cucumber (Kheera) - greenhouse\n• Capsicum (Shimla Mirch) - greenhouse\n• Leafy vegetables - greenhouse\n• Radish (Mooli) - greenhouse\n• Turnip (Shalgam) - greenhouse\n\n💡 **FARMER TIP**: Greenhouse cultivation essential for vegetable production; use polyhouses" 
+    },
+    
+    "Chandigarh": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - CHANDIGARH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - small agricultural pockets\n• Mustard (Sarson) - limited areas\n• Peas (Matar) - 80-100 days\n• Potato (Aloo) - 80-110 days\n• Onion (Pyaz) - 120-150 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n\n💡 **FARMER TIP**: Focus on high-value vegetables for urban market; practice terrace gardening", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - CHANDIGARH**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - peripheral areas\n• Maize (Makka) - peripheral areas\n• Okra (Bhindi) - 50-60 days\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n\n💡 **FARMER TIP**: Limited agriculture; focus on peri-urban farming; use organic methods", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - CHANDIGARH**\n\n✅ **MAIN CROPS**:\n• Cucumber (Kheera) - 50-60 days\n• Bottle Gourd (Lauki) - 60-70 days\n• Sponge Gourd (Tori) - 50-60 days\n• Bitter Gourd (Karela) - 55-65 days\n• Watermelon (Tarbooj) - 80-100 days\n\n💡 **FARMER TIP**: Supply fresh vegetables to Chandigarh market; use drip irrigation" 
+    },
+    
+    "Puducherry": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - PUDUCHERRY**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - limited area\n• Pulses - limited area\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n• Onion (Pyaz) - 120-150 days\n• Cabbage (Patta Gobhi) - 70-90 days\n\n💡 **FARMER TIP**: Limited agricultural land; focus on vegetables for local market", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - PUDUCHERRY**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - main crop\n• Sugarcane (Ganna) - cash crop\n• Cotton (Kapas) - limited area\n• Groundnut (Moongphali) - 110-130 days\n\n💡 **FARMER TIP**: Rice is staple crop in Puducherry; use high-yielding varieties", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - PUDUCHERRY**\n\n✅ **MAIN CROPS**:\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n• Chilli (Mirch) - 90-120 days\n• Okra (Bhindi) - 50-60 days\n• Cucumber (Kheera) - 50-60 days\n• Fodder Crops (Chara)\n\n💡 **FARMER TIP**: Summer vegetables give good returns; use drip irrigation" 
+    },
+    
+    "Lakshadweep": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - LAKSHADWEEP**\n\n✅ **MAIN CROPS**:\n• Coconut (Nariyal) - main crop\n• Limited agriculture\n• Banana (Kela) - small scale\n\n💡 **FARMER TIP**: Coconut is the primary crop on islands; intercropping recommended", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - LAKSHADWEEP**\n\n✅ **MAIN CROPS**:\n• Coconut (Nariyal)\n• Banana (Kela) - small scale\n• Sweet Potato (Shakarkand) - small scale\n• Taro (Arbi) - small scale\n\n💡 **FARMER TIP**: Intercropping with coconut recommended; use organic manure", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - LAKSHADWEEP**\n\n✅ **MAIN CROPS**:\n• Limited vegetable cultivation\n• Leafy vegetables - small scale\n\n💡 **FARMER TIP**: Import most vegetables; grow limited varieties for self-consumption" 
+    },
+    
+    "Andaman and Nicobar Islands": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - ANDAMAN & NICOBAR**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - limited area\n• Pulses - limited area\n• Vegetables - limited area\n• Coconut (Nariyal) - plantation crop\n\n💡 **FARMER TIP**: Self-sufficiency in rice targeted; use high-yielding varieties", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - ANDAMAN & NICOBAR**\n\n✅ **MAIN CROPS**:\n• Paddy (Dhan) - main crop\n• Coconut (Nariyal) - plantation crop\n• Arecanut (Supari) - plantation crop\n• Cloves (Laung) - spices\n• Nutmeg (Jaiphal) - spices\n• Cinnamon (Dalchini) - spices\n\n💡 **FARMER TIP**: Plantation crops are mainstay; practice organic farming", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - ANDAMAN & NICOBAR**\n\n✅ **MAIN CROPS**:\n• Vegetables - small scale\n• Fruits - small scale\n• Banana (Kela) - small scale\n\n💡 **FARMER TIP**: Focus on local consumption; use organic methods" 
+    },
+    
+    "Dadra and Nagar Haveli and Daman and Diu": { 
+        Rabi: "🌾 **RABI SEASON (October to March) - DADRA & NAGAR HAVELI**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - limited area\n• Pulses - limited area\n• Vegetables - all types\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n\n💡 **FARMER TIP**: Limited agriculture; focus on vegetables; use organic manure", 
+        
+        Kharif: "🌧️ **KHARIF SEASON (June to October) - DADRA & NAGAR HAVELI**\n\n✅ **MAIN CROPS**:\n• Paddy (Dhan) - main crop\n• Finger Millet (Ragi) - 90-100 days\n• Pulses - various\n• Groundnut (Moongphali) - 110-130 days\n\n💡 **FARMER TIP**: Paddy is main staple; use high-yielding varieties", 
+        
+        Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - DADRA & NAGAR HAVELI**\n\n✅ **MAIN CROPS**:\n• Vegetables - all types\n• Brinjal (Baingan) - 90-120 days\n• Tomato (Tamatar) - 70-90 days\n• Okra (Bhindi) - 50-60 days\n• Cucumber (Kheera) - 50-60 days\n• Fodder Crops (Chara)\n\n💡 **FARMER TIP**: Summer vegetables for local markets; use drip irrigation" 
+    },
+
+     "Assam": {
+    Rabi: "🌾 **RABI SEASON (October to March) - ASSAM**\n\n✅ **MAIN CROPS**:\n• Rice (Boro) - irrigated winter rice\n• Wheat (Gehu) - 120-140 days\n• Mustard (Sarson) - 110-130 days\n• Potato (Aloo) - 80-100 days\n• Lentil (Masoor) - 100-120 days\n• Green Peas (Matar) - 80-100 days\n• Onion (Pyaz) - 120-140 days\n• Garlic (Lahsun) - 120-140 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Tomato (Tamatar) - 70-90 days\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: As required in dry spells\n⚠️ **PEST ALERT**: Aphids in mustard\n💡 **FARMER TIP**: Use raised beds to avoid waterlogging and certified seeds.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - ASSAM**\n\n✅ **MAIN CROPS**:\n• Rice (Ahu, Sali)\n• Jute (Pat)\n• Maize (Makka)\n• Black Gram (Urad)\n• Green Gram (Moong)\n• Sesame (Til)\n• Sugarcane (Ganna)\n• Tea (Chai) - plantation crop\n• Ginger (Adrak)\n• Turmeric (Haldi)\n\n📅 **SOWING TIME**: May-June\n💧 **WATER MANAGEMENT**: Drain excess water during floods\n🐛 **PEST ALERT**: Stem borer and leaf folder in rice\n💡 **FARMER TIP**: Use flood-tolerant rice varieties.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - ASSAM**\n\n✅ **MAIN CROPS**:\n• Cucumber (Kheera)\n• Watermelon (Tarbooj)\n• Bottle Gourd (Lauki)\n• Bitter Gourd (Karela)\n• Ridge Gourd (Turai)\n• Pumpkin (Kaddu)\n• Okra (Bhindi)\n\n💧 **IRRIGATION**: Light irrigation every 7-10 days\n💡 **FARMER TIP**: Grow short-duration vegetables before monsoon."
+},
+
+"Arunachal Pradesh": {
+    Rabi: "🌾 **RABI SEASON (October to March) - ARUNACHAL PRADESH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Barley (Jau)\n• Potato (Aloo)\n• Peas (Matar)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n• Mustard (Sarson)\n\n📅 **SOWING TIME**: October-November\n💡 **FARMER TIP**: Use cold-tolerant varieties and mulch crops against frost.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - ARUNACHAL PRADESH**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Millets\n• Soybean\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Large Cardamom\n\n📅 **SOWING TIME**: May-June\n💡 **FARMER TIP**: Terrace farming helps reduce soil erosion.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - ARUNACHAL PRADESH**\n\n✅ **MAIN CROPS**:\n• Tomato\n• Cucumber\n• Pumpkin\n• Bottle Gourd\n• Leafy Vegetables\n\n💡 **FARMER TIP**: Use organic compost and rainwater harvesting."
+},
+
+"Chhattisgarh": {
+    Rabi: "🌾 **RABI SEASON (October to March) - CHHATTISGARH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Chickpea (Chana)\n• Lentil (Masoor)\n• Mustard (Sarson)\n• Linseed (Alsi)\n• Potato (Aloo)\n• Onion (Pyaz)\n• Garlic (Lahsun)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: 3-4 irrigations\n💡 **FARMER TIP**: Treat seeds before sowing to prevent fungal diseases.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - CHHATTISGARH**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - Main crop\n• Maize (Makka)\n• Soybean\n• Groundnut (Moongphali)\n• Sesame (Til)\n• Pigeonpea (Arhar)\n• Green Gram (Moong)\n\n📅 **SOWING TIME**: June\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Adopt line transplanting for better yields.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - CHHATTISGARH**\n\n✅ **MAIN CROPS**:\n• Watermelon\n• Muskmelon\n• Cucumber\n• Bottle Gourd\n• Pumpkin\n• Okra\n\n💧 **IRRIGATION**: Drip irrigation recommended\n💡 **FARMER TIP**: Mulching conserves soil moisture."
+},
+
+"Goa": {
+    Rabi: "🌾 **RABI SEASON (October to March) - GOA**\n\n✅ **MAIN CROPS**:\n• Vegetables\n• Cowpea\n• Groundnut\n• Onion\n• Tomato\n• Brinjal\n• Chilli\n\n📅 **SOWING TIME**: October-November\n💡 **FARMER TIP**: Grow vegetables on raised beds to avoid waterlogging.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - GOA**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Coconut (Nariyal)\n• Cashew (Kaju)\n• Arecanut (Supari)\n• Banana (Kela)\n• Sugarcane (Ganna)\n\n📅 **SOWING TIME**: June\n💧 **WATER MANAGEMENT**: Proper drainage during heavy rains\n💡 **FARMER TIP**: Apply organic manure to coconut plantations.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - GOA**\n\n✅ **MAIN CROPS**:\n• Watermelon\n• Cucumber\n• Bottle Gourd\n• Bitter Gourd\n• Pumpkin\n• Okra\n\n💧 **IRRIGATION**: Regular irrigation required\n💡 **FARMER TIP**: Summer vegetables fetch higher market prices."
+},
+
+     "Himachal Pradesh": {
+    Rabi: "🌾 **RABI SEASON (October to March) - HIMACHAL PRADESH**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu) - 120-140 days\n• Barley (Jau) - 110-130 days\n• Mustard (Sarson) - 110-130 days\n• Peas (Matar) - 80-100 days\n• Potato (Aloo) - 90-110 days\n• Garlic (Lahsun) - 120-140 days\n• Onion (Pyaz) - 120-140 days\n• Cauliflower (Phool Gobhi) - 70-90 days\n• Cabbage (Patta Gobhi) - 70-90 days\n• Spinach (Palak) - 40-50 days\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Light irrigation when required\n💡 **FARMER TIP**: Protect crops from frost using mulching and low tunnels.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - HIMACHAL PRADESH**\n\n✅ **MAIN CROPS**:\n• Maize (Makka)\n• Rice (Dhan)\n• Tomato (Tamatar)\n• Capsicum (Shimla Mirch)\n• French Bean\n• Apple (Seb)\n• Plum\n• Peach\n• Pear\n\n📅 **SOWING TIME**: May-June\n🐛 **PEST ALERT**: Apple scab and fruit fly\n💡 **FARMER TIP**: Prune fruit trees regularly and use disease-free planting material.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - HIMACHAL PRADESH**\n\n✅ **MAIN CROPS**:\n• Cucumber\n• Tomato\n• Capsicum\n• Pumpkin\n• Bottle Gourd\n• Leafy Vegetables\n\n💧 **IRRIGATION**: Regular irrigation\n💡 **FARMER TIP**: Grow vegetables under polyhouses for higher income."
+},
+
+"Jharkhand": {
+    Rabi: "🌾 **RABI SEASON (October to March) - JHARKHAND**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Chickpea (Chana)\n• Lentil (Masoor)\n• Mustard (Sarson)\n• Potato (Aloo)\n• Onion (Pyaz)\n• Garlic (Lahsun)\n• Peas (Matar)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: 3-4 irrigations\n💡 **FARMER TIP**: Seed treatment improves germination and disease resistance.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - JHARKHAND**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Finger Millet (Ragi)\n• Pigeonpea (Arhar)\n• Black Gram (Urad)\n• Green Gram (Moong)\n• Groundnut (Moongphali)\n• Sesame (Til)\n\n📅 **SOWING TIME**: June-July\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Harvest rainwater for supplemental irrigation.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - JHARKHAND**\n\n✅ **MAIN CROPS**:\n• Watermelon\n• Muskmelon\n• Cucumber\n• Bottle Gourd\n• Pumpkin\n• Okra\n\n💧 **IRRIGATION**: Drip irrigation preferred\n💡 **FARMER TIP**: Mulching helps conserve moisture."
+},
+
+"Kerala": {
+    Rabi: "🌾 **RABI SEASON (October to March) - KERALA**\n\n✅ **MAIN CROPS**:\n• Rice (Puncha)\n• Vegetables\n• Tapioca (Cassava)\n• Banana (Kela)\n• Cowpea\n• Tomato\n• Brinjal\n• Chilli\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Required during dry periods\n💡 **FARMER TIP**: Use organic manure and proper drainage in paddy fields.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - KERALA**\n\n✅ **MAIN CROPS**:\n• Rice (Virippu)\n• Coconut (Nariyal)\n• Rubber\n• Pepper (Kali Mirch)\n• Cardamom\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Banana\n• Tapioca\n\n📅 **SOWING TIME**: May-June\n💧 **WATER MANAGEMENT**: Ensure proper drainage due to heavy rainfall\n💡 **FARMER TIP**: Intercrop spices with coconut plantations for better income.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - KERALA**\n\n✅ **MAIN CROPS**:\n• Bitter Gourd\n• Bottle Gourd\n• Snake Gourd\n• Ridge Gourd\n• Cucumber\n• Okra\n\n💧 **IRRIGATION**: Drip irrigation recommended\n💡 **FARMER TIP**: Grow vegetables on raised beds with mulching."
+},
+
+"Odisha": {
+    Rabi: "🌾 **RABI SEASON (October to March) - ODISHA**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Mustard (Sarson)\n• Green Gram (Moong)\n• Black Gram (Urad)\n• Chickpea (Chana)\n• Potato (Aloo)\n• Onion (Pyaz)\n• Garlic (Lahsun)\n• Tomato\n• Cabbage\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Light irrigation where required\n💡 **FARMER TIP**: Use certified seeds and balanced fertilizers.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - ODISHA**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan) - Main crop\n• Maize (Makka)\n• Groundnut (Moongphali)\n• Sesame (Til)\n• Green Gram (Moong)\n• Black Gram (Urad)\n• Sugarcane (Ganna)\n• Cotton (Kapas)\n\n📅 **SOWING TIME**: June\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Use flood-tolerant rice varieties in coastal districts.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - ODISHA**\n\n✅ **MAIN CROPS**:\n• Watermelon\n• Muskmelon\n• Cucumber\n• Bottle Gourd\n• Bitter Gourd\n• Pumpkin\n• Okra\n\n💧 **IRRIGATION**: Regular irrigation\n💡 **FARMER TIP**: Summer vegetables provide additional income before monsoon."
+},
+
+     "Manipur": {
+    Rabi: "🌾 **RABI SEASON (October to March) - MANIPUR**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Mustard (Sarson)\n• Potato (Aloo)\n• Peas (Matar)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n• Onion (Pyaz)\n• Garlic (Lahsun)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Light irrigation during dry spells\n💡 **FARMER TIP**: Use raised beds to improve drainage and crop growth.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - MANIPUR**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Black Gram (Urad)\n• Green Gram (Moong)\n• Soybean\n• Ginger (Adrak)\n• Turmeric (Haldi)\n\n📅 **SOWING TIME**: May-June\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Practice terrace farming in hilly regions.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - MANIPUR**\n\n✅ **MAIN CROPS**:\n• Cucumber\n• Tomato\n• Bottle Gourd\n• Pumpkin\n• Okra\n• Watermelon\n\n💧 **IRRIGATION**: Regular irrigation\n💡 **FARMER TIP**: Mulching helps conserve soil moisture."
+},
+
+"Meghalaya": {
+    Rabi: "🌾 **RABI SEASON (October to March) - MEGHALAYA**\n\n✅ **MAIN CROPS**:\n• Potato (Aloo)\n• Wheat (Gehu)\n• Mustard (Sarson)\n• Peas (Matar)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n• Carrot (Gajar)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: As required\n💡 **FARMER TIP**: Use organic manure for healthy crops.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - MEGHALAYA**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Black Pepper\n• Arecanut (Supari)\n• Pineapple\n\n📅 **SOWING TIME**: May-June\n💧 **WATER MANAGEMENT**: Prevent soil erosion on slopes\n💡 **FARMER TIP**: Adopt contour farming in hilly areas.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - MEGHALAYA**\n\n✅ **MAIN CROPS**:\n• Tomato\n• Cucumber\n• Pumpkin\n• Bottle Gourd\n• Okra\n\n💧 **IRRIGATION**: Light irrigation\n💡 **FARMER TIP**: Grow vegetables using organic methods."
+},
+
+"Mizoram": {
+    Rabi: "🌾 **RABI SEASON (October to March) - MIZORAM**\n\n✅ **MAIN CROPS**:\n• Potato (Aloo)\n• Peas (Matar)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n• Mustard (Sarson)\n\n📅 **SOWING TIME**: October-November\n💡 **FARMER TIP**: Use compost to improve soil fertility.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - MIZORAM**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Banana (Kela)\n• Pineapple\n• Orange\n\n📅 **SOWING TIME**: May-June\n💧 **WATER MANAGEMENT**: Prevent soil erosion on hill slopes\n💡 **FARMER TIP**: Terrace cultivation improves productivity.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - MIZORAM**\n\n✅ **MAIN CROPS**:\n• Tomato\n• Cucumber\n• Pumpkin\n• Bottle Gourd\n• Chilli\n\n💧 **IRRIGATION**: Regular irrigation\n💡 **FARMER TIP**: Use mulching to retain moisture."
+},
+
+"Nagaland": {
+    Rabi: "🌾 **RABI SEASON (October to March) - NAGALAND**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Potato (Aloo)\n• Peas (Matar)\n• Mustard (Sarson)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Light irrigation\n💡 **FARMER TIP**: Apply organic compost for better yields.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - NAGALAND**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Millets\n• Soybean\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Naga Chilli\n\n📅 **SOWING TIME**: May-June\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Terrace farming reduces soil erosion and improves water conservation.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - NAGALAND**\n\n✅ **MAIN CROPS**:\n• Tomato\n• Cucumber\n• Bottle Gourd\n• Pumpkin\n• Okra\n\n💧 **IRRIGATION**: Regular irrigation\n💡 **FARMER TIP**: Grow vegetables using drip irrigation for efficient water use."
+},
+
+     "Sikkim": {
+    Rabi: "🌾 **RABI SEASON (October to March) - SIKKIM**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Barley (Jau)\n• Potato (Aloo)\n• Peas (Matar)\n• Mustard (Sarson)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n• Carrot (Gajar)\n• Radish (Mooli)\n• Garlic (Lahsun)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Light irrigation when required\n💡 **FARMER TIP**: Use organic compost and mulching; Sikkim is India's first fully organic state.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - SIKKIM**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Finger Millet (Ragi)\n• Large Cardamom\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Buckwheat\n• Soybean\n\n📅 **SOWING TIME**: May-June\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Practice terrace farming to reduce soil erosion and conserve water.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - SIKKIM**\n\n✅ **MAIN CROPS**:\n• Tomato\n• Cucumber\n• Capsicum\n• Bottle Gourd\n• Pumpkin\n• Leafy Vegetables\n\n💧 **IRRIGATION**: Regular irrigation\n💡 **FARMER TIP**: Polyhouse cultivation improves vegetable production in hilly regions."
+},
+
+"Tripura": {
+    Rabi: "🌾 **RABI SEASON (October to March) - TRIPURA**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Mustard (Sarson)\n• Potato (Aloo)\n• Lentil (Masoor)\n• Green Peas (Matar)\n• Onion (Pyaz)\n• Garlic (Lahsun)\n• Tomato (Tamatar)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Irrigate during dry periods\n💡 **FARMER TIP**: Use certified seeds and apply farmyard manure.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - TRIPURA**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Jute (Pat)\n• Sesame (Til)\n• Groundnut (Moongphali)\n• Green Gram (Moong)\n• Black Gram (Urad)\n• Pineapple\n• Banana (Kela)\n\n📅 **SOWING TIME**: May-June\n🐛 **PEST ALERT**: Stem borer in rice\n💡 **FARMER TIP**: Use flood-tolerant rice varieties in low-lying areas.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - TRIPURA**\n\n✅ **MAIN CROPS**:\n• Watermelon\n• Muskmelon\n• Cucumber\n• Bottle Gourd\n• Bitter Gourd\n• Ridge Gourd\n• Pumpkin\n• Okra\n\n💧 **IRRIGATION**: Regular irrigation every 7-10 days\n💡 **FARMER TIP**: Mulching helps retain moisture during summer."
+},
+
+"Uttarakhand": {
+    Rabi: "🌾 **RABI SEASON (October to March) - UTTARAKHAND**\n\n✅ **MAIN CROPS**:\n• Wheat (Gehu)\n• Barley (Jau)\n• Mustard (Sarson)\n• Lentil (Masoor)\n• Chickpea (Chana)\n• Potato (Aloo)\n• Onion (Pyaz)\n• Garlic (Lahsun)\n• Peas (Matar)\n• Cabbage (Patta Gobhi)\n• Cauliflower (Phool Gobhi)\n• Spinach (Palak)\n\n📅 **SOWING TIME**: October-November\n💧 **IRRIGATION**: Light irrigation as required\n💡 **FARMER TIP**: Use terrace farming and mulching to conserve moisture and prevent erosion.",
+
+    Kharif: "🌧️ **KHARIF SEASON (June to October) - UTTARAKHAND**\n\n✅ **MAIN CROPS**:\n• Rice (Dhan)\n• Maize (Makka)\n• Finger Millet (Ragi)\n• Barnyard Millet (Sanwa)\n• Soybean\n• Black Gram (Urad)\n• Green Gram (Moong)\n• Ginger (Adrak)\n• Turmeric (Haldi)\n• Apple (Seb)\n\n📅 **SOWING TIME**: May-June\n🐛 **PEST ALERT**: Stem borer in rice and fruit fly in orchards\n💡 **FARMER TIP**: Promote integrated farming with horticulture for higher income.",
+
+    Zaid: "☀️ **ZAID/SUMMER SEASON (April to June) - UTTARAKHAND**\n\n✅ **MAIN CROPS**:\n• Cucumber\n• Tomato\n• Capsicum\n• Bottle Gourd\n• Pumpkin\n• Watermelon\n• Muskmelon\n• Leafy Vegetables\n\n💧 **IRRIGATION**: Regular irrigation; drip recommended\n💡 **FARMER TIP**: Grow off-season vegetables in polyhouses for premium prices."
+}
+};
+
+   const specificCropAdvice = {
+    "Wheat (Gehu)": `🌾 **WHEAT (GEHU) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING & PREPARATION**
+═══════════════════════════════════════════════════════════
+📅 **Sowing Time**: October-November (Rabi season)
+🌱 **Seed Rate**: 100-125 kg per hectare
+💊 **Seed Treatment**: Treat with Carbendazim @ 2g/kg seed
+📏 **Spacing**: Row spacing 20-22.5 cm
+🌍 **Soil**: Well-drained loamy soil, pH 6.5-7.5
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-12 tons/ha (apply 15 days before sowing)
+• NPK: 120:60:40 kg/ha
+• Zinc Sulphate: 25 kg/ha if zinc deficient
+
+💧 **STEP 2: IRRIGATION**
+• 5-6 irrigations total
+• Critical stages: Crown root initiation, Tillering, Flowering
+
+🌾 **STEP 3: HARVEST**
+• Time: March-April when grains are hard & moisture 12-14%
+• Yield: 45-55 quintals per hectare`,
+
+    "Rice (Dhan/Chawal)": `🍚 **RICE (DHAN/CHAWAL) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: May-June
+🌱 **Seed Rate**: 40-50 kg/ha
+💊 **Seed Treatment**: Soak in salt water, treat with Trichoderma
+👶 **Seedling Age**: 25-30 days
+📏 **Spacing**: 20 cm x 15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 120:60:40 kg/ha
+• Zinc Sulphate: 25 kg/ha
+
+💧 **STEP 2: WATER MANAGEMENT**
+• Maintain 5 cm standing water from transplanting to flowering
+• Drain 2 weeks before harvest
+
+🌾 **STEP 3: HARVEST**
+• Time: October-November when 80% grains are golden yellow
+• Yield: 50-65 quintals per hectare`,
+
+    "Maize (Makka/Bhutta)": `🌽 **MAIZE (MAKKA/BHUTTA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or October-November (Rabi)
+🌱 **Seed Rate**: 20-25 kg/ha
+💊 **Seed Treatment**: Carbendazim + Thiram @ 3g/kg seed
+📏 **Spacing**: 60 cm x 25 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-12 tons/ha
+• NPK: 150:75:75 kg/ha
+• Zinc Sulphate: 25 kg/ha
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 4-5 irrigations
+• Critical: Knee-high, tasseling, silking stages
+• Earthing up at 25-30 days
+
+🌾 **STEP 3: HARVEST**
+• Time: 90-110 days after sowing (husk turns brown)
+• Yield: 45-60 quintals per hectare`,
+
+    "Cotton (Kapas)": `🧶 **COTTON (KAPAS) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: April-May (Kharif)
+🌱 **Seed Rate**: 15-20 kg/ha (hybrids)
+💊 **Seed Treatment**: Carbendazim + Thiram @ 3g/kg seed
+📏 **Spacing**: 90 cm x 60 cm (hybrids)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 12-15 tons/ha
+• NPK: 150:75:75 kg/ha
+• Zinc Sulphate: 25 kg/ha
+
+💧 **STEP 2: IRRIGATION & PEST MANAGEMENT**
+• 5-6 irrigations
+• Install pheromone traps for pink bollworm
+
+🌾 **STEP 3: HARVEST**
+• Time: October-December when bolls open fully
+• 3-4 pickings at 7-10 day intervals
+• Yield: 20-25 quintals seed cotton per hectare`,
+
+    "Potato (Aloo)": `🥔 **POTATO (ALOO) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: October-November (Rabi)
+🌱 **Seed Rate**: 25-30 quintals tubers/ha
+💊 **Seed Treatment**: Dip in Carbendazim + Mancozeb
+📏 **Spacing**: 60 cm x 20 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 150:100:150 kg/ha
+• Zinc Sulphate: 25 kg/ha
+
+💧 **STEP 2: IRRIGATION & EARTHING UP**
+• 5-6 irrigations
+• Earthing up at 25-30 days after planting
+
+🌾 **STEP 3: HARVEST**
+• Time: January-March when vines dry completely
+• Yield: 250-350 quintals per hectare`,
+
+    "Onion (Pyaz)": `🧅 **ONION (PYAZ) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: October-November (Rabi)
+🌱 **Seed Rate**: 8-10 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+👶 **Seedling Age**: 6-8 weeks
+📏 **Spacing**: 15 cm x 10 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 100:50:100 kg/ha
+• Sulphur: 20-25 kg/ha
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 5-6 irrigations
+• Stop irrigation when tops start falling (15-20 days before harvest)
+
+🌾 **STEP 3: HARVEST**
+• Time: March-May when 50% tops fall
+• Curing: Dry in field for 5-7 days
+• Yield: 200-250 quintals per hectare`,
+
+    "Tomato (Tamatar)": `🍅 **TOMATO (TAMATAR) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: September-October (Rabi)
+🌱 **Seed Rate**: 400-500 gm/ha
+💊 **Seed Treatment**: Trichoderma @ 4g/kg seed
+👶 **Seedling Age**: 25-30 days
+📏 **Spacing**: 75 cm x 45 cm (determinate)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 120:80:80 kg/ha
+• Boron: 1 kg/ha, Calcium Nitrate: 25 kg/ha
+
+💧 **STEP 2: IRRIGATION & STAKING**
+• Drip irrigation every 2-3 days
+• Provide support with bamboo sticks
+
+🌾 **STEP 3: HARVEST**
+• Time: 65-80 days after transplanting
+• Yield: 250-350 quintals per hectare`,
+
+    "Sugarcane (Ganna)": `🎋 **SUGARCANE (GANNA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: January-February (Spring) or October-November (Autumn)
+🌱 **Seed Rate**: 35-40 quintals setts/ha
+💊 **Seed Treatment**: Carbendazim + Imidacloprid
+📏 **Spacing**: 90 cm x 60 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 20-25 tons/ha
+• NPK: 250:100:150 kg/ha
+• Zinc Sulphate: 25 kg/ha
+
+💧 **STEP 2: IRRIGATION & EARTHING UP**
+• 15-20 irrigations (every 10-15 days)
+• Earthing up at 120 days after planting
+
+🌾 **STEP 3: HARVEST**
+• Time: 10-12 months after planting
+• Yield: 70-85 tons per hectare`,
+
+    "Mustard (Sarson)": `🌼 **MUSTARD (SARSON) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: October-November (Rabi)
+🌱 **Seed Rate**: 5-6 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 45 cm x 15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 80:40:40 kg/ha
+• Sulphur: 20-25 kg/ha
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 irrigations (critical at flowering and pod formation)
+• Hand weeding at 25 days
+
+🌾 **STEP 3: HARVEST**
+• Time: February-March when pods turn yellow
+• Yield: 15-20 quintals per hectare`,
+
+    "Paddy (Basmati)": `🍚 **PADDY (BASMATI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: June-July (Kharif)
+🌱 **Seed Rate**: 35-40 kg/ha
+💊 **Seed Treatment**: Soak in salt water, treat with Trichoderma
+👶 **Seedling Age**: 20-25 days (shorter for Basmati)
+📏 **Spacing**: 20 cm x 12-15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 100:50:40 kg/ha (Basmati needs slightly less N)
+• Zinc Sulphate: 25 kg/ha
+
+💧 **STEP 2: WATER MANAGEMENT**
+• Maintain 3-5 cm water from transplanting to flowering
+• Avoid deep water; drain 10-15 days before harvest
+
+🌾 **STEP 3: HARVEST**
+• Time: October when 85% grains are golden
+• Yield: 35-45 quintals per hectare (quality-focused)`,
+
+    "Groundnut (Kadale)": `🫘 **GROUNDNUT (KADALE) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or October-November (Rabi in southern India)
+🌱 **Seed Rate**: 80-100 kg/ha (kernel)
+💊 **Seed Treatment**: Carbendazim + Thiram @ 3g/kg seed
+📏 **Spacing**: 45 cm x 10 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-12 tons/ha
+• NPK: 40:80:40 kg/ha (low N, high P)
+• Calcium: 100-150 kg/ha if soil deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 3-4 irrigations (critical at flowering & peg formation)
+• Weed control at 25-30 days
+
+🌾 **STEP 3: HARVEST**
+• Time: When pods are fully developed and leaves yellow
+• Yield: 15-25 quintals per hectare`,
+
+    "Pigeon Pea (Arhar/Tur)": `🫗 **PIGEON PEA (ARHAR/TUR) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif)
+🌱 **Seed Rate**: 25-30 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 60 cm x 20 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 20:40:20 kg/ha (low requirement)
+• Micronutrients if soil test shows deficiency
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 irrigations in dry spells
+• Weed control at 25-30 days
+
+🌾 **STEP 3: HARVEST**
+• Time: When pods turn black and dry (multiple pickings)
+• Yield: 10-15 quintals per hectare`,
+
+    "Soybean (Sarsoo)": `🫘 **SOYBEAN (SARSOO) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif)
+🌱 **Seed Rate**: 60-70 kg/ha
+💊 **Seed Treatment**: Carbendazim + Thiram @ 3g/kg seed
+📏 **Spacing**: 45 cm x 10 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 20:40:20 kg/ha (soybean fixes N)
+• Zinc Sulphate: 25 kg/ha if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 irrigations at flowering & pod filling
+• Weed control at 25-30 days
+
+🌾 **STEP 3: HARVEST**
+• Time: When leaves fall and pods turn brown
+• Yield: 18-25 quintals per hectare`,
+
+    "Chickpea (Gilji/Arbi)": `🫗 **CHICKPEA (GILJI/ARBI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: October-November (Rabi)
+🌱 **Seed Rate**: 40-50 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 45 cm x 15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 20:40:20 kg/ha
+• Sulphur: 20 kg/ha if soil deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2 irrigations (critical at flowering & pod formation)
+• Weed control at 25-30 days
+
+🌾 **STEP 3: HARVEST**
+• Time: When pods turn brown and plants dry
+• Yield: 12-18 quintals per hectare`,
+
+    "Green Gram (Moong/Mung)": `🌱 **GREEN GRAM (MOONG/MUNG) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or February-March (summer irrigated)
+🌱 **Seed Rate**: 10-12 kg/ha (broadcast) or 8-10 kg/ha (row)
+💊 **Seed Treatment**: Rhizobium + Carbendazim @ 2g/kg seed
+📏 **Spacing**: 30 cm x 10 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 5-8 tons/ha
+• NPK: 20:40:20 kg/ha
+• Zinc Sulphate: 25 kg/ha if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 light irrigations (depending on rainfall)
+• Weed control early; avoid waterlogging
+
+🌾 **STEP 3: HARVEST**
+• Time: 60-75 days after sowing when pods mature
+• Yield: 6-8 quintals per hectare`,
+
+    "Black Gram (Urad)": `🌱 **BLACK GRAM (URAD) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif)
+🌱 **Seed Rate**: 15-20 kg/ha
+💊 **Seed Treatment**: Rhizobium + Carbendazim @ 2g/kg seed
+📏 **Spacing**: 30 cm x 10-15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 5-8 tons/ha
+• NPK: 20:40:20 kg/ha
+• Sulphur: 20 kg/ha if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 irrigations; avoid excess moisture
+• Timely weeding and disease watch
+
+🌾 **STEP 3: HARVEST**
+• Time: 90-110 days depending on variety
+• Yield: 8-12 quintals per hectare`,
+
+    "Safflower (Kusum)": `🌼 **SAFFLOWER (KUSUM) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: October-November (Rabi)
+🌱 **Seed Rate**: 6-8 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 30 cm x 10-15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 5-7 tons/ha
+• NPK: 40:40:20 kg/ha
+• Boron: 0.5-1 kg/ha if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 irrigations; drought tolerant crop
+• Control safflower fly and aphids
+
+🌾 **STEP 3: HARVEST**
+• Time: 120-140 days when heads dry
+• Yield: 8-12 quintals per hectare`,
+
+    "Sunflower (Surajmukhi)": `🌻 **SUNFLOWER (SURAJMUKHI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or February-March (Rabi)
+🌱 **Seed Rate**: 8-10 kg/ha (hybrids lower)
+💊 **Seed Treatment**: Thiram + Carbendazim @ 2-3g/kg seed
+📏 **Spacing**: 60 cm x 30 cm (single row) or 45 cm x 30 cm (double row)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 8-10 tons/ha
+• NPK: 60:40:40 kg/ha
+• Boron and Zinc if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 3-4 irrigations, critical at flowering & grain fill
+• Bird protection and moth control
+
+🌾 **STEP 3: HARVEST**
+• Time: 100-120 days when back of heads turn yellow
+• Yield: 10-15 quintals seed per hectare`,
+
+    "Sesame (Til)": `🌾 **SESAME (TIL) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or March-April (Rabi/late)
+🌱 **Seed Rate**: 5-6 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 30 cm x 10 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 5-7 tons/ha
+• NPK: 20:40:20 kg/ha
+• Calcium and Boron if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 2-3 light irrigations; crop is drought tolerant
+• Support during heavy winds if tall varieties
+
+🌾 **STEP 3: HARVEST**
+• Time: 90-120 days when capsules turn brown
+• Yield: 5-8 quintals per hectare`,
+
+    "Millet (Bajra/Pearl Millet)": `🌾 **MILLET (BAJRA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif)
+🌱 **Seed Rate**: 4-6 kg/ha (if broadcast) or 3-4 kg/ha (row)
+💊 **Seed Treatment**: Thiram/Carbendazim @ 2-3g/kg seed
+📏 **Spacing**: 45 cm x 10-15 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 5-8 tons/ha
+• NPK: 60:30:20 kg/ha
+• Iron and Zinc if deficient
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 1-2 irrigations in dry spells
+• Tolerant to heat and low moisture
+
+🌾 **STEP 3: HARVEST**
+• Time: 60-90 days depending on hybrid
+• Yield: 20-30 quintals per hectare`,
+
+    "Banana (Kela)": `🍌 **BANANA (KELA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: Year-round (prefer early monsoon)
+🌱 **Planting Material**: 1200-1600 suckers/ha (depending on spacing)
+💊 **Treatment**: Treat suckers with fungicide (Carbendazim) before planting
+📏 **Spacing**: 2.5 m x 2.5 m (about 1600 plants/ha)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 40-50 tons/ha (split doses)
+• NPK: 600:200:600 kg/ha (split monthly)
+• Micronutrients: Boron, Zinc as foliar sprays
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Frequent irrigation (drip recommended)
+• Propping and bunch covers to protect fruits
+
+🌾 **STEP 3: HARVEST**
+• Time: 9-12 months to first bunch
+• Yield: 50-70 tons per hectare`,
+
+    "Papaya (Papaiya)": `🥭 **PAPAYA (PAPAIYA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: Year-round in warm areas; avoid frost
+🌱 **Planting Material**: Seedlings from polybags, 1600-2000 plants/ha at 2m x 2m
+💊 **Treatment**: Seed/seedling treatment with Trichoderma
+📏 **Spacing**: 2 m x 2 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 20-25 tons/ha
+• NPK: 200:100:200 kg/ha (split monthly)
+• Calcium and Boron for fruit quality
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Frequent irrigation and mulching
+• Protect from strong winds; stake tall plants
+
+🌾 **STEP 3: HARVEST**
+• Time: 9-11 months after planting (first harvest)
+• Yield: 40-60 tons per hectare (varies widely)`,
+
+     "Chili (Mirchi)": `🌶️ **CHILI (MIRCHI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: November-December (Rabi) or July (Kharif)
+🌱 **Seed Rate**: 250-300 g/ha
+💊 **Seed Treatment**: Trichoderma @ 4g/kg seed
+👶 **Seedling Age**: 6-8 weeks
+📏 **Spacing**: 60 cm x 45 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-12 tons/ha
+• NPK: 120:60:60 kg/ha
+• Calcium nitrate and Boron for fruit set
+
+💧 **STEP 2: IRRIGATION & PEST MANAGEMENT**
+• Drip irrigation; 2-3 irrigations weekly during fruiting
+• Watch for thrips, fruit borer; use pheromone traps and biocontrols
+
+🌾 **STEP 3: HARVEST**
+• Time: 70-120 days after transplanting depending on variety
+• Yield: 15-25 quintals per hectare`,
+
+    "Garlic (Lasun)": `🧄 **GARLIC (LASUN) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: October-November (Rabi)
+🌱 **Seed Rate**: 8-10 quintals cloves/ha
+💊 **Seed Treatment**: Fungicide (Carbendazim) dip
+📏 **Spacing**: 20 cm x 10 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 120:60:60 kg/ha
+• Boron and Zinc as needed
+
+💧 **STEP 2: IRRIGATION & CARE**
+• 6-8 light irrigations; avoid waterlogging
+• Weed control and neck rot prevention
+
+🌾 **STEP 3: HARVEST**
+• Time: April-May when tops yellow and dry
+• Yield: 150-200 quintals per hectare`,
+
+    "Brinjal (Vangi)": `🫓 **BRINJAL (VANGI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: September-October (Rabi) or May-June (Kharif)
+🌱 **Seed Rate**: 300-400 g/ha
+💊 **Seed Treatment**: Trichoderma @ 4g/kg seed
+👶 **Seedling Age**: 30-35 days
+📏 **Spacing**: 60 cm x 45 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 120:60:60 kg/ha
+• Calcium and Boron for better fruit set
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Drip irrigation every 2-3 days in fruiting
+• Watch for fruit borer; use pheromone traps
+
+🌾 **STEP 3: HARVEST**
+• Time: 60-80 days after transplanting
+• Yield: 200-300 quintals per hectare`,
+
+    "Cabbage (Bund Gobhi)": `🥬 **CABBAGE (BUND GOBHI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: September-October (Rabi)
+🌱 **Seed Rate**: 400-500 g/ha
+💊 **Seed Treatment**: Trichoderma @ 4g/kg seed
+👶 **Seedling Age**: 25-30 days
+📏 **Spacing**: 45 cm x 30 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 120:80:80 kg/ha
+• Boron and Calcium for better head formation
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid water stress at head formation
+• Control aphids and diamondback moth
+
+🌾 **STEP 3: HARVEST**
+• Time: 70-90 days after transplanting when heads are firm
+• Yield: 250-350 quintals per hectare`,
+
+    "Cauliflower (Phool Gobhi)": `🥬 **CAULIFLOWER (PHOOL GOBHI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: NURSERY & TRANSPLANTING**
+📅 **Nursery Time**: August-September (Early Rabi)
+🌱 **Seed Rate**: 400-500 g/ha
+💊 **Seed Treatment**: Trichoderma @ 4g/kg seed
+👶 **Seedling Age**: 25-30 days
+📏 **Spacing**: 45 cm x 30 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 120:80:80 kg/ha
+• Boron and Calcium for better curd quality
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid drought at curd initiation
+• Control pests and diseases timely
+
+🌾 **STEP 3: HARVEST**
+• Time: 70-90 days after transplanting when curds are tight
+• Yield: 200-300 quintals per hectare`,
+
+    "Bitter Gourd (Karela)": `🥒 **BITTER GOURD (KARELA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: Sowing & Trellising**
+📅 **Time**: June-July (Kharif) or February-March (summer)
+🌱 **Seed Rate**: 4-5 kg/ha
+💊 **Seed Treatment**: Carbendazim + Rhizobium
+📏 **Spacing**: 2 m x 1 m (with trellis)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 100:60:60 kg/ha
+• Micronutrients as needed
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Drip irrigation every 2-3 days during fruiting
+• Provide trellis and regular pruning
+
+🌾 **STEP 3: HARVEST**
+• Time: 60-80 days after sowing
+• Yield: 150-200 quintals per hectare`,
+
+    "Lady's Finger (Bhendi/Drumstick)": `🥬 **LADY'S FINGER (BHENDI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or February-March (summer)
+🌱 **Seed Rate**: 10-12 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 60 cm x 45 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-12 tons/ha
+• NPK: 100:60:60 kg/ha
+• Micronutrients as needed
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid waterlogging
+• Timely weeding and pest control
+
+🌾 **STEP 3: HARVEST**
+• Time: 60-90 days after sowing; pick tender fruits
+• Yield: 200-300 quintals per hectare`,
+
+    "Okra (Bhindi)": `🥬 **OKRA (BHINDI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or February-March (summer)
+🌱 **Seed Rate**: 10-12 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 60 cm x 45 cm
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-12 tons/ha
+• NPK: 100:60:60 kg/ha
+• Micronutrients as needed
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid waterlogging
+• Timely weeding and pest control
+
+🌾 **STEP 3: HARVEST**
+• Time: 60-90 days after sowing; pick tender fruits
+• Yield: 200-300 quintals per hectare`,
+
+    "Cucumber (Kheera)": `🥒 **CUCUMBER (KHEERA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or February-March (summer)
+🌱 **Seed Rate**: 3-4 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 1.5 m x 1 m (with trellis) or 2 m x 1 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 12-15 tons/ha
+• NPK: 80:60:60 kg/ha
+• Micronutrients as needed
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid water stress at fruiting
+• Provide trellis and prune older leaves
+
+🌾 **STEP 3: HARVEST**
+• Time: 45-60 days after sowing
+• Yield: 150-200 quintals per hectare`,
+
+    "Pumpkin (Bottla)": `🫘 **PUMPKIN (BOTTLA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: SOWING**
+📅 **Time**: June-July (Kharif) or February-March (summer)
+🌱 **Seed Rate**: 3-4 kg/ha
+💊 **Seed Treatment**: Carbendazim @ 2g/kg seed
+📏 **Spacing**: 2 m x 1.5 m (with spreading)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 12-15 tons/ha
+• NPK: 80:60:60 kg/ha
+• Micronutrients as needed
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid waterlogging
+• Control fruit borers and pests
+
+🌾 **STEP 3: HARVEST**
+• Time: 90-110 days after sowing when rind hardens
+• Yield: 200-300 quintals per hectare`,
+
+    "Watermelon (Bhallu)": `🍉 **WATERMELON (BHALLU) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: Sowing & Preparation**
+📅 **Time**: January-March (summer irrigated)
+🌱 **Seed Rate**: 2-3 kg/ha (hybrids less)
+💊 **Seed Treatment**: Carbendazim + Trichoderma
+📏 **Spacing**: 2.5 m x 2 m (with wide beds)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 tons/ha
+• NPK: 100:60:60 kg/ha
+• High potassium for fruit quality
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Frequent irrigation; avoid water stress at fruiting
+• Control pests and diseases timely
+
+🌾 **STEP 3: HARVEST**
+• Time: 90-110 days after sowing when fruit skin shines
+• Yield: 300-400 quintals per hectare`,
+
+    "Mango (Mamidi)": `🥭 **MANGO (MAMIDI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: June-July (monsoon planting)
+🌱 **Planting Material**: 400-500 plants/ha at 10 m x 10 m
+💊 **Treatment**: Dip roots in fungicide before planting
+📏 **Spacing**: 10 m x 10 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 20-30 kg/tree/year (increasing with age)
+• NPK: 500:250:250 g/tree/year (adult trees)
+• Micronutrients as per soil test
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Irrigate during dry periods; avoid waterlogging
+• Pruning, training, and pest/disease management
+
+🌾 **STEP 3: HARVEST**
+• Time: 4-6 years after planting; harvest in summer
+• Yield: 50-100 kg/tree (adult, varies by variety)`,
+
+    "Grape (Dakkan)": `🍇 **GRAPE (DAKKAN) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: December-January (vine planting)
+🌱 **Planting Material**: 800-1000 vines/ha at 2.5 m x 2 m
+💊 **Treatment**: Dip root zone in fungicide before planting
+📏 **Spacing**: 2.5 m x 2 m (with trellis)
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 kg/vine/year
+• NPK: 200:100:100 g/vine/year (adult vines)
+• Boron and Zinc for fruit quality
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Regular irrigation; avoid water stress at flowering
+• Proper trellising, pruning, and disease control
+
+🌾 **STEP 3: HARVEST**
+• Time: 2-3 years after planting; harvest in summer
+• Yield: 10-20 tons per hectare (varies by variety)`,
+
+    "Lemon (Nimma)": `🍋 **LEMON (NIMMA) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: June-July (monsoon planting)
+🌱 **Planting Material**: 400-500 plants/ha at 6 m x 6 m
+💊 **Treatment**: Dip roots in fungicide before planting
+📏 **Spacing**: 6 m x 6 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 kg/tree/year
+• NPK: 300:150:150 g/tree/year (adult trees)
+• Micronutrients as per soil test
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Irrigate during dry periods; avoid waterlogging
+• Pruning, training, and pest/disease management
+
+🌾 **STEP 3: HARVEST**
+• Time: 3-4 years after planting; harvest throughout year
+• Yield: 40-80 kg/tree (adult, varies by variety)`,
+
+    "Orange (Kottai)": `🍊 **ORANGE (KOTTAI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: June-July (monsoon planting)
+🌱 **Planting Material**: 400-500 plants/ha at 6 m x 6 m
+💊 **Treatment**: Dip roots in fungicide before planting
+📏 **Spacing**: 6 m x 6 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 kg/tree/year
+• NPK: 300:150:150 g/tree/year (adult trees)
+• Micronutrients as per soil test
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Irrigate during dry periods; avoid waterlogging
+• Pruning, training, and pest/disease management
+
+🌾 **STEP 3: HARVEST**
+• Time: 3-4 years after planting; harvest in winter
+• Yield: 50-100 kg/tree (adult, varies by variety)`,
+
+    "Cashew (Kathaballu)": `🌰 **CASHEW (KATHABALLU) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: June-July (monsoon planting)
+🌱 **Planting Material**: 100-120 plants/ha at 10 m x 10 m
+💊 **Treatment**: Dip root zone in fungicide before planting
+📏 **Spacing**: 10 m x 10 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-15 kg/tree/year
+• NPK: 200:100:100 g/tree/year (adult trees)
+• Micronutrients as per soil test
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Irrigate during dry periods; avoid waterlogging
+• Pruning, training, and pest/disease management
+
+🌾 **STEP 3: HARVEST**
+• Time: 4-5 years after planting; harvest in summer
+• Yield: 5-10 kg/tree (adult, varies by variety)`,
+
+    "Coconut (Bans)": `🌴 **COCONUT (BANS) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING**
+📅 **Time**: June-July (monsoon planting)
+🌱 **Planting Material**: 400-500 plants/ha at 6 m x 6 m
+💊 **Treatment**: Dip root zone in fungicide before planting
+📏 **Spacing**: 6 m x 6 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 15-20 kg/tree/year
+• NPK: 300:150:150 g/tree/year (adult trees)
+• Micronutrients as per soil test
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Irrigate during dry periods; avoid waterlogging
+• Pruning, training, and pest/disease management
+
+🌾 **STEP 3: HARVEST**
+• Time: 4-5 years after planting; harvest throughout year
+• Yield: 60-100 nuts/tree (adult, varies by variety)`,
+
+    "Tea (Chai)": `🍵 **TEA (CHAI) - COMPLETE FARMER'S GUIDE**
+    
+═══════════════════════════════════════════════════════════
+🌱 **STEP 1: PLANTING & PREPARATION**
+📅 **Time**: June-July (monsoon planting in suitable regions)
+🌱 **Planting Material**: 1000-1200 plants/ha at 1.5 m x 1 m
+💊 **Treatment**: Dip root zone in fungicide before planting
+📏 **Spacing**: 1.5 m x 1 m
+
+💊 **FERTILIZER & MANURE**:
+• FYM: 10-15 kg/plant/year
+• NPK: 200:100:100 g/plant/year (adult plants)
+• Micronutrients as per soil test
+
+💧 **STEP 2: IRRIGATION & CARE**
+• Irrigate during dry periods; avoid waterlogging
+• Regular pruning, training, and pest/disease management
+
+🌾 **STEP 3: HARVEST**
+• Time: 3-4 years after planting; harvest shoots regularly
+• Yield: 1-2 tons of made tea per hectare (varies by variety)`
+};
 })();
