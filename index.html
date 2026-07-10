@@ -13,6 +13,246 @@
     <link rel="stylesheet" href="techmankapapa.css">
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <style>
+        /* Custom Cursor Integration */
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), auto;
+        }
+
+        button, .click-card, .nav-item, .user-profile {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ffd966" stroke="%23b45f06" stroke-width="1.5"/><text x="8" y="18" font-size="10">🌱</text></svg>'), pointer;
+        }
+
+        /* NEW AUTH MODAL STYLES */
+        .auth-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-modal {
+            background: white;
+            border-radius: 32px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        .auth-modal-header {
+            background: linear-gradient(135deg, #2e7d32, #f9a825);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .auth-modal-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .auth-modal-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .auth-modal-body {
+            padding: 30px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: #2e7d32;
+            border-bottom: 3px solid #2e7d32;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 14px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .auth-form button:hover {
+            background: #1b5e20;
+        }
+
+        .auth-form button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #4caf50;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top: 2px solid #2e7d32;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #eee;
+        }
+
+        .verify-title {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .verify-subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        #verify-code {
+            text-align: center;
+            font-size: 1.3rem;
+            letter-spacing: 8px;
+            font-weight: bold;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+        }
+
+        .resend-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .resend-link a {
+            color: #2e7d32;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
+        .resend-link a:hover {
+            text-decoration: underline;
+        }
+
+        .info-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #999;
+            margin-top: 15px;
+        }
+
+        /* Google Translate Element Styling Overrides */
+        #google_translate_element {
+            margin-right: 15px;
+            display: inline-block;
+        }
+        .goog-te-gadget-simple {
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--border) !important;
+            padding: 6px 12px !important;
+            border-radius: 20px !important;
+            font-family: 'Quicksand', sans-serif !important;
+        }
+        .goog-te-gadget-icon {
+            display: none !important;
+        }
+        .goog-te-menu-value span {
+            color: var(--text1) !important;
+            font-size: 0.9rem !important;
+            font-weight: 500 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -30,41 +270,37 @@
         </div>
         <div class="auth-modal-body">
             <div class="auth-tabs">
-                <button class="auth-tab active" id="tab-login-trigger">Login</button>
-                <button class="auth-tab" id="tab-signup-trigger">Sign Up</button>
+                <button class="auth-tab active" onclick="switchAuthTabNew('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTabNew('signup')">Sign Up</button>
             </div>
-            
             <div id="login-form-new" class="auth-form active">
                 <input type="email" id="login-email" placeholder="Email Address" required>
                 <input type="password" id="login-password" placeholder="Password" required>
-                <button id="login-btn">Login</button>
+                <button id="login-btn" onclick="handleLoginNew()">Login</button>
                 <div id="login-error" class="error-message"></div>
             </div>
-            
             <div id="signup-form-new" class="auth-form">
                 <input type="text" id="signup-name" placeholder="Full Name" required>
                 <input type="email" id="signup-email" placeholder="Email Address" required>
                 <input type="password" id="signup-password" placeholder="Password" required>
-                <button id="signup-btn">Create Account</button>
+                <button id="signup-btn" onclick="handleSignupNew()">Create Account</button>
                 <div id="signup-error" class="error-message"></div>
                 <p class="info-note">We'll send a 6-digit verification code to your email</p>
             </div>
-            
             <div style="text-align: center; margin-top: 15px;">
                 <span style="color: var(--text2); font-size: 0.9rem;">Or want to explore first?</span>
-                <button type="button" id="guest-login-btn" style="display: block; width: 100%; margin-top: 8px; padding: 12px; background: transparent; border: 2px dashed #2e7d32; color: #2e7d32; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                <button type="button" id="guest-login-btn" onclick="handleGuestLogin()" style="display: block; width: 100%; margin-top: 8px; padding: 12px; background: transparent; border: 2px dashed #2e7d32; color: #2e7d32; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
                     ✨ Continue as Guest
                 </button>
             </div>
-            
             <div id="verification-section" style="display: none;">
                 <hr>
                 <div class="verify-title">🔐 Verify Your Email</div>
                 <div class="verify-subtitle">Enter the 6-digit code sent to your email</div>
                 <input type="text" id="verify-code" placeholder="000000" maxlength="6">
-                <button id="verify-submit-btn" style="background: #f9a825;">Verify Account</button>
+                <button onclick="verifyCodeNew()" style="background: #f9a825;">Verify Account</button>
                 <div id="verify-error" class="error-message"></div>
-                <div class="resend-link"><a id="resend-code-trigger">Didn't receive code? Resend</a></div>
+                <div class="resend-link"><a onclick="resendCodeNew()">Didn't receive code? Resend</a></div>
             </div>
         </div>
     </div>
@@ -440,40 +676,363 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="schemes_data.js"></script>
+
 <script src="itzmee_here.js"></script>
 
-<script type="module">
-    import { AuthSystem } from './auth.js';
-    import { MessageSystem } from './message.js';
-
-    const SERVICE_ID = 'service_c48sfqj';
-    const SIGNUP_TEMPLATE_ID = 'template_tzsa9yh';
-    const CONTACT_TEMPLATE_ID = 'template_xnjx3mg';
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // Fallback safety unlatch: ensure page unblanks even if session profiles reject asynchronously
-        setTimeout(() => {
-            const loader = document.getElementById('loading-screen');
-            if (loader && loader.style.display !== 'none') {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.display = 'none'; }, 400);
-            }
-        }, 1200);
-
+<script>
+    // Database
+    let users = JSON.parse(localStorage.getItem('patukrishi_users') || '{}');
+    let pendingVerifications = JSON.parse(localStorage.getItem('patukrishi_pending') || '{}');
+    let currentPendingEmail = null;
+    
+    function generateCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    
+    async function sendVerificationEmail(email, name, code) {
         try {
-            AuthSystem.initSession();
-            MessageSystem.bindContactForm(SERVICE_ID, CONTACT_TEMPLATE_ID);
-        } catch(err) {
-            console.error("Auth payload initialization bypassed context:", err);
-            // Dynamic window recovery unlatch
-            document.getElementById('authModal').classList.add('show');
+            const templateParams = {
+                email: email,
+                to_name: name,
+                name: name,
+                passcode: code,
+                time: new Date().toLocaleTimeString()
+            };
+            
+            const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            console.log('Email sent successfully!', response);
+            return { success: true };
+        } catch (error) {
+            console.error('Email failed:', error);
+            return { success: false, error: error.text || 'Failed to send email' };
         }
+    }
+    
+    function setButtonLoading(buttonId, isLoading) {
+        const btn = document.getElementById(buttonId);
+        if (btn) {
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loader"></span> Please wait...';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = buttonId === 'login-btn' ? 'Login' : 'Create Account';
+            }
+        }
+    }
+    
+    window.switchAuthTabNew = (tab) => {
+        document.querySelectorAll('#authModal .auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#authModal .auth-form').forEach(f => f.classList.remove('active'));
+        document.getElementById('verification-section').style.display = 'none';
+        document.getElementById('verify-error').innerText = '';
+        
+        if (tab === 'login') {
+            document.querySelectorAll('#authModal .auth-tab')[0].classList.add('active');
+            document.getElementById('login-form-new').classList.add('active');
+        } else {
+            document.querySelectorAll('#authModal .auth-tab')[1].classList.add('active');
+            document.getElementById('signup-form-new').classList.add('active');
+        }
+    };
+    
+    window.handleSignupNew = async () => {
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const errorDiv = document.getElementById('signup-error');
+        
+        if (!name || !email || !password) {
+            errorDiv.innerText = 'Please fill all fields';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        if (password.length < 4) {
+            errorDiv.innerText = 'Password must be at least 4 characters';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        if (users[email]) {
+            errorDiv.innerText = 'Email already registered. Please login.';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        const code = generateCode();
+        
+        setButtonLoading('signup-btn', true);
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '📧 Sending verification email...';
+        
+        const emailResult = await sendVerificationEmail(email, name, code);
+        
+        if (!emailResult.success) {
+            setButtonLoading('signup-btn', false);
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = '❌ ' + emailResult.error;
+            return;
+        }
+        
+        pendingVerifications[email] = {
+            name: name,
+            password: password,
+            code: code,
+            expires: Date.now() + 15 * 60 * 1000
+        };
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        currentPendingEmail = email;
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerHTML = '✅ Verification code sent to ' + email + '! Please check your inbox.';
+        
+        document.getElementById('signup-name').value = '';
+        document.getElementById('signup-email').value = '';
+        document.getElementById('signup-password').value = '';
+        document.getElementById('verification-section').style.display = 'block';
+        document.getElementById('verify-code').value = '';
+        document.getElementById('verify-error').innerText = '';
+        
+        setButtonLoading('signup-btn', false);
+    };
+    
+    window.verifyCodeNew = () => {
+        const code = document.getElementById('verify-code').value;
+        const email = currentPendingEmail;
+        const errorDiv = document.getElementById('verify-error');
+        
+        if (!code || code.length !== 6) {
+            errorDiv.innerText = 'Please enter the 6-digit verification code';
+            return;
+        }
+        
+        if (!email) {
+            errorDiv.innerText = 'No pending verification. Please sign up again.';
+            return;
+        }
+        
+        const pending = pendingVerifications[email];
+        
+        if (!pending) {
+            errorDiv.innerText = 'No pending verification found. Please sign up again.';
+            return;
+        }
+        
+        if (pending.code !== code) {
+            errorDiv.innerText = '❌ Invalid verification code. Please try again.';
+            return;
+        }
+        
+        if (pending.expires < Date.now()) {
+            errorDiv.innerText = '❌ Verification code expired. Please click "Resend" to get a new code.';
+            return;
+        }
+        
+        users[email] = {
+            name: pending.name,
+            email: email,
+            password: pending.password,
+            verified: true,
+            createdAt: new Date().toISOString()
+        };
+        
+        delete pendingVerifications[email];
+        localStorage.setItem('patukrishi_users', JSON.stringify(users));
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '✅ Account verified successfully! You can now login.';
+        
+        setTimeout(() => {
+            document.getElementById('verification-section').style.display = 'none';
+            document.getElementById('login-email').value = email;
+            switchAuthTabNew('login');
+            errorDiv.innerText = '';
+        }, 2000);
+    };
+    
+    window.resendCodeNew = async () => {
+        const email = currentPendingEmail;
+        const errorDiv = document.getElementById('verify-error');
+        
+        if (!email) {
+            errorDiv.innerText = 'No pending verification. Please sign up again.';
+            return;
+        }
+        
+        const pending = pendingVerifications[email];
+        if (!pending) {
+            errorDiv.innerText = 'No pending verification found. Please sign up again.';
+            return;
+        }
+        
+        const newCode = generateCode();
+        pending.code = newCode;
+        pending.expires = Date.now() + 15 * 60 * 1000;
+        localStorage.setItem('patukrishi_pending', JSON.stringify(pendingVerifications));
+        
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '📧 Sending new code...';
+        
+        const emailResult = await sendVerificationEmail(email, pending.name, newCode);
+        
+        if (emailResult.success) {
+            errorDiv.className = 'success-message';
+            errorDiv.innerText = '✅ New verification code sent! Please check your email.';
+        } else {
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = '❌ ' + emailResult.error;
+        }
+    };
+    
+    window.handleLoginNew = async () => {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const errorDiv = document.getElementById('login-error');
+        
+        if (!email || !password) {
+            errorDiv.innerText = 'Please enter email and password';
+            errorDiv.className = 'error-message';
+            return;
+        }
+        
+        setButtonLoading('login-btn', true);
+        errorDiv.innerText = '';
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const user = users[email];
+        
+        if (!user) {
+            errorDiv.innerText = 'No account found. Please sign up first.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        if (user.password !== password) {
+            errorDiv.innerText = 'Incorrect password. Please try again.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        if (!user.verified) {
+            errorDiv.innerText = 'Please verify your email first.';
+            errorDiv.className = 'error-message';
+            setButtonLoading('login-btn', false);
+            return;
+        }
+        
+        localStorage.setItem('patukrishi_session', JSON.stringify({ name: user.name, email: user.email }));
+        errorDiv.className = 'success-message';
+        errorDiv.innerText = '✅ Login successful! Redirecting...';
+        
+        setTimeout(() => {
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            if (typeof loadDashboard === 'function') {
+                loadDashboard();
+            } else {
+                location.reload();
+            }
+        }, 1000);
+    };
+    
+    (() => {
+        const sessionStr = localStorage.getItem('patukrishi_session');
+        if (sessionStr) {
+            try {
+                const currentSession = JSON.parse(sessionStr);
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('authModal').style.display = 'none';
+                
+                if (currentSession.isGuest) {
+                    document.getElementById('header-name').innerText = "Guest";
+                    document.getElementById('welcome-name').innerText = "Guest";
+                    document.getElementById('header-avatar').innerText = "G";
+                } else if (currentSession.name) {
+                    document.getElementById('header-name').innerText = currentSession.name.split(' ')[0];
+                    document.getElementById('welcome-name').innerText = currentSession.name.split(' ')[0];
+                    document.getElementById('header-avatar').innerText = currentSession.name.charAt(0).toUpperCase();
+                }
+            } catch(e) {
+                localStorage.removeItem('patukrishi_session');
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('authModal').style.display = 'flex';
+            }
+        } else {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('authModal').style.display = 'flex';
+        }
+        
+        const oldAuth = document.getElementById('auth-container');
+        if (oldAuth) oldAuth.style.display = 'none';
+    })();
+</script>
 
-        document.getElementById('tab-login-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('login'));
-        document.getElementById('tab-signup-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('signup'));
-        document.getElementById('signup-btn')?.addEventListener('click', () => AuthSystem.handleSignup(SERVICE_ID, SIGNUP_TEMPLATE_ID));
-        document.getElementById('verify-submit-btn')?.addEventListener('click', () => AuthSystem.verifyPasscode());
+<script>
+    if (document.getElementById('patuContactForm')) {
+        document.getElementById('patuContactForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('patuName').value;
+            const mobile = document.getElementById('patuMobile').value;
+            const email = document.getElementById('patuEmail').value;
+            const message = document.getElementById('patuMessage').value;
+            const statusDiv = document.getElementById('patuFormStatus');
+            
+            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
+            statusDiv.style.color = '#f9a825';
+            
+            try {
+                const templateParams = {
+                    from_name: name,
+                    from_email: email,
+                    mobile: mobile,
+                    message: message,
+                    to_email: 'patukrishi@gmail.com'
+                };
+                
+                const response = await emailjs.send('service_c48sfqj', 'template_xnjx3mg', templateParams);
+                if (response.status === 200) {
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> ✅ Message sent successfully!';
+                    statusDiv.style.color = '#4caf50';
+                    document.getElementById('patuContactForm').reset();
+                    setTimeout(() => statusDiv.innerHTML = '', 5000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('EmailJS Error:', error);
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Failed to send message.';
+                statusDiv.style.color = '#f44336';
+                setTimeout(() => statusDiv.innerHTML = '', 5000);
+            }
+        });
+    }
+</script>
+
+<script>
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loading-screen');
+        if (loader) {
+            loader.style.transition = 'opacity 0.5s ease';
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    setTimeout(() => {
+        const loader = document.getElementById('loading-screen');
+        if (loader && loader.style.display !== 'none') {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
     });
 </script>
 
