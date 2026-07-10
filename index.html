@@ -498,8 +498,8 @@
         document.getElementById('tab-login-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('login'));
         document.getElementById('tab-signup-trigger')?.addEventListener('click', () => AuthSystem.switchAuthTab('signup'));
         document.getElementById('login-btn')?.addEventListener('click', () => {
-            if (typeof handleLoginNew === 'function') handleLoginNew();
-        });
+    AuthSystem.handleLogin();
+});
         document.getElementById('signup-btn')?.addEventListener('click', () => AuthSystem.handleSignup(SERVICE_ID, SIGNUP_TEMPLATE_ID));
         document.getElementById('verify-submit-btn')?.addEventListener('click', () => AuthSystem.verifyPasscode());
         document.getElementById('resend-code-trigger')?.addEventListener('click', () => {
