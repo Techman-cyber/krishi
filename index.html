@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PatuKrishi · Smart Farming for Indian Farmers</title>
     
     <link rel="icon" type="image/png" href="patukrishi logo.png">
@@ -47,8 +47,8 @@
             </div>
             
             <div id="login-form-new" class="auth-form active">
-                <input type="email" id="login-email" placeholder="Email Address" required>
-                <input type="password" id="login-password" placeholder="Password" required>
+                <input type="email" id="login-email" placeholder="Email Address" aria-label="Email Address" required>
+                <input type="password" id="login-password" placeholder="Password" aria-label="Password" required>
                 
                 <div class="compact-forgot-row">
                     <button type="button" id="forgot-password-btn" class="minimal-auth-link">
@@ -61,9 +61,9 @@
             </div>
             
             <div id="signup-form-new" class="auth-form">
-                <input type="text" id="signup-name" placeholder="Full Name" required>
-                <input type="email" id="signup-email" placeholder="Email Address" required>
-                <input type="password" id="signup-password" placeholder="Password" required>
+                <input type="text" id="signup-name" placeholder="Full Name" aria-label="Full Name" required>
+                <input type="email" id="signup-email" placeholder="Email Address" aria-label="Email Address" required>
+                <input type="password" id="signup-password" placeholder="Password" aria-label="Password" required>
                 <button id="signup-btn">Create Account</button>
                 <div id="signup-error" class="error-message"></div>
                 
@@ -83,7 +83,7 @@
                 <hr>
                 <div class="verify-title">🔐 Verify Your Email</div>
                 <div class="verify-subtitle">Enter the 6-digit code sent to your email</div>
-                <input type="text" id="verify-code" placeholder="000000" maxlength="6">
+                <input type="text" id="verify-code" placeholder="000000" aria-label="Verification Code" maxlength="6">
                 <button id="verify-submit-btn" style="background: #f9a825;">Verify Account</button>
                 <div id="verify-error" class="error-message"></div>
                 
@@ -115,7 +115,7 @@
         <div style="display: flex; align-items: center; gap: 15px;">
             <div id="google_translate_element"></div>
             
-            <button id="theme-toggle" style="background:none;border:none;font-size:1.4rem;color:var(--text1)"><i class="fas fa-moon"></i></button>
+            <button id="theme-toggle" aria-label="Toggle Dark Theme" style="background:none;border:none;font-size:1.4rem;color:var(--text1)"><i class="fas fa-moon"></i></button>
             <div class="user-profile" onclick="toggleUserDropdown()">
                 <div class="user-avatar" id="header-avatar">U</div>
                 <span id="header-name">User</span>
@@ -132,25 +132,25 @@
         <section id="home-section" class="content-section active">
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/af/70/f8/af70f8299a42ca31fea7dc2e254fe66e.jpg" alt="Farmer in field"></div>
-                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/e8/b5/7b/e8b57b30c2b24b7cb981707444b225b8.jpg" alt="Agriculture drone"></div>
-                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/e3/cb/7a/e3cb7ab73c4f58fd3e0c1b5eb4e7d4d6.jpg" alt="Tractor"></div>
-                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/95/46/8a/95468af98e9bb4db89dfa9009c4ed12b.jpg" alt="Vegetables"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/af/70/f8/af70f8299a42ca31fea7dc2e254fe66e.jpg" alt="Farmer working in a field"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/e8/b5/7b/e8b57b30c2b24b7cb981707444b225b8.jpg" alt="Agriculture drone scanning fields"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/e3/cb/7a/e3cb7ab73c4f58fd3e0c1b5eb4e7d4d6.jpg" alt="Tractor operating on a farm row"></div>
+                    <div class="swiper-slide"><img src="https://i.pinimg.com/736x/95/46/8a/95468af98e9bb4db89dfa9009c4ed12b.jpg" alt="Fresh organic vegetables harvested"></div>
                 </div>
                 <div class="swiper-pagination"></div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
-           <div class="tip-container" data-aos="fade-up">
-    <div class="tip-header">
-        <div class="time-badge-large">
-            <i class="far fa-clock"></i> 
-            <span id="current-time">00:00:00</span>
-        </div>
-        <div class="tip-number-badge" id="tip-number">#01</div>
-    </div>
-    <div class="tip-text" id="tip-of-the-day">Loading daily tip...</div>
-</div>
+            <div class="tip-container" data-aos="fade-up">
+                <div class="tip-header">
+                    <div class="time-badge-large">
+                        <i class="far fa-clock"></i> 
+                        <span id="current-time">00:00:00</span>
+                    </div>
+                    <div class="tip-number-badge" id="tip-number">#01</div>
+                </div>
+                <div class="tip-text" id="tip-of-the-day">Loading daily tip...</div>
+            </div>
             <div class="hero-section" data-aos="fade-up">
                 <h1>Namaste, <span id="welcome-name">Farmer</span> 🌾</h1>
                 <p>Your own farmer friend – with smart farming</p>
@@ -182,7 +182,7 @@
             <h2 class="agri-border"><i class="fas fa-cloud-sun-rain"></i> Weather & 7-Day Forecast</h2>
             <div class="card">
                 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
-                    <input type="text" id="cityInput" class="form-input" placeholder="Enter city name (Delhi, Mumbai, Chennai...)" style="flex:2">
+                    <input type="text" id="cityInput" class="form-input" placeholder="Enter city name (Delhi, Mumbai, Chennai...)" aria-label="City Name Lookup" style="flex:2">
                     <button class="btn-3d" onclick="getWeatherData()"><i class="fas fa-search"></i> Get Forecast</button>
                     <button class="btn-3d" style="background:#f9a825" onclick="getLocationWeatherData()"><i class="fas fa-location-dot"></i> My Location</button>
                 </div>
@@ -194,9 +194,9 @@
             <h2 class="agri-border"><i class="fas fa-rupee-sign"></i> <span>Mandi Prices · Market Rates</span></h2>
             <div class="card">
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px">
-                    <select id="mandiStateSelect" class="nice-select" onchange="updateDistrictDropdown()"></select>
-                    <select id="mandiDistrictSelect" class="nice-select"></select>
-                    <select id="mandiCropSelect" class="nice-select"></select>
+                    <select id="mandiStateSelect" class="nice-select" aria-label="Select State" onchange="updateDistrictDropdown()"></select>
+                    <select id="mandiDistrictSelect" class="nice-select" aria-label="Select District"></select>
+                    <select id="mandiCropSelect" class="nice-select" aria-label="Select Crop"></select>
                     <button class="btn-3d" onclick="fetchMandiPrices()"><span>Show Prices</span></button>
                 </div>
                 <div id="mandi-multiple-list" style="margin-bottom:20px"></div>
@@ -204,7 +204,7 @@
             </div>
         </section>
 
-        <div id="lens-section" class="content-section">
+        <section id="lens-section" class="content-section">
             <div class="section-header">
                 <h2><i class="fas fa-camera"></i> 🌾 Crop Lens - AI Disease Detection</h2>
                 <p>Upload a photo of your crop to detect diseases and get instant treatment recommendations</p>
@@ -214,7 +214,7 @@
                     <i class="fas fa-cloud-upload-alt" style="font-size: 4rem; color: #f9a825;"></i>
                     <p style="margin: 15px 0; font-size: 1.1rem;">Click below to select a crop image</p>
                     <p style="font-size: 0.85rem; color: #666;">Supports: JPG, PNG, GIF (Max 10MB)</p>
-                    <input type="file" id="crop-image" accept="image/*" style="display: none;">
+                    <input type="file" id="crop-image" accept="image/*" aria-label="Upload Crop Image File" style="display: none;">
                     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
                         <button onclick="document.getElementById('crop-image').click()" style="background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 12px 30px; border: none; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 1rem;">📸 Choose Image</button>
                         <button onclick="analyzeCropImage()" style="background: #f9a825; color: #333; padding: 12px 30px; border: none; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 1rem;">🔍 Analyze Crop</button>
@@ -224,7 +224,7 @@
                 <div id="image-preview" style="margin: 20px 0;"></div>
                 <div id="lens-result" style="margin-top: 20px;"></div>
             </div>
-        </div>
+        </section>
 
         <section id="advisory-section" class="content-section">
             <h2 class="agri-border"><i class="fas fa-calendar-alt"></i> <span>Crop Advisory · Full Guide</span></h2>
@@ -235,8 +235,8 @@
                 </div>
                 <div id="generalAdvisoryInputs">
                     <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
-                        <select id="advisoryStateSelect" class="nice-select" style="flex:1"></select>
-                        <select id="advisorySeasonSelect" class="nice-select" style="flex:1">
+                        <select id="advisoryStateSelect" class="nice-select" aria-label="Select Advisory State" style="flex:1"></select>
+                        <select id="advisorySeasonSelect" class="nice-select" aria-label="Select Advisory Season" style="flex:1">
                             <option value="Rabi">Rabi (Winter)</option>
                             <option value="Kharif">Kharif (Monsoon)</option>
                             <option value="Zaid">Zaid (Summer)</option>
@@ -247,7 +247,7 @@
                 </div>
                 <div id="specificAdvisoryInputs" style="display:none">
                     <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
-                        <select id="specificCropSelect" class="nice-select" style="flex:2"></select>
+                        <select id="specificCropSelect" class="nice-select" aria-label="Select Specific Crop Type" style="flex:2"></select>
                         <button class="btn-3d" onclick="showSpecificAdvisory()"><span>Get 3-Step Guide</span></button>
                     </div>
                     <div id="specificAdvisoryContent" style="padding:20px;background:var(--bg);border-radius:32px;line-height:1.8"></div>
@@ -291,7 +291,7 @@
             <div class="video-gallery" data-aos="fade-up">
                 <div class="video-card">
                     <div class="video-thumbnail">
-                        <iframe src="https://www.youtube.com/embed/h8CF8SFDAgM" title="Smart Farmers Use This" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/h8CF8SFDAgM" title="Smart Farmers Use This… Do You? | PatuKrishi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
                         <span class="video-duration"><i class="far fa-clock"></i> 5:02 min</span>
@@ -311,7 +311,7 @@
                 </div>
             </div>
             <div class="view-all-btn">
-                <a href="https://www.youtube.com/@PatuKrishi" target="_blank" class="btn-3d" style="display: inline-flex; align-items: center; gap: 8px;">
+                <a href="https://www.youtube.com/@PatuKrishi" target="_blank" class="btn-3d" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
                     <i class="fab fa-youtube"></i> Subscribe to PatuKrishi YouTube
                 </a>
             </div>
@@ -366,16 +366,16 @@
                 
                 <form id="patuContactForm">
                     <div style="margin-bottom: 15px;">
-                        <input type="text" id="patuName" placeholder="Your Full Name" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
+                        <input type="text" id="patuName" placeholder="Your Full Name" aria-label="Contact Full Name" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
                     </div>
                     <div style="margin-bottom: 15px;">
-                        <input type="tel" id="patuMobile" placeholder="Mobile Number" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
+                        <input type="tel" id="patuMobile" placeholder="Mobile Number" aria-label="Contact Mobile Number" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
                     </div>
                     <div style="margin-bottom: 15px;">
-                        <input type="email" id="patuEmail" placeholder="Email Address" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
+                        <input type="email" id="patuEmail" placeholder="Email Address" aria-label="Contact Email Address" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem;">
                     </div>
                     <div style="margin-bottom: 20px;">
-                        <textarea id="patuMessage" rows="4" placeholder="Your Message..." required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem; resize: vertical;"></textarea>
+                        <textarea id="patuMessage" rows="4" placeholder="Your Message..." aria-label="Contact Message Area" required style="width: 100%; padding: 14px 18px; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text1); font-size: 1rem; resize: vertical;"></textarea>
                     </div>
                     <button type="submit" class="btn-3d" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <i class="fas fa-paper-plane"></i> Send Message
@@ -389,14 +389,14 @@
     <footer class="official-footer">
         <div class="footer-grid">
             <div class="footer-col">
-                <div class="footer-logo"><img src="patukrishi logo.png" alt="PatuKrishi Logo"></div>
+                <div class="footer-logo"><img src="patukrishi logo.png" alt="PatuKrishi Footer Brand Identity Image"></div>
                 <p>Smart Farming for Indian farmers.</p>
                 <div class="social-links">
-                    <a href="https://www.facebook.com/people/PatuKrishi-Sustainable-Farming/pfbid02Q7jES5tykPXi4f11KRiXoDqdwLFkTGkBCaETi4fom8F533PWk2gt34KToLJF5woPl/" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/_patukrishi_/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/patukrishi-sustainable-farming-3559913b2/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://www.youtube.com/@PatuKrishi" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://twitter.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.facebook.com/people/PatuKrishi-Sustainable-Farming/pfbid02Q7jES5tykPXi4f11KRiXoDqdwLFkTGkBCaETi4fom8F533PWk2gt34KToLJF5woPl/" aria-label="Facebook Page Link" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/_patukrishi_/" aria-label="Instagram Profile Link" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/patukrishi-sustainable-farming-3559913b2/" aria-label="LinkedIn Corporate Profile" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.youtube.com/@PatuKrishi" aria-label="YouTube Channel Link" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://twitter.com" aria-label="X Twitter Profile" target="_blank"><i class="fab fa-x-twitter"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -443,7 +443,7 @@
     <div class="modal-content">
         <h3 style="margin-bottom:20px">Edit Profile</h3>
         <div class="form-group">
-            <input class="form-input" id="edit-name" placeholder="Your Name">
+            <input class="form-input" id="edit-name" placeholder="Your Name" aria-label="Update Profile Name">
         </div>
         <div style="display:flex;gap:12px">
             <button class="btn-3d" onclick="saveProfile()">Save</button>
@@ -452,7 +452,7 @@
     </div>
 </div>
 
-<button class="chatbot-btn" onclick="toggleChatbot()"><i class="fas fa-robot"></i></button>
+<button class="chatbot-btn" aria-label="Open Krishi Bot Chat Window" onclick="toggleChatbot()"><i class="fas fa-robot"></i></button>
 
 <div class="chatbot-window" id="chat-window">
     <div style="background:var(--primary);color:#fff;padding:15px;border-radius:32px 32px 0 0;display:flex;align-items:center;gap:10px">
@@ -462,7 +462,7 @@
         <div class="message msg-bot">Greetings! I am your Krishi Bot. Ask me anything about mandi rates, weather, crop lens diagnostic tools, or general guidelines!</div>
     </div>
     <div class="chat-input-area">
-        <input id="chat-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendMessage()"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        <input id="chat-input" placeholder="Type here..." aria-label="Chat input message box" onkeypress="if(event.key==='Enter') sendMessage()"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
