@@ -22,6 +22,96 @@
 //    localStorage — this needs a real backend + hashing before this app holds
 //    real user data. See TODO comment near the auth section.
 // ============================================================================
+// 1. Disable Right Click
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  return false;
+});
+ 
+// 2. Disable Drag and Drop
+document.addEventListener('dragstart', function(e) {
+  e.preventDefault();
+  return false;
+});
+ 
+// 3. Disable Text Selection
+document.body.style.userSelect = 'none';
+document.body.style.webkitUserSelect = 'none';
+document.body.style.msUserSelect = 'none';
+ 
+// 4. Disable Image Dragging (including dynamically added images)
+const disableDragging = function() {
+  const images = document.querySelectorAll('img');
+  images.forEach(img => {
+    img.setAttribute('draggable', 'false');
+  });
+};
+disableDragging();
+new MutationObserver(disableDragging).observe(document.body, { childList: true, subtree: true });
+ 
+// 5. Disable common devtools/save/print keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'F12') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'J') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'C') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.key === 'p') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'K') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'E') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'M') { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && e.key === 'P') { e.preventDefault(); return false; }
+});
+ 
+// 6. Detect Dev Tools via debugger-timing heuristic
+let devToolsOpen = false;
+function detectDevTools() {
+  const start = performance.now();
+  debugger;
+  const end = performance.now();
+ 
+  if (end - start > 100) {
+    if (!devToolsOpen) {
+      devToolsOpen = true;
+      document.body.innerHTML = `
+        <div style="text-align:center; padding:50px; min-height:100vh; background:#1a1a2e; color:white; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+          <h1 style="font-size:3rem;">🔒 Access Denied</h1>
+          <p style="font-size:1.2rem; margin-top:1rem;">Developer Tools are not allowed on this site.</p>
+          <p>Please close Dev Tools and refresh the page.</p>
+        </div>
+      `;
+      document.body.style.margin = '0';
+      document.body.style.padding = '0';
+    }
+    return true;
+  }
+  devToolsOpen = false;
+  return false;
+}
+detectDevTools();
+setInterval(detectDevTools, 1000);
+ 
+// 7. Disable console methods
+console.log = function() {};
+console.error = function() {};
+console.warn = function() {};
+console.table = function() {};
+console.debug = function() {};
+console.info = function() {};
+console.clear = function() {};
+ 
+// 8. Clear console periodically
+setInterval(function() {
+  if (typeof console !== 'undefined') {
+    console.clear();
+  }
+}, 100);
+ 
+// 9. Block view-source: URL
+if (window.location.protocol === 'view-source:') {
+  window.location.href = 'about:blank';
+}
 
 (function () {
     // ==================== SWIPER INITIALIZATION ====================
