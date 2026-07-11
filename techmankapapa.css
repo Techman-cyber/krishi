@@ -1287,3 +1287,47 @@ button, .click-card, .nav-item, .user-profile {
     display: none !important;
     visibility: hidden !important;
 }
+.tip-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid #eef2f5;
+}
+
+.tip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.time-badge-large {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tip-number-badge {
+    background: #2e7d32;
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.tip-text {
+    color: #333333;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
