@@ -2022,11 +2022,12 @@ recognition.onstart = () => {
     // ===== FIX: this handler was missing. Without it, permission/mic/HTTPS
     // errors failed completely silently — the button would flash "listening"
     // then revert with zero feedback, which is exactly the reported bug. =====
-    recognition.onerror = (event) => {
-        listening = false;
-        micBtn.classList.remove('listening');
-        console.error('Speech recognition error:', event.error);
-
+  recognition.onerror = (event) => {
+    listening = false;
+    starting = false;
+    micBtn.classList.remove('listening');
+    console.error('Speech recognition error:', event.error);
+      
         let msg = 'Mic error: ' + event.error;
         if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
             msg = '🎤 Microphone access blocked. Please allow mic permission for this site in your browser settings.';
