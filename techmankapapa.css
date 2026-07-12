@@ -1467,3 +1467,29 @@ button, .click-card, .nav-item, .user-profile {
 .main-nav::-webkit-scrollbar {
     display: none;
 }
+
+#chat-mic-btn {
+    background: none;
+    border: none;
+    color: var(--primary, #2e7d32);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 8px 10px;
+    transition: color 0.2s ease;
+}
+
+#chat-mic-btn:hover {
+    color: #f9a825;
+}
+
+#chat-mic-btn.listening {
+    color: #fff;
+    background: #d32f2f;
+    border-radius: 50%;
+    animation: mic-pulse 1s infinite;
+}
+
+@keyframes mic-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.5); }
+    50% { opacity: 0.75; box-shadow: 0 0 0 6px rgba(211, 47, 47, 0); }
+}
