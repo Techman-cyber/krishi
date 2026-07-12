@@ -423,9 +423,11 @@
     <div class="chat-messages" id="chat-messages">
         <div class="message msg-bot">Greetings! I am your Krishi Bot. Ask me anything about mandi rates, weather, crop lens diagnostic tools, or general guidelines!</div>
     </div>
-    <div class="chat-input-area">
-        <input id="chat-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendMessage()"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-    </div>
+<div class="chat-input-area">
+    <input id="chat-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendMessage()">
+    <button id="chat-mic-btn" type="button" title="Speak"><i class="fas fa-microphone"></i></button>
+    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+</div>
 </div>
 
 <div id="notification-container"></div>
