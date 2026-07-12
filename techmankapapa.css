@@ -1436,39 +1436,34 @@ button, .click-card, .nav-item, .user-profile {
         cursor: pointer;
     }
 }
-/* Ensure the main header splits space perfectly */
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-}
-
-/* Give the navbar room to breathe so Home and About stay inside the viewport */
+/* Update your navigation container with these exact properties */
 .main-nav {
     display: flex;
     align-items: center;
+    justify-content: flex-start; /* Forces items to align correctly starting from Home */
     gap: 18px;
-    flex: 1;                    /* Forces the menu to take up all available middle space */
-    min-width: 0;               /* Critical layout fix: prevents flex items from breaking container limits */
-    flex-wrap: nowrap;          /* Keeps everything strictly on one line */
-    overflow-x: auto;           /* Allows swiping if the screen gets way too small */
-    padding: 5px 0;
-    scrollbar-width: none;      /* Hides scrollbar on Firefox */
-    -ms-overflow-style: none;  /* Hides scrollbar on IE/Edge */
+    flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 8px 4px;            /* Adds a tiny buffer so text doesn't touch layout boundaries */
+    margin-left: 10px;           /* Pushes "Home" away from the logo safely */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
 }
 
-/* Make sure the text never compresses or cuts off */
+/* Double check your nav-item properties */
 .nav-item {
-    white-space: nowrap;        /* Keeps terms like "Government Schemes" unbroken */
-    flex-shrink: 0;             /* Absolute defense line: prevents the browser from squishing items away */
+    display: inline-block;       /* Ensures the element respects padding and visibility rules */
+    white-space: nowrap;
+    flex-shrink: 0;
     font-size: 0.95rem;
-    padding: 4px 8px;
+    padding: 6px 10px;
+    visibility: visible !important; /* Forces the browser to render the item */
 }
 
-/* Clean up native webkit scrollbars */
+/* Keep this clean to hide scroll tracks */
 .main-nav::-webkit-scrollbar {
     display: none;
 }
