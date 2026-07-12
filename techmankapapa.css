@@ -986,6 +986,14 @@ button, .click-card, .nav-item, .user-profile {
 
 /* ==========================================================================
    11. GOOGLE TRANSLATE ELEMENTS & INTENT HACKS
+   ==========================================================================
+   FIX APPLIED: the original rule here also hid `.skiptranslate`, which is
+   the class Google wraps around the ENTIRE translate dropdown widget (not
+   just the "this page has been translated" banner). That's why the widget
+   never appeared in #google_translate_element / #google_translate_element_auth
+   even though the script loaded and initialized correctly. Removed
+   `.skiptranslate` from this selector list — only the banner iframe and
+   tooltip are hidden now, not the widget itself.
    ========================================================================== */
 #google_translate_element {
     display: inline-flex;
@@ -1002,43 +1010,48 @@ button, .click-card, .nav-item, .user-profile {
     font-size: 0 !important;
 }
 
-.goog-te-gadget-simple {
+/* Google now renders the picker as a plain native <select class="goog-te-combo">
+   instead of the old span/gadget structure, so style that element directly. */
+.goog-te-combo {
     background: var(--card-bg) !important;
+    color: var(--text1) !important;
     border: 2px solid var(--border) !important;
-    padding: 8px 16px !important;
     border-radius: 30px !important;
+    padding: 8px 36px 8px 18px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%234b5c6b" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
     box-shadow: var(--shadow) !important;
-    display: inline-flex !important;
-    align-items: center;
-    gap: 5px;
+    cursor: pointer !important;
+    outline: none !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.goog-te-gadget-simple:hover {
+.goog-te-combo:hover,
+.goog-te-combo:focus {
     border-color: var(--secondary) !important;
     transform: translateY(-1px);
 }
 
-.goog-te-menu-value {
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
+#google_translate_element,
+#google_translate_element_auth {
+    display: inline-flex !important;
     align-items: center;
-    gap: 6px;
 }
 
-.goog-te-menu-value span {
-    color: var(--text1) !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-}
-
-.goog-te-menu-value border {
-    border-top: 5px solid var(--text2) !important;
-    margin-top: 2px !important;
-}
-
-.goog-te-banner-frame, .goog-te-banner, .skiptranslate, #goog-gt-tt {
+/* Only hide the translation banner / tooltip — NOT .skiptranslate,
+   which would hide the actual dropdown widget. */
+.goog-te-banner-frame, .goog-te-banner, #goog-gt-tt {
     display: none !important;
     visibility: hidden !important;
 }
@@ -1282,52 +1295,144 @@ button, .click-card, .nav-item, .user-profile {
     transform: scale(0.97);
 }
 
-/* CORRECTED VERSION - Removes .skiptranslate from the hidden rule */
-.goog-te-banner-frame, .goog-te-banner, #goog-gt-tt {
-    display: none !important;
-    visibility: hidden !important;
-}
-.tip-container {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border: 1px solid #eef2f5;
-}
+/* ==========================================================================
+   14. HAMBURGER MENU & MOBILE SLIDE-IN NAV DRAWER
+   ==========================================================================
+   Desktop: hamburger button is hidden, .main-nav behaves exactly as before
+   (horizontal row in the header).
+   Mobile (<=768px): .main-nav is hidden from the header entirely and instead
+   rendered as a fixed slide-in drawer from the right, opened via the
+   hamburger button. This replaces the old cramped horizontal-scroll nav
+   strip on small screens.
+   ========================================================================== */
 
-.tip-header {
-    display: flex;
-    justify-content: space-between;
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 16px;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: var(--bg) !important;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+    z-index: 2100;
 }
 
-.time-badge-large {
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+.hamburger-btn span {
+    display: block;
+    width: 22px;
+    height: 2.5px;
+    background: var(--text1);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.tip-number-badge {
-    background: #2e7d32;
-    color: #ffffff;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: bold;
+.hamburger-btn.open span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+}
+.hamburger-btn.open span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-btn.open span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
 }
 
-.tip-text {
-    color: #333333;
-    font-size: 1.1rem;
-    line-height: 1.5;
-    font-weight: 500;
+.mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
+    z-index: 2200;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+/* SAFETY NET: the drawer rules below only apply once body carries
+   .has-mobile-menu, which JS adds ONLY after confirming the hamburger
+   button, #mainNav, and the overlay div all actually exist in the HTML.
+   If that markup hasn't been added yet, none of this fires, and .main-nav
+   simply keeps behaving like it always did (the old horizontal scroll
+   strip) — so a CSS-only update can never hide the menu with no way to
+   reopen it. */
+@media (max-width: 768px) {
+    body.has-mobile-menu .hamburger-btn {
+        display: flex;
+    }
+
+    /* Turn the existing .main-nav into a fixed right-side drawer on mobile */
+    body.has-mobile-menu .main-nav {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 280px;
+        max-width: 80vw;
+        height: 100vh;
+        background: var(--card-bg);
+        flex-direction: column;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        gap: 4px !important;
+        padding: 90px 16px 20px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.25);
+        transition: right 0.32s ease;
+        z-index: 2300;
+        border-left: 1px solid var(--border);
+    }
+
+    body.has-mobile-menu .main-nav.open {
+        right: 0;
+    }
+
+    body.has-mobile-menu .main-nav .nav-item {
+        width: 100%;
+        text-align: left;
+        padding: 14px 16px !important;
+        border-radius: 16px;
+        font-size: 1rem !important;
+        white-space: normal !important;
+        border-bottom: 1px solid var(--border);
+    }
+
+    body.has-mobile-menu .main-nav .nav-item:last-child {
+        border-bottom: none;
+    }
+
+    body.has-mobile-menu .main-nav .nav-item.active {
+        background: var(--hover-bg) !important;
+        color: var(--primary) !important;
+    }
+
+    .mobile-nav-close {
+        display: none;
+    }
+
+    body.has-mobile-menu .mobile-nav-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        font-size: 1.1rem;
+        color: var(--text1);
+        cursor: pointer;
+    }
 }
