@@ -530,12 +530,16 @@ function googleTranslateElementInit() {
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  // Mount widget dropdown choice to the gate gateway auth splash modal panel header
-  new google.translate.TranslateElement({
-    pageLanguage: 'en', 
-    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
-  }, 'google_translate_element_auth');
-},
+function googleTranslateElementInit() {
+  // Mount widget dropdown to the auth splash modal header
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
+    },
+    'google_translate_element_auth'
+  );
+}
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
