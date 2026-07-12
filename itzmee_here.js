@@ -1971,23 +1971,39 @@
         bgc: 'bgc-IN'  // Haryanvi (Spoken in Haryana)
     };
 
-    let listening = false;
+ let listening = false;
+let starting = false; // closes the gap between calling start() and onstart actually firing
 
-    micBtn.addEventListener('click', () => {
-        if (listening) {
-            recognition.stop();
+micBtn.addEventListener('click', () => {
+    if (listening || starting) {
+        try { recognition.stop(); } catch (e) { /* already stopping/stopped, ignore */ }
+        return;
+    }
+    starting = true;
+    recognition.lang = speechLangMap[window.currentLanguage] || 'hi-IN';
+    try {
+        recognition.start();
+    } catch (e) {
+        starting = false;
+        if (e.name === 'InvalidStateError') {
+            // The engine says it's already running — trust that over our own
+            // flag and just sync the UI state instead of showing an error.
+            listening = true;
+            micBtn.classList.add('listening');
             return;
         }
-        recognition.lang = speechLangMap[window.currentLanguage] || 'hi-IN';
-        try {
-            recognition.start();
-        } catch (e) {
-            console.warn('Speech recognition failed to start:', e);
-            if (typeof showNotification === 'function') {
-                showNotification('Mic could not start: ' + e.message, 'error');
-            }
+        console.warn('Speech recognition failed to start:', e);
+        if (typeof showNotification === 'function') {
+            showNotification('Mic could not start: ' + e.message, 'error');
         }
-    });
+    }
+});
+
+recognition.onstart = () => {
+    starting = false;
+    listening = true;
+    micBtn.classList.add('listening');
+};
 
     recognition.onstart = () => {
         listening = true;
