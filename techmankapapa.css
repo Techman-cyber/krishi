@@ -1436,38 +1436,3 @@ button, .click-card, .nav-item, .user-profile {
         cursor: pointer;
     }
 }
-/* Update your main header navigation container */
-.main-nav {
-    display: flex;
-    align-items: center;
-    gap: 16px;                  /* Tightens or loosens space between menu options */
-    flex-wrap: nowrap;          /* Strictly forbids items from dropping to a new line */
-    overflow-x: auto;           /* Allows horizontal sliding on smaller mobile screens */
-    padding-bottom: 4px;        /* Tiny buffer space for the scrolling motion */
-    scrollbar-width: none;      /* Firefox hide ugly scrollbar */
-    -ms-overflow-style: none;  /* IE/Edge hide ugly scrollbar */
-    -webkit-overflow-scrolling: touch; /* Butter-smooth swipe animation on mobile iOS/Android */
-}
-
-/* Hide the native webkit scrollbar track to keep the header perfectly clean */
-.main-nav::-webkit-scrollbar {
-    display: none;
-}
-
-/* Update your individual navigation elements */
-.nav-item {
-    white-space: nowrap;        /* Forces text like "Government Schemes" to stay on one single line */
-    font-size: 0.95rem;         /* Marginally scales text to fit more viewports */
-    flex-shrink: 0;             /* Prevents the browser from compressing the text width squished */
-}
-
-/* Quick responsive tweak for standard desktops to ensure everything sits pretty */
-@media (max-width: 1024px) {
-    .main-header {
-        gap: 10px;
-    }
-    .main-nav {
-        gap: 12px;
-        font-size: 0.9rem;
-    }
-}
