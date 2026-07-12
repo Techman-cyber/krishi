@@ -1472,18 +1472,3 @@ button, .click-card, .nav-item, .user-profile {
 .main-nav::-webkit-scrollbar {
     display: none;
 }
-/* Protect the brand identity from getting cut off */
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;      /* Absolute shield: prevents the logo area from compressing */
-    white-space: nowrap; /* Forces "PatuKrishi" to stay as one single piece of text */
-}
-
-/* Optional safety check for the logo text itself */
-.logo-text {
-    font-weight: 700;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-}
