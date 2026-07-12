@@ -2067,10 +2067,42 @@ console.log('Protection Active');
     recognition.interimResults = false;
 
     const speechLangMap = {
-        en: 'en-IN', hi: 'hi-IN', bn: 'bn-IN', te: 'te-IN', mr: 'mr-IN',
-        gu: 'gu-IN', pa: 'pa-IN', ta: 'ta-IN', ml: 'ml-IN', ur: 'ur-IN',
-        kn: 'kn-IN', or: 'or-IN'
-    };
+    // --- Major Scheduled Languages ---
+    en: 'en-IN',   // Indian English
+    hi: 'hi-IN',   // Hindi
+    bn: 'bn-IN',   // Bengali
+    te: 'te-IN',   // Telugu
+    mr: 'mr-IN',   // Marathi
+    gu: 'gu-IN',   // Gujarati
+    pa: 'pa-IN',   // Punjabi
+    ta: 'ta-IN',   // Tamil
+    ml: 'ml-IN',   // Malayalam
+    kn: 'kn-IN',   // Kannada
+    or: 'or-IN',   // Odia (Oriya)
+    ur: 'ur-IN',   // Urdu
+    as: 'as-IN',   // Assamese
+
+    // --- Additional Scheduled & Minor/Regional Languages ---
+    bho: 'bho-IN', // Bhojpuri
+    mai: 'mai-IN', // Maithili
+    sat: 'sat-IN', // Santali
+    ks: 'ks-IN',   // Kashmiri
+    ne: 'ne-IN',   // Nepali (Spoken in Sikkim/North Bengal)
+    kok: 'kok-IN', // Konkani (Goa/Coastal Karnataka)
+    sd: 'sd-IN',   // Sindhi
+    doi: 'doi-IN', // Dogri
+    mni: 'mni-IN', // Manipuri / Meitei
+    sa: 'sa-IN',   // Sanskrit
+    brx: 'brx-IN', // Bodo
+    
+    // --- Highly Localized / Minority Dialects ---
+    tcy: 'tcy-IN', // Tulu (Spoken in coastal Karnataka/Kerala)
+    kha: 'kha-IN', // Khasi (Spoken in Meghalaya)
+    mzo: 'mzo-IN', // Mizo (Spoken in Mizoram)
+    mwr: 'mwr-IN', // Marwari (Spoken in Rajasthan)
+    awa: 'awa-IN', // Awadhi (Spoken in Uttar Pradesh)
+    bgc: 'bgc-IN'  // Haryanvi (Spoken in Haryana)
+};
 
     let listening = false;
 
