@@ -925,7 +925,10 @@
 
     window.loadNewsSection = async function (category = 'agri') {
         currentNewsCategory = category;
-        const container = document.getElementById('news-container'); // ← use your actual container id
+        const container = document.getElementById('news-container');
+        document.querySelectorAll('.news-tabs button').forEach(btn => {
+    btn.classList.toggle('active-tab', btn.getAttribute('onclick').includes(`'${category}'`));
+});// ← use your actual container id
         if (!container) return;
 
         container.innerHTML = '<div style="text-align:center;padding:30px;"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>';
