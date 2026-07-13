@@ -923,37 +923,48 @@
     // ==================== NEWS SECTION ====================
     let currentNewsCategory = 'agri';
 
-    window.loadNewsSection = async function (category = 'agri') {
-        currentNewsCategory = category;
-        const container = document.getElementById('news-container');
-        document.querySelectorAll('.news-tabs button').forEach(btn => {
-    btn.classList.toggle('active-tab', btn.getAttribute('onclick').includes(`'${category}'`));
-});// ← use your actual container id
-        if (!container) return;
-
-        container.innerHTML = '<div style="text-align:center;padding:30px;"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>';
-
-        try {
-            const res = await fetch(`/api/news?category=${encodeURIComponent(category)}`);
-            const data = await res.json();
-            if (!data.success || !data.articles.length) {
-                container.innerHTML = `<p style="text-align:center;padding:20px;">${data.reason || 'No news available right now.'}</p>`;
-                return;
-            }
-           container.innerHTML = data.articles.map(a => `
-    <a href="${a.url}" target="_blank" rel="noopener" class="news-card">
-        ${a.image ? `<img src="${a.image}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
-        <div class="news-card-text">
-            <h4>${a.title}</h4>
-            <span class="news-source-link">${a.source}</span>
-        </div>
-    </a>
-`).join('');
-        } catch (e) {
-            console.error('News load error:', e);
-            container.innerHTML = `<p style="text-align:center;padding:20px;">Failed to load news.</p>`;
+window.loadNewsSection = async function (category = 'agri') {
+    window.currentNewsCategory = category; // Store globally
+    const container = document.getElementById('news-container');
+    
+    // Fix tab button highlighting
+    document.querySelectorAll('.news-tabs button').forEach(btn => {
+        // Check if the button's onclick contains the category
+        const onclickAttr = btn.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes(`'${category}'`)) {
+            btn.classList.add('active-tab');
+        } else {
+            btn.classList.remove('active-tab');
         }
-    };
+    });
+    
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align:center;padding:30px;"><i class="fas fa-spinner fa-pulse fa-2x"></i> Loading news...</div>';
+
+    try {
+        const res = await fetch(`/api/news?category=${encodeURIComponent(category)}`);
+        const data = await res.json();
+        
+        if (!data.success || !data.articles || data.articles.length === 0) {
+            container.innerHTML = `<p style="text-align:center;padding:20px;">${data.reason || 'No news available right now.'}</p>`;
+            return;
+        }
+        
+        container.innerHTML = data.articles.map(a => `
+            <a href="${a.url}" target="_blank" rel="noopener" class="news-card">
+                ${a.image ? `<img src="${a.image}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+                <div class="news-card-text">
+                    <h4>${a.title}</h4>
+                    <span class="news-source-link">${a.source || 'News Source'}</span>
+                </div>
+            </a>
+        `).join('');
+    } catch (e) {
+        console.error('News load error:', e);
+        container.innerHTML = `<p style="text-align:center;padding:20px;">Failed to load news. Please try again later.</p>`;
+    }
+};
     
     // ML Model Simulation - Advanced disease detection
     class CropLensAI {
@@ -1603,15 +1614,27 @@
     }
     window.showNotification = showNotification;
 
-  window.switchSection = e => {
+window.switchSection = function(e) {
+    // Update navigation items
     document.querySelectorAll('.nav-item').forEach(t => {
         t.classList.toggle('active', t.getAttribute('data-section') === e);
     });
+    
+    // Update content sections
     document.querySelectorAll('.content-section').forEach(t => t.classList.remove('active'));
     const section = document.getElementById(e + '-section');
     if (section) section.classList.add('active');
+    
     window.scrollTo(0, 0);
-    if (e === 'news') window.loadNewsSection(currentNewsCategory);  // ← add this
+    
+    // Load news when switching to news section
+    if (e === 'news') {
+        // Make sure currentNewsCategory is defined globally
+        if (typeof currentNewsCategory === 'undefined') {
+            window.currentNewsCategory = 'agri';
+        }
+        loadNewsSection(window.currentNewsCategory);
+    }
 };
 
     const themeToggle = document.getElementById('theme-toggle');
