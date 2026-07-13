@@ -377,7 +377,6 @@
                         <p><strong>💰 Price (₹/q):</strong> <span style="font-size:1.4rem; color:#2e7d32;">${priceValue}</span></p>
                         <p><strong>📅 Date:</strong> ${record.arrival_date || record.updated_date || 'Latest'}</p>
                         <p><strong>📍 Location:</strong> ${record.district || district}, ${record.state || state}</p>
-                        <small style="color:#666;">📊 Source: AGMARKNET (Government of India)</small>
                     `;
                     container.appendChild(card);
                 });
