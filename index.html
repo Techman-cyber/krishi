@@ -423,11 +423,9 @@
     <div class="chat-messages" id="chat-messages">
         <div class="message msg-bot">Greetings! I am your Krishi Bot. Ask me anything about mandi rates, weather, crop lens diagnostic tools, or general guidelines!</div>
     </div>
-<div class="chat-input-area">
-    <input id="chat-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendMessage()">
-    <button id="chat-mic-btn" type="button" title="Speak"><i class="fas fa-microphone"></i></button>
-    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-</div>
+    <div class="chat-input-area">
+        <input id="chat-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendMessage()"><button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
 </div>
 
 <div id="notification-container"></div>
@@ -515,29 +513,27 @@
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
-  // Dashboard Translator Component
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: 'en',
-      includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,kok,kha,mzo'
-    },
-    'google_translate_element'
-  );
+  // 1. Dashboard Translator Component
+  new google.translate.TranslateElement({
+    pageLanguage: 'en', 
+    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne,as,kok,kha,mzo'
+  }, 'google_translate_element');
 
-  // Security Gateway Auth Modal Component
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: 'en',
-      includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,kok,kha,mzo'
-    },
-    'google_translate_element_auth'
-  );
+  // 2. Security Gateway Auth Modal Component
+  new google.translate.TranslateElement({
+    pageLanguage: 'en', 
+    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne,as,kok,kha,mzo'
+  }, 'google_translate_element_auth');
 }
 </script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<script
-  type="text/javascript"
-  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  // Mount widget dropdown choice to the gate gateway auth splash modal panel header
+  new google.translate.TranslateElement({
+    pageLanguage: 'en', 
+    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
+  }, 'google_translate_element_auth');
+}
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
