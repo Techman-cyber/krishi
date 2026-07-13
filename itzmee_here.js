@@ -37,9 +37,9 @@
         currentLanguage = 'en';
 
     // ==================== STABLE API CONFIGURATION ====================
-    const MANDI_API_URL = 'https://api.ceda.ashoka.edu.in/v1/agmarknet/prices';
+    const MANDI_API_URL = 'https://api.ceda.ashoka.edu.in';
     // TODO: put your real data.gov.in / AGMARKNET API key here.
-    const MANDI_API_KEY = '';
+    const MANDI_API_KEY = '5605096a98a46741fff17da879896cf9cd567f8b384abaefabfca5fa0894defb';
     const EMAILJS_SERVICE_ID = 'service_c48sfqj';
     const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';
     const EMAILJS_TEMPLATE_ID_WEATHER_CONTACT = 'template_xnjx3mg'; // used by contact form
