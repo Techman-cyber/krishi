@@ -15,8 +15,9 @@ const CATEGORY_KEYWORDS = {
     prices: ['mandi', 'price', 'msp', 'rate', 'crop']
 };
 
+// Cache disabled: every request will fetch fresh news
 const cache = new Map();
-const CACHE_TTL_MS = 5 * 60 * 1000; // shortened to 5 min so refresh feels live
+const CACHE_TTL_MS = 0;
 
 // Fisher-Yates shuffle — gives a different order each request even when
 // the underlying article set from GNews hasn't changed
@@ -34,15 +35,17 @@ module.exports = async (req, res) => {
         res.status(405).json({ success: false, reason: 'Method not allowed', articles: [] });
         return;
     }
+
     try {
         const category = String(req.query.category || 'agri').toLowerCase();
         const lang = String(req.query.lang || 'en');
         const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
-        const cacheKey = `${category}_${lang}`;
 
+        // Cache check is effectively disabled because CACHE_TTL_MS is 0
+        const cacheKey = `${category}_${lang}`;
         const cached = cache.get(cacheKey);
         if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-            // still shuffle cached data so the ORDER looks fresh on refresh
+            // This block will never run now
             res.status(200).json({ success: true, cached: true, articles: shuffle(cached.articles) });
             return;
         }
@@ -84,7 +87,9 @@ module.exports = async (req, res) => {
             return keywords.some(k => text.includes(k));
         });
 
+        // Still updating cache, but it won't be used because TTL is 0
         cache.set(cacheKey, { articles, timestamp: Date.now() });
+
         res.status(200).json({ success: true, cached: false, articles: shuffle(articles) });
     } catch (error) {
         console.error('News fetch error:', error);
