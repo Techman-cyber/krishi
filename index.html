@@ -107,6 +107,7 @@
             <span class="nav-item" onclick="switchSection('mandi')">Mandi</span>
             <span class="nav-item" onclick="switchSection('lens')">Crop Lens</span>
             <span class="nav-item" onclick="switchSection('advisory')">Advisory</span>
+            <span class="nav-item" onclick="switchSection('news')">News</span>
             <span class="nav-item" onclick="switchSection('schemes')">Government Schemes</span>
             <span class="nav-item" onclick="switchSection('about')">About</span>
         </nav>
@@ -250,6 +251,17 @@
                 </div>
             </div>
         </section>
+
+        <section id="news-section" class="content-section">
+    <h2 class="agri-border"><i class="fas fa-newspaper"></i> <span>Agri News</span></h2>
+    <div class="card">
+        <div class="news-tabs" style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+            <button class="btn-3d news-tab active" data-category="agri" onclick="loadNewsSection('agri')">🌾 Agri News</button>
+            <button class="btn-3d news-tab" data-category="schemes" style="background:#f9a825" onclick="loadNewsSection('schemes')">📋 Schemes & Rural</button>
+        </div>
+        <div id="news-container"></div>
+    </div>
+</section>
 
         <section id="schemes-section" class="content-section">
             <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span>Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
