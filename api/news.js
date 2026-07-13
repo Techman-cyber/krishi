@@ -19,8 +19,6 @@
 const GNEWS_API_KEY = process.env.GNEWS_API_KEY || '';
 const GNEWS_BASE_URL = 'https://gnews.io/api/v4/search';
 
-// Category -> search query mapping. Keeps the feed agriculture-focused
-// instead of pulling in general/national/world news.
 const CATEGORY_QUERIES = {
     agri: 'agriculture OR farmer OR crop OR mandi OR monsoon India',
     schemes: 'farmer scheme OR agriculture subsidy OR PM-Kisan OR rural India',
@@ -28,14 +26,10 @@ const CATEGORY_QUERIES = {
     prices: 'crop prices India OR mandi rates OR MSP India'
 };
 
-// Simple in-memory cache so repeated section opens don't burn through the
-// 100 req/day free quota. NOTE: on Vercel this resets whenever the function
-// "cold starts" (new instance) — it's a bonus, not a guarantee.
 const cache = new Map();
 const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
 
 module.exports = async (req, res) => {
-    // Basic method guard
     if (req.method !== 'GET') {
         res.status(405).json({ success: false, reason: 'Method not allowed' });
         return;
@@ -64,7 +58,7 @@ module.exports = async (req, res) => {
 
         const url = `${GNEWS_BASE_URL}?q=${encodeURIComponent(query)}&lang=${lang}&country=in&max=10&apikey=${GNEWS_API_KEY}`;
 
-        const response = await fetch(url); // Node 18+ runtime on Vercel has global fetch
+        const response = await fetch(url);
         const data = await response.json();
 
         if (!response.ok) {
