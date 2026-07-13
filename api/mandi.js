@@ -31,7 +31,7 @@
 const MANDI_API_KEY = process.env.MANDI_API_KEY || '';
 
 // Official AGMARKNET "Variety-wise Daily Market Prices" resource on data.gov.in
-const MANDI_API_URL = 'https://api.ceda.ashoka.edu.in';
+const MANDI_API_URL = 'https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070';
 
 const cache = new Map();
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes — mandi prices don't change that often intraday
