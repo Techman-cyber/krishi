@@ -524,29 +524,30 @@
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
-  // 1. Dashboard Translator Component
-  new google.translate.TranslateElement({
-    pageLanguage: 'en', 
-    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne,as,kok,kha,mzo'
-  }, 'google_translate_element');
+  // Dashboard Translator Component
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,kok,kha,mzo'
+    },
+    'google_translate_element'
+  );
 
-  // 2. Security Gateway Auth Modal Component
-  new google.translate.TranslateElement({
-    pageLanguage: 'en', 
-    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne,as,kok,kha,mzo'
-  }, 'google_translate_element_auth');
+  // Security Gateway Auth Modal Component
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,kok,kha,mzo'
+    },
+    'google_translate_element_auth'
+  );
 }
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  // Mount widget dropdown choice to the gate gateway auth splash modal panel header
-  new google.translate.TranslateElement({
-    pageLanguage: 'en', 
-    includedLanguages: 'en,hi,bn,te,mr,ta,ur,gu,kn,or,pa,ml,as,sa,bho,mai,ks,gom,sd,doi,mni,sat,ne'
-  }, 'google_translate_element_auth');
-}
+<script
+  type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
+    
 </body>
 </html>
