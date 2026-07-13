@@ -921,6 +921,37 @@
         { name: "Tea (Chai)", emoji: "🍵", stage: "Shoot growth", tip: "Irrigate during dry periods; avoid waterlogging. Do regular pruning, training, and pest/disease management. Harvest shoots regularly after 3–4 years." }
     ];
 
+    // ==================== NEWS SECTION ====================
+    let currentNewsCategory = 'agri';
+
+    window.loadNewsSection = async function (category = 'agri') {
+        currentNewsCategory = category;
+        const container = document.getElementById('news-container'); // ← use your actual container id
+        if (!container) return;
+
+        container.innerHTML = '<div style="text-align:center;padding:30px;"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>';
+
+        try {
+            const res = await fetch(`/api/news?category=${encodeURIComponent(category)}`);
+            const data = await res.json();
+            if (!data.success || !data.articles.length) {
+                container.innerHTML = `<p style="text-align:center;padding:20px;">${data.reason || 'No news available right now.'}</p>`;
+                return;
+            }
+            container.innerHTML = data.articles.map(a => `
+                <div class="news-card">
+                    ${a.image ? `<img src="${a.image}" style="width:100%;border-radius:12px;">` : ''}
+                    <h4>${a.title}</h4>
+                    <p>${a.description || ''}</p>
+                    <a href="${a.url}" target="_blank" rel="noopener">Read more — ${a.source}</a>
+                </div>
+            `).join('');
+        } catch (e) {
+            console.error('News load error:', e);
+            container.innerHTML = `<p style="text-align:center;padding:20px;">Failed to load news.</p>`;
+        }
+    };
+    
     // ML Model Simulation - Advanced disease detection
     class CropLensAI {
         constructor() {
