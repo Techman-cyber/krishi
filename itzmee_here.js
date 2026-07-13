@@ -36,10 +36,7 @@
         userDatabase = JSON.parse(localStorage.getItem('patukrishi_users') || '{}'),
         currentLanguage = 'en';
 
-    // ==================== STABLE API CONFIGURATION ====================
-    const MANDI_API_URL = 'https://api.ceda.ashoka.edu.in';
-    // TODO: put your real data.gov.in / AGMARKNET API key here.
-    const MANDI_API_KEY = '5605096a98a46741fff17da879896cf9cd567f8b384abaefabfca5fa0894defb';
+   
     const EMAILJS_SERVICE_ID = 'service_c48sfqj';
     const EMAILJS_PUBLIC_KEY = 'QA0QL3SJlJH2VL0y3';
     const EMAILJS_TEMPLATE_ID_WEATHER_CONTACT = 'template_xnjx3mg'; // used by contact form
@@ -192,20 +189,13 @@
         </div>`;
     }
 
-    // ==================== REAL MANDI API FUNCTION ====================
+   // ==================== REAL MANDI API FUNCTION (via serverless proxy) ====================
     async function fetchRealMandiPricesFromAPI(state, district, commodity) {
-        if (!MANDI_API_KEY) {
-            console.warn('MANDI_API_KEY is not set — skipping live API call and using mock data.');
-            return null;
-        }
         try {
-            const url = `${MANDI_API_URL}?api-key=${MANDI_API_KEY}&format=json&filters[state]=${encodeURIComponent(state)}&filters[district]=${encodeURIComponent(district)}&filters[commodity]=${encodeURIComponent(commodity)}&limit=20`;
+            const url = `/api/mandi?state=${encodeURIComponent(state)}&district=${encodeURIComponent(district)}&commodity=${encodeURIComponent(commodity)}`;
             const response = await fetch(url);
             const data = await response.json();
-            if (data && data.records && data.records.length > 0) {
-                return data.records;
-            }
-            return null;
+            return (data.success && data.records && data.records.length > 0) ? data.records : null;
         } catch (error) {
             console.error('Error fetching mandi prices:', error);
             return null;
