@@ -1720,15 +1720,16 @@ console.log('Protection Active');
     }
     window.showNotification = showNotification;
 
-    window.switchSection = e => {
-        document.querySelectorAll('.nav-item').forEach(t => {
-            t.classList.toggle('active', t.getAttribute('data-section') === e);
-        });
-        document.querySelectorAll('.content-section').forEach(t => t.classList.remove('active'));
-        const section = document.getElementById(e + '-section');
-        if (section) section.classList.add('active');
-        window.scrollTo(0, 0);
-    };
+  window.switchSection = e => {
+    document.querySelectorAll('.nav-item').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-section') === e);
+    });
+    document.querySelectorAll('.content-section').forEach(t => t.classList.remove('active'));
+    const section = document.getElementById(e + '-section');
+    if (section) section.classList.add('active');
+    window.scrollTo(0, 0);
+    if (e === 'news') window.loadNewsSection(currentNewsCategory);  // ← add this
+};
 
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
