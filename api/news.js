@@ -15,12 +15,18 @@ const CATEGORY_KEYWORDS = {
     prices: ['mandi', 'price', 'msp', 'rate', 'crop']
 };
 
-// Cache disabled: every request will fetch fresh news
-const cache = new Map();
-const CACHE_TTL_MS = 0;
+// Track seen article URLs to avoid repetition across requests
+const seenUrls = new Set();
+const MAX_SEEN_URLS = 5000; // keep memory usage bounded
 
-// Fisher-Yates shuffle — gives a different order each request even when
-// the underlying article set from GNews hasn't changed
+// Simple rotating page index based on time (changes every ~10 minutes)
+function getRotatingPage() {
+    const block = Math.floor(Date.now() / (10 * 60 * 1000)); // 10-min blocks
+    // Cycle page between 1 and 10
+    return (block % 10) + 1;
+}
+
+// Fisher-Yates shuffle
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -41,14 +47,8 @@ module.exports = async (req, res) => {
         const lang = String(req.query.lang || 'en');
         const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
 
-        // Cache check is effectively disabled because CACHE_TTL_MS is 0
-        const cacheKey = `${category}_${lang}`;
-        const cached = cache.get(cacheKey);
-        if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-            // This block will never run now
-            res.status(200).json({ success: true, cached: true, articles: shuffle(cached.articles) });
-            return;
-        }
+        // Get a rotating page number to fetch different results each time
+        const page = getRotatingPage();
 
         if (!GNEWS_API_KEY) {
             res.status(200).json({
@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const url = `${GNEWS_BASE_URL}?q=${encodeURIComponent(query)}&lang=${lang}&country=in&max=25&sortby=publishedAt&apikey=${GNEWS_API_KEY}`;
+        const url = `${GNEWS_BASE_URL}?q=${encodeURIComponent(query)}&lang=${lang}&country=in&max=25&page=${page}&sortby=publishedAt&apikey=${GNEWS_API_KEY}`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -82,13 +82,27 @@ module.exports = async (req, res) => {
         }));
 
         const keywords = CATEGORY_KEYWORDS[category] || CATEGORY_KEYWORDS.agri;
-        const articles = rawArticles.filter(a => {
-            const text = `${a.title || ''} ${a.description || ''}`.toLowerCase();
-            return keywords.some(k => text.includes(k));
-        });
-
-        // Still updating cache, but it won't be used because TTL is 0
-        cache.set(cacheKey, { articles, timestamp: Date.now() });
+        const articles = rawArticles
+            .filter(a => {
+                const text = `${a.title || ''} ${a.description || ''}`.toLowerCase();
+                return keywords.some(k => text.includes(k));
+            })
+            .filter(a => {
+                // Avoid articles we've already seen
+                if (seenUrls.has(a.url)) return false;
+                // Track this URL
+                if (seenUrls.size >= MAX_SEEN_URLS) {
+                    // Remove oldest 10% to keep memory bounded
+                    const toRemove = Math.floor(MAX_SEEN_URLS * 0.1);
+                    let count = 0;
+                    for (const u of seenUrls) {
+                        if (count++ >= toRemove) break;
+                        seenUrls.delete(u);
+                    }
+                }
+                seenUrls.add(a.url);
+                return true;
+            });
 
         res.status(200).json({ success: true, cached: false, articles: shuffle(articles) });
     } catch (error) {
