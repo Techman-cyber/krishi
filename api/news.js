@@ -2,10 +2,10 @@ const CURRENTS_API_KEY = process.env.CURRENTS_API_KEY || '';
 const CURRENTS_BASE_URL = 'https://api.currentsapi.services/v1/search';
 
 const CATEGORY_QUERIES = {
-    agri: '"Indian agriculture" OR "farmer" OR "crop yield" OR "mandi" OR "monsoon crop"',
-    schemes: '"PM-Kisan" OR "farmer scheme" OR "agriculture subsidy" OR "kisan yojana"',
-    weather: '"monsoon forecast" OR "rainfall India" OR "IMD weather"',
-    prices: '"mandi price" OR "MSP crop" OR "crop price India"'
+    agri: '(Indian agriculture) OR (farmer) OR (crop yield) OR (mandi) OR (monsoon crop)',
+    schemes: '(PM-Kisan) OR (farmer scheme) OR (agriculture subsidy) OR (kisan yojana)',
+    weather: '(monsoon forecast) OR (rainfall India) OR (IMD weather)',
+    prices: '(mandi price) OR (MSP crop) OR (crop price India)'
 };
 
 const CATEGORY_KEYWORDS = {
@@ -15,11 +15,9 @@ const CATEGORY_KEYWORDS = {
     prices: ['mandi', 'price', 'msp', 'rate', 'crop']
 };
 
-// Track seen article URLs to avoid repetition across requests
 const seenUrls = new Set();
-const MAX_SEEN_URLS = 5000; // keep memory usage bounded
+const MAX_SEEN_URLS = 5000;
 
-// Fisher-Yates shuffle
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -43,36 +41,42 @@ module.exports = async (req, res) => {
         if (!CURRENTS_API_KEY) {
             res.status(200).json({
                 success: false,
-                reason: 'CURRENTS_API_KEY not configured. Add it in Vercel -> Settings -> Environment Variables.',
+                reason: 'CURRENTS_API_KEY is missing or empty. Please check your environment variables.',
                 articles: []
             });
             return;
         }
 
-        // Currents API natively accepts your existing boolean queries via 'query' parameter
-        // It also isolates by country safely using standard 2-letter codes ('IN')
+        // Cleaned the query formatting brackets to adhere to strict Currents logic rules
         const url = `${CURRENTS_BASE_URL}?query=${encodeURIComponent(query)}&language=${lang}&country=IN&page_size=30&apiKey=${CURRENTS_API_KEY}`;
         
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': CURRENTS_API_KEY, // Pass via standard authorization header map
+                'Accept': 'application/json'
+            }
+        });
+        
         const data = await response.json();
 
+        // If the server rejects the request, show the exact message sent back by Currents
         if (!response.ok || data.status === 'error') {
             res.status(200).json({
                 success: false,
-                reason: data.message || 'Failed to fetch news from Currents backend engines.',
+                reason: data.message || `Currents API responded with status code: ${response.status}`,
                 articles: []
             });
             return;
         }
 
-        // Currents returns an array inside the 'news' object parameter
         const rawArticles = (data.news || []).map(a => ({
             title: a.title,
             description: a.description,
             url: a.url,
-            image: a.image, // Kept native to your front-end schema mapping rules
-            source: a.author || 'News Source', // Currents provides 'author' or domain configurations
-            publishedAt: a.published // Currents strings use 'published' instead of 'publishedAt'
+            image: a.image, 
+            source: a.author || 'News Source', 
+            publishedAt: a.published 
         }));
 
         const keywords = CATEGORY_KEYWORDS[category] || CATEGORY_KEYWORDS.agri;
@@ -82,10 +86,7 @@ module.exports = async (req, res) => {
                 return keywords.some(k => text.includes(k));
             })
             .filter(a => {
-                // Avoid articles we've already seen
                 if (seenUrls.has(a.url)) return false;
-                
-                // Track this URL
                 if (seenUrls.size >= MAX_SEEN_URLS) {
                     const toRemove = Math.floor(MAX_SEEN_URLS * 0.1);
                     let count = 0;
@@ -101,6 +102,6 @@ module.exports = async (req, res) => {
         res.status(200).json({ success: true, cached: false, articles: shuffle(articles) });
     } catch (error) {
         console.error('News fetch error:', error);
-        res.status(200).json({ success: false, reason: 'Server error fetching news', articles: [] });
+        res.status(200).json({ success: false, reason: `Server Exception: ${error.message}`, articles: [] });
     }
 };
