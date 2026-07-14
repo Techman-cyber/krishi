@@ -1,11 +1,11 @@
-const GNEWS_API_KEY = process.env.GNEWS_API_KEY || '';
-const GNEWS_BASE_URL = 'https://gnews.io/api/v4/search';
+const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY || '';
+const NEWSDATA_BASE_URL = 'https://newsdata.io/api/1/news';
 
 const CATEGORY_QUERIES = {
-    agri: '"Indian agriculture" OR "farmer" OR "crop yield" OR "mandi" OR "monsoon crop"',
-    schemes: '"PM-Kisan" OR "farmer scheme" OR "agriculture subsidy" OR "kisan yojana"',
-    weather: '"monsoon forecast" OR "rainfall India" OR "IMD weather"',
-    prices: '"mandi price" OR "MSP crop" OR "crop price India"'
+    agri: 'agriculture OR farmer OR "crop yield" OR mandi',
+    schemes: '"PM-Kisan" OR "farmer scheme" OR subsidy OR yojana',
+    weather: 'monsoon OR rainfall OR IMD weather',
+    prices: '"mandi price" OR "MSP crop" OR "crop price"'
 };
 
 const CATEGORY_KEYWORDS = {
@@ -40,45 +40,40 @@ module.exports = async (req, res) => {
         const lang = String(req.query.lang || 'en');
         const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
 
-        if (!GNEWS_API_KEY) {
+        if (!NEWSDATA_API_KEY) {
             res.status(200).json({
                 success: false,
-                reason: 'GNEWS_API_KEY not configured. Add it back in Vercel -> Settings -> Environment Variables.',
+                reason: 'NEWSDATA_API_KEY not configured. Add it in Vercel -> Settings -> Environment Variables.',
                 articles: []
             });
             return;
         }
 
-        // ====================================================================
-        // THE CREDIT SAVER: VERCEL EDGE NETWORK CONTROL HEADERS
-        // --------------------------------------------------------------------
-        // s-maxage=1800 cache data on Vercel's global CDN layers for 30 minutes.
-        // stale-while-revalidate=600 lets background workers update content seamlessly.
-        // ====================================================================
-        res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=1800, stale-while-revalidate=600');
+        // Caches results on Vercel's Edge CDN for 30 minutes to protect your daily limit
+        res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=1800');
 
-        // Removed the token-wasting page rotator so GNews pulls high-quality matches instantly
-        const url = `${GNEWS_BASE_URL}?q=${encodeURIComponent(query)}&lang=${lang}&country=in&max=25&sortby=publishedAt&apikey=${GNEWS_API_KEY}`;
+        // NewsData cleanly filters by country=in and handles standard boolean queries
+        const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in`;
         
         const response = await fetch(url);
         const data = await response.json();
 
-        if (!response.ok) {
+        if (!response.ok || data.status === 'error') {
             res.status(200).json({
                 success: false,
-                reason: (data.errors && data.errors.join(', ')) || 'Failed to fetch news from GNews layers.',
+                reason: (data.results && data.results.message) || 'Failed to fetch news from NewsData engine.',
                 articles: []
             });
             return;
         }
 
-        const rawArticles = (data.articles || []).map(a => ({
+        const rawArticles = (data.results || []).map(a => ({
             title: a.title,
             description: a.description,
-            url: a.url,
-            image: a.image, // Maps cleanly back to your frontend image keys
-            source: a.source ? a.source.name : 'Unknown',
-            publishedAt: a.publishedAt
+            url: a.link,             // Remapped from 'link' to fit your frontend setup
+            image: a.image_url,      // Remapped from 'image_url' to fit your frontend setup
+            source: a.source_id || 'News Source',
+            publishedAt: a.pubDate
         }));
 
         const keywords = CATEGORY_KEYWORDS[category] || CATEGORY_KEYWORDS.agri;
@@ -102,7 +97,7 @@ module.exports = async (req, res) => {
                 return true;
             });
 
-        res.status(200).json({ success: true, cached: true, articles: shuffle(articles) });
+        res.status(200).json({ success: true, articles: shuffle(articles) });
     } catch (error) {
         console.error('News fetch error:', error);
         res.status(200).json({ success: false, reason: 'Server error fetching news', articles: [] });
