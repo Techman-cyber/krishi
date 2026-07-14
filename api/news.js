@@ -1,5 +1,5 @@
-const NEWS_API_KEY = process.env.NEWS_API_KEY || '';
-const NEWS_BASE_URL = 'https://newsapi.org/v2/everything';
+const CURRENTS_API_KEY = process.env.CURRENTS_API_KEY || '';
+const CURRENTS_BASE_URL = 'https://api.currentsapi.services/v1/search';
 
 const CATEGORY_QUERIES = {
     agri: '"Indian agriculture" OR "farmer" OR "crop yield" OR "mandi" OR "monsoon crop"',
@@ -18,13 +18,6 @@ const CATEGORY_KEYWORDS = {
 // Track seen article URLs to avoid repetition across requests
 const seenUrls = new Set();
 const MAX_SEEN_URLS = 5000; // keep memory usage bounded
-
-// Simple rotating page index based on time (changes every ~10 minutes)
-function getRotatingPage() {
-    const block = Math.floor(Date.now() / (10 * 60 * 1000)); // 10-min blocks
-    // Cycle page between 1 and 4 (NewsAPI free limits deep pagination results)
-    return (block % 4) + 1;
-}
 
 // Fisher-Yates shuffle
 function shuffle(arr) {
@@ -47,42 +40,39 @@ module.exports = async (req, res) => {
         const lang = String(req.query.lang || 'en');
         const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
 
-        // Get a rotating page number to fetch different results each time
-        const page = getRotatingPage();
-
-        if (!NEWS_API_KEY) {
+        if (!CURRENTS_API_KEY) {
             res.status(200).json({
                 success: false,
-                reason: 'NEWS_API_KEY not configured. Add it in Vercel -> Settings -> Environment Variables.',
+                reason: 'CURRENTS_API_KEY not configured. Add it in Vercel -> Settings -> Environment Variables.',
                 articles: []
             });
             return;
         }
 
-        // Note: NewsAPI uses 'language' and 'pageSize' parameters
-        const url = `${NEWS_BASE_URL}?q=${encodeURIComponent(query)}&language=${lang}&pageSize=25&page=${page}&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
+        // Currents API natively accepts your existing boolean queries via 'query' parameter
+        // It also isolates by country safely using standard 2-letter codes ('IN')
+        const url = `${CURRENTS_BASE_URL}?query=${encodeURIComponent(query)}&language=${lang}&country=IN&page_size=30&apiKey=${CURRENTS_API_KEY}`;
         
-        const response = await fetch(url, {
-            headers: { 'User-Agent': 'PatuKrishiApp/1.0' } // NewsAPI requires a User-Agent header
-        });
+        const response = await fetch(url);
         const data = await response.json();
 
         if (!response.ok || data.status === 'error') {
             res.status(200).json({
                 success: false,
-                reason: data.message || 'Failed to fetch news from NewsAPI arrays.',
+                reason: data.message || 'Failed to fetch news from Currents backend engines.',
                 articles: []
             });
             return;
         }
 
-        const rawArticles = (data.articles || []).map(a => ({
+        // Currents returns an array inside the 'news' object parameter
+        const rawArticles = (data.news || []).map(a => ({
             title: a.title,
             description: a.description,
             url: a.url,
-            image: a.urlToImage, // NewsAPI returns 'urlToImage' instead of 'image'
-            source: a.source ? a.source.name : 'Unknown',
-            publishedAt: a.publishedAt
+            image: a.image, // Kept native to your front-end schema mapping rules
+            source: a.author || 'News Source', // Currents provides 'author' or domain configurations
+            publishedAt: a.published // Currents strings use 'published' instead of 'publishedAt'
         }));
 
         const keywords = CATEGORY_KEYWORDS[category] || CATEGORY_KEYWORDS.agri;
@@ -97,7 +87,6 @@ module.exports = async (req, res) => {
                 
                 // Track this URL
                 if (seenUrls.size >= MAX_SEEN_URLS) {
-                    // Remove oldest 10% to keep memory bounded
                     const toRemove = Math.floor(MAX_SEEN_URLS * 0.1);
                     let count = 0;
                     for (const u of seenUrls) {
