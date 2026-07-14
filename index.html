@@ -252,15 +252,22 @@
             </div>
         </section>
 
-        <section id="news-section" class="content-section">
-    <h2 class="agri-border"><i class="fas fa-newspaper"></i> <span>Agri News</span></h2>
-    <div class="card">
-        <div class="news-tabs" style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-            <button onclick="loadNewsSection('agri')">Agriculture</button>
-<button onclick="loadNewsSection('schemes')">Schemes</button>        </div>
-        <div id="news-container"></div>
-    </div>
-</section>
+       <section id="news-section" class="content-section">
+            <h2 class="agri-border"><i class="fas fa-newspaper"></i> <span>Agri News</span></h2>
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:20px; flex-wrap:wrap;">
+                    <div class="news-tabs" style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button class="btn-3d" onclick="loadNewsSection('agri')">Agriculture</button>
+                        <button class="btn-3d" onclick="loadNewsSection('schemes')">Schemes</button>
+                    </div>
+                    <button id="refresh-news-btn" class="btn-3d" style="background:#f9a825; color:#333;" onclick="triggerNewsRefresh()">
+                        <i class="fas fa-sync-alt" id="refresh-icon"></i> 
+                        <span id="refresh-btn-text">Refresh News</span>
+                    </button>
+                </div>
+                <div id="news-container"></div>
+            </div>
+        </section>
 
         <section id="schemes-section" class="content-section">
             <h2 class="agri-border"><i class="fas fa-file-alt"></i> <span>Government Schemes for Farmers</span><span style="font-size: 0.8rem; background: #2e7d32; color: white; padding: 4px 12px; border-radius: 30px; margin-left: 10px;">140 Active Schemes</span></h2>
