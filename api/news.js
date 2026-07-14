@@ -15,11 +15,9 @@ const CATEGORY_KEYWORDS = {
     prices: ['mandi', 'price', 'msp', 'rate', 'crop']
 };
 
-// Track seen article URLs to avoid repetition across requests
 const seenUrls = new Set();
-const MAX_SEEN_URLS = 5000; // keep memory usage bounded
+const MAX_SEEN_URLS = 5000;
 
-// Fisher-Yates shuffle
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -49,11 +47,9 @@ module.exports = async (req, res) => {
             return;
         }
 
-        // Caches results on Vercel's Edge CDN for 30 minutes to protect your daily limit
-        res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=1800');
+        // Caching line has been removed from here so every request calls the live server
 
-        // NewsData cleanly filters by country=in and handles standard boolean queries
-        const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in`;
+        const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in';
         
         const response = await fetch(url);
         const data = await response.json();
@@ -70,8 +66,8 @@ module.exports = async (req, res) => {
         const rawArticles = (data.results || []).map(a => ({
             title: a.title,
             description: a.description,
-            url: a.link,             // Remapped from 'link' to fit your frontend setup
-            image: a.image_url,      // Remapped from 'image_url' to fit your frontend setup
+            url: a.link,             
+            image: a.image_url,      
             source: a.source_id || 'News Source',
             publishedAt: a.pubDate
         }));
