@@ -1,11 +1,12 @@
 const CURRENTS_API_KEY = process.env.CURRENTS_API_KEY || '';
 const CURRENTS_BASE_URL = 'https://api.currentsapi.services/v1/search';
 
+// Simplified terms into standard keywords that won't trigger a 400 error
 const CATEGORY_QUERIES = {
-    agri: '(Indian agriculture) OR (farmer) OR (crop yield) OR (mandi) OR (monsoon crop)',
-    schemes: '(PM-Kisan) OR (farmer scheme) OR (agriculture subsidy) OR (kisan yojana)',
-    weather: '(monsoon forecast) OR (rainfall India) OR (IMD weather)',
-    prices: '(mandi price) OR (MSP crop) OR (crop price India)'
+    agri: 'Indian agriculture farmer crop mandi',
+    schemes: 'PM-Kisan farmer subsidy kisan yojana',
+    weather: 'monsoon rainfall India IMD weather',
+    prices: 'mandi price MSP crop price India'
 };
 
 const CATEGORY_KEYWORDS = {
@@ -41,30 +42,29 @@ module.exports = async (req, res) => {
         if (!CURRENTS_API_KEY) {
             res.status(200).json({
                 success: false,
-                reason: 'CURRENTS_API_KEY is missing or empty. Please check your environment variables.',
+                reason: 'CURRENTS_API_KEY is missing in your environment variables.',
                 articles: []
             });
             return;
         }
 
-        // Cleaned the query formatting brackets to adhere to strict Currents logic rules
-        const url = `${CURRENTS_BASE_URL}?query=${encodeURIComponent(query)}&language=${lang}&country=IN&page_size=30&apiKey=${CURRENTS_API_KEY}`;
+        // FIXED: Switched "query=" to "keywords=" to handle clean strings perfectly
+        const url = `${CURRENTS_BASE_URL}?keywords=${encodeURIComponent(query)}&language=${lang}&country=IN&page_size=30`;
         
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': CURRENTS_API_KEY, // Pass via standard authorization header map
+                'Authorization': CURRENTS_API_KEY, 
                 'Accept': 'application/json'
             }
         });
         
         const data = await response.json();
 
-        // If the server rejects the request, show the exact message sent back by Currents
         if (!response.ok || data.status === 'error') {
             res.status(200).json({
                 success: false,
-                reason: data.message || `Currents API responded with status code: ${response.status}`,
+                reason: data.message || `Currents Error: ${response.status}`,
                 articles: []
             });
             return;
