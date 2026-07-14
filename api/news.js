@@ -1,12 +1,11 @@
-const CURRENTS_API_KEY = process.env.CURRENTS_API_KEY || '';
-const CURRENTS_BASE_URL = 'https://api.currentsapi.services/v1/search';
+const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY || '';
+const NEWSDATA_BASE_URL = 'https://newsdata.io/api/1/news';
 
-// Simplified terms into standard keywords that won't trigger a 400 error
 const CATEGORY_QUERIES = {
-    agri: 'Indian agriculture farmer crop mandi',
-    schemes: 'PM-Kisan farmer subsidy kisan yojana',
-    weather: 'monsoon rainfall India IMD weather',
-    prices: 'mandi price MSP crop price India'
+    agri: 'agriculture OR farmer OR "crop yield" OR mandi',
+    schemes: '"PM-Kisan" OR "farmer scheme" OR subsidy OR yojana',
+    weather: 'monsoon OR rainfall OR IMD weather',
+    prices: '"mandi price" OR "MSP crop" OR "crop price"'
 };
 
 const CATEGORY_KEYWORDS = {
@@ -39,44 +38,33 @@ module.exports = async (req, res) => {
         const lang = String(req.query.lang || 'en');
         const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
 
-        if (!CURRENTS_API_KEY) {
-            res.status(200).json({
-                success: false,
-                reason: 'CURRENTS_API_KEY is missing in your environment variables.',
-                articles: []
-            });
+        if (!NEWSDATA_API_KEY) {
+            res.status(200).json({ success: false, reason: 'NEWSDATA_API_KEY not configured.', articles: [] });
             return;
         }
 
-        // FIXED: Switched "query=" to "keywords=" to handle clean strings perfectly
-        const url = `${CURRENTS_BASE_URL}?keywords=${encodeURIComponent(query)}&language=${lang}&country=IN&page_size=30`;
+        // NewsData cleanly filters by country=in and accepts standard boolean OR logic
+        const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in`;
         
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': CURRENTS_API_KEY, 
-                'Accept': 'application/json'
-            }
-        });
-        
+        const response = await fetch(url);
         const data = await response.json();
 
         if (!response.ok || data.status === 'error') {
             res.status(200).json({
                 success: false,
-                reason: data.message || `Currents Error: ${response.status}`,
+                reason: data.results?.message || 'Failed to fetch news from NewsData engines.',
                 articles: []
             });
             return;
         }
 
-        const rawArticles = (data.news || []).map(a => ({
+        const rawArticles = (data.results || []).map(a => ({
             title: a.title,
             description: a.description,
-            url: a.url,
-            image: a.image, 
-            source: a.author || 'News Source', 
-            publishedAt: a.published 
+            url: a.link,             // NewsData wraps links in 'link'
+            image: a.image_url,      // NewsData uses 'image_url'
+            source: a.source_id || 'News Source',
+            publishedAt: a.pubDate
         }));
 
         const keywords = CATEGORY_KEYWORDS[category] || CATEGORY_KEYWORDS.agri;
