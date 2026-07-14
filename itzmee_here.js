@@ -1106,7 +1106,72 @@ window.loadNewsSection = async function (category = 'agri') {
         container.innerHTML = `<p style="text-align:center;padding:20px;">Failed to load news. Please try again later.</p>`;
     }
 };
+
+  let isRefreshCooldown = false;
+
+window.triggerNewsRefresh = async function() {
+    if (isRefreshCooldown) return;
+
+    const refreshBtn = document.getElementById('refresh-news-btn');
+    const refreshIcon = document.getElementById('refresh-icon');
+    const refreshText = document.getElementById('refresh-btn-text');
     
+    // 1. Enter Loading State
+    if (refreshIcon) refreshIcon.classList.add('spinning');
+    if (refreshBtn) refreshBtn.disabled = true;
+    if (refreshText) refreshText.textContent = "Loading Updates...";
+
+    try {
+        // 2. Capture the currently active category & language from your app's state
+        // (Fallback to 'agri' and 'en' if not explicitly set)
+        const currentCategory = window.currentNewsCategory || 'agri';
+        const currentLang = window.currentLanguage || 'en';
+
+        // 3. Fetch from your GNews serverless backend
+        // We append a timestamp (_t) to bypass the browser's local cache on manual click
+        const response = await fetch(`/api/news?category=${currentCategory}&lang=${currentLang}&_t=${Date.now()}`);
+        const data = await response.json();
+
+        if (data.success && typeof renderNewsArticles === 'function') {
+            // Call whatever frontend function you use to display the news cards
+            renderNewsArticles(data.articles);
+            if (typeof showNotification === 'function') {
+                showNotification('News feed updated successfully!', 'success');
+            }
+        } else if (!data.success) {
+            console.warn("Backend rejected fresh fetch:", data.reason);
+        }
+    } catch (error) {
+        console.error("Manual refresh pipeline exception:", error);
+    } finally {
+        // 4. Stop the spin animation
+        if (refreshIcon) refreshIcon.classList.remove('spinning');
+        
+        // 5. Start the 60-second token saver cooldown
+        startRefreshCooldown(60);
+    }
+};
+
+function startRefreshCooldown(seconds) {
+    const refreshBtn = document.getElementById('refresh-news-btn');
+    const refreshText = document.getElementById('refresh-btn-text');
+    isRefreshCooldown = true;
+    
+    let timeLeft = seconds;
+
+    const timer = setInterval(() => {
+        timeLeft--;
+        if (refreshBtn) refreshBtn.disabled = true;
+        if (refreshText) refreshText.textContent = `Wait ${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            isRefreshCooldown = false;
+            if (refreshBtn) refreshBtn.disabled = false;
+            if (refreshText) refreshText.textContent = "Refresh News";
+        }
+    }, 1000);
+}
     // ML Model Simulation - Advanced disease detection
     class CropLensAI {
         constructor() {
