@@ -1,7 +1,6 @@
 const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY || '';
 const NEWSDATA_BASE_URL = 'https://newsdata.io/api/1/latest';
 
-// Indian Agriculture Target Match Queries
 const CATEGORY_QUERIES = {
     agri: 'agriculture OR farmer OR "crop yield" OR mandi',
     schemes: '"PM-Kisan" OR "farmer scheme" OR subsidy OR yojana',
@@ -9,8 +8,8 @@ const CATEGORY_QUERIES = {
     prices: '"mandi price" OR "MSP crop" OR "crop price"'
 };
 
-// Global Fallback Memory Cache (Preserved across warm serverless functions)
-global.newsCache = global.newsCache || {};
+// Persistent global fallback storage across warm lambda functions
+global.lastKnownNewsCache = global.lastKnownNewsCache || {};
 
 function shuffle(arr) {
     const a = [...arr];
@@ -22,7 +21,7 @@ function shuffle(arr) {
 }
 
 module.exports = async (req, res) => {
-    // 1. Force instant clean JSON & Strict Anti-Cache Headers to ensure fresh client pulls
+    // 1. Force instant clean JSON & Strict Anti-Cache Headers
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
@@ -36,7 +35,7 @@ module.exports = async (req, res) => {
     const lang = String(req.query.lang || 'en');
     const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
     
-    // Unique identifier for fallback lookup
+    // Unique cache key combined by category and language
     const cacheKey = `${category}_${lang}`;
 
     // Setup an Abort Controller to kill hanging API calls at 8 seconds
@@ -49,7 +48,7 @@ module.exports = async (req, res) => {
             throw new Error('API key variable missing in system environment');
         }
 
-        // 2. Fetch with a Cache-Buster timestamp parameter to force NewsData.io to fetch fresh
+        // Fetch fresh data with a timestamp cache-buster
         const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in&_cb=${Date.now()}`;
         
         const response = await fetch(url, { signal: controller.signal });
@@ -59,7 +58,7 @@ module.exports = async (req, res) => {
 
         let freshArticles = [];
 
-        // 3. Process Response safely
+        // Parse matching payload only if HTTP status is OK and API returns a success message
         if (response.ok && data.status === 'success' && Array.isArray(data.results) && data.results.length > 0) {
             freshArticles = data.results.map(a => ({
                 title: a.title || '',
@@ -71,28 +70,34 @@ module.exports = async (req, res) => {
             }));
         }
 
-        // 4. Decisive Fallback logic (Preventing "No News Available" screens)
+        // 2. If fresh news exists, store it as the absolute baseline and return it
         if (freshArticles.length > 0) {
-            const finalArticles = shuffle(freshArticles);
-            // Save this success batch as the fallback state
-            global.newsCache[cacheKey] = finalArticles;
-            return res.status(200).json({ success: true, articles: finalArticles });
-        } else {
-            // No new articles returned or rate limit hit. Silently return cached backup
-            if (global.newsCache[cacheKey] && global.newsCache[cacheKey].length > 0) {
-                return res.status(200).json({ success: true, articles: shuffle(global.newsCache[cacheKey]) });
-            }
-            // Absolute critical fallback array if the serverless function is fresh and has zero state
-            return res.status(200).json({ success: true, articles: [] });
+            const shuffledArticles = shuffle(freshArticles);
+            global.lastKnownNewsCache[cacheKey] = shuffledArticles;
+            return res.status(200).json({ success: true, articles: shuffledArticles });
+        } 
+        
+        // 3. Fallback: API is empty/rate-limited -> Repeat the previously saved news
+        if (global.lastKnownNewsCache[cacheKey] && global.lastKnownNewsCache[cacheKey].length > 0) {
+            return res.status(200).json({ 
+                success: true, 
+                articles: shuffle(global.lastKnownNewsCache[cacheKey]) 
+            });
         }
+
+        // Extreme backup in case memory is totally empty (e.g. initial start failure)
+        return res.status(200).json({ success: true, articles: [] });
 
     } catch (error) {
         clearTimeout(timeoutId);
-        console.error('API Interceptor Exception:', error);
+        console.error('API Fetch Failure Intercepted:', error);
 
-        // Fail-Safe: On timeout, network drop, or script crash, serve the fallback data instantly
-        if (global.newsCache[cacheKey] && global.newsCache[cacheKey].length > 0) {
-            return res.status(200).json({ success: true, articles: shuffle(global.newsCache[cacheKey]) });
+        // 4. Fallback on network drops, script timeout or crash -> Serve historical memory state
+        if (global.lastKnownNewsCache[cacheKey] && global.lastKnownNewsCache[cacheKey].length > 0) {
+            return res.status(200).json({ 
+                success: true, 
+                articles: shuffle(global.lastKnownNewsCache[cacheKey]) 
+            });
         }
 
         return res.status(200).json({ 
