@@ -1,22 +1,13 @@
 const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY || '';
 const NEWSDATA_BASE_URL = 'https://newsdata.io/api/1/latest';
 
+// Refined target query strings to maximize NewsData Boolean matching
 const CATEGORY_QUERIES = {
     agri: 'agriculture OR farmer OR "crop yield" OR mandi',
     schemes: '"PM-Kisan" OR "farmer scheme" OR subsidy OR yojana',
-    weather: 'monsoon OR rainfall OR IMD weather',
+    weather: 'monsoon OR rainfall OR "IMD weather"',
     prices: '"mandi price" OR "MSP crop" OR "crop price"'
 };
-
-const CATEGORY_KEYWORDS = {
-    agri: ['agri', 'farm', 'crop', 'mandi', 'monsoon', 'harvest', 'irrigation', 'sowing', 'kisan'],
-    schemes: ['kisan', 'scheme', 'subsidy', 'yojana', 'msp', 'farmer'],
-    weather: ['monsoon', 'rainfall', 'weather', 'imd', 'forecast'],
-    prices: ['mandi', 'price', 'msp', 'rate', 'crop']
-};
-
-const seenUrls = new Set();
-const MAX_SEEN_URLS = 5000;
 
 function shuffle(arr) {
     const a = [...arr];
@@ -28,17 +19,16 @@ function shuffle(arr) {
 }
 
 module.exports = async (req, res) => {
-    // Force clean JSON headers immediately to prevent content-type mismatch crashes
+    // Force clean JSON response type instantly
     res.setHeader('Content-Type', 'application/json');
 
     if (req.method !== 'GET') {
-        res.status(405).json({ success: false, reason: 'Method not allowed', articles: [] });
-        return;
+        return res.status(405).json({ success: false, reason: 'Method not allowed', articles: [] });
     }
 
-    // Set up an AbortController to kill slow API hanging connections before Vercel does
+    // Abort controller to kill hanging connections before Vercel kills the execution context
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8-second cutoff guard
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
 
     try {
         const category = String(req.query.category || 'agri').toLowerCase();
@@ -47,72 +37,55 @@ module.exports = async (req, res) => {
 
         if (!NEWSDATA_API_KEY) {
             clearTimeout(timeoutId);
-            res.status(200).json({
+            return res.status(200).json({
                 success: false,
-                reason: 'NEWSDATA_API_KEY environment variable is empty or missing in Vercel.',
+                reason: 'NEWSDATA_API_KEY environment variable is empty or missing in Vercel settings.',
                 articles: []
             });
-            return;
         }
 
+        // Newsdata parameter guidelines require URL encoding values precisely
         const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in`;
         
         const response = await fetch(url, { signal: controller.signal });
         const data = await response.json();
         
-        // Clear the timeout safety lock as the response arrived safely
         clearTimeout(timeoutId);
 
         if (!response.ok || data.status === 'error') {
-            res.status(200).json({
+            return res.status(200).json({
                 success: false,
-                reason: data.message || `NewsData API error status code: ${response.status}`,
+                reason: data.results?.message || data.message || `NewsData API returned HTTP status code: ${response.status}`,
                 articles: []
             });
-            return;
         }
 
-        const rawArticles = (data.results || []).map(a => ({
-            title: a.title,
-            description: a.description,
-            url: a.link,             
-            image: a.image_url,      
+        // Map data directly into your frontend interface properties
+        const articles = (data.results || []).map(a => ({
+            title: a.title || '',
+            description: a.description || '',
+            url: a.link || '',             
+            image: a.image_url || null,      
             source: a.source_id || 'News Source',
-            publishedAt: a.pubDate
+            publishedAt: a.pubDate || ''
         }));
 
-        const keywords = CATEGORY_KEYWORDS[category] || CATEGORY_KEYWORDS.agri;
-        const articles = rawArticles
-            .filter(a => {
-                const text = `${a.title || ''} ${a.description || ''}`.toLowerCase();
-                return keywords.some(k => text.includes(k));
-            })
-            .filter(a => {
-                if (seenUrls.has(a.url)) return false;
-                
-                if (seenUrls.size >= MAX_SEEN_URLS) {
-                    const toRemove = Math.floor(MAX_SEEN_URLS * 0.1);
-                    let count = 0;
-                    for (const u of seenUrls) {
-                        if (count++ >= toRemove) break;
-                        seenUrls.delete(u);
-                    }
-                }
-                seenUrls.add(a.url);
-                return true;
-            });
+        // Removed heavy local post-filtering since API Boolean rules handled the exact extraction
+        return res.status(200).json({ 
+            success: true, 
+            articles: shuffle(articles) 
+        });
 
-        res.status(200).json({ success: true, articles: shuffle(articles) });
     } catch (error) {
         clearTimeout(timeoutId);
-        console.error('News fetch error details:', error);
+        console.error('News microservice exception:', error);
         
         let errorMessage = error.message;
         if (error.name === 'AbortError') {
             errorMessage = 'NewsData API response timed out after 8 seconds.';
         }
 
-        res.status(200).json({ 
+        return res.status(200).json({ 
             success: false, 
             reason: `Backend Exception: ${errorMessage}`, 
             articles: [] 
