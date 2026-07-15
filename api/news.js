@@ -1,13 +1,16 @@
 const NEWSDATA_API_KEY = process.env.NEWSDATA_API_KEY || '';
 const NEWSDATA_BASE_URL = 'https://newsdata.io/api/1/latest';
 
-// Refined target query strings to maximize NewsData Boolean matching
+// Indian Agriculture Target Match Queries
 const CATEGORY_QUERIES = {
     agri: 'agriculture OR farmer OR "crop yield" OR mandi',
     schemes: '"PM-Kisan" OR "farmer scheme" OR subsidy OR yojana',
     weather: 'monsoon OR rainfall OR "IMD weather"',
     prices: '"mandi price" OR "MSP crop" OR "crop price"'
 };
+
+// Global Fallback Memory Cache (Preserved across warm serverless functions)
+global.newsCache = global.newsCache || {};
 
 function shuffle(arr) {
     const a = [...arr];
@@ -19,75 +22,82 @@ function shuffle(arr) {
 }
 
 module.exports = async (req, res) => {
-    // Force clean JSON response type instantly
+    // 1. Force instant clean JSON & Strict Anti-Cache Headers to ensure fresh client pulls
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
 
     if (req.method !== 'GET') {
         return res.status(405).json({ success: false, reason: 'Method not allowed', articles: [] });
     }
 
-    // Abort controller to kill hanging connections before Vercel kills the execution context
+    const category = String(req.query.category || 'agri').toLowerCase();
+    const lang = String(req.query.lang || 'en');
+    const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
+    
+    // Unique identifier for fallback lookup
+    const cacheKey = `${category}_${lang}`;
+
+    // Setup an Abort Controller to kill hanging API calls at 8 seconds
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
 
     try {
-        const category = String(req.query.category || 'agri').toLowerCase();
-        const lang = String(req.query.lang || 'en');
-        const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
-
         if (!NEWSDATA_API_KEY) {
             clearTimeout(timeoutId);
-            return res.status(200).json({
-                success: false,
-                reason: 'NEWSDATA_API_KEY environment variable is empty or missing in Vercel settings.',
-                articles: []
-            });
+            throw new Error('API key variable missing in system environment');
         }
 
-        // Newsdata parameter guidelines require URL encoding values precisely
-        const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in`;
+        // 2. Fetch with a Cache-Buster timestamp parameter to force NewsData.io to fetch fresh
+        const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in&_cb=${Date.now()}`;
         
         const response = await fetch(url, { signal: controller.signal });
         const data = await response.json();
         
         clearTimeout(timeoutId);
 
-        if (!response.ok || data.status === 'error') {
-            return res.status(200).json({
-                success: false,
-                reason: data.results?.message || data.message || `NewsData API returned HTTP status code: ${response.status}`,
-                articles: []
-            });
+        let freshArticles = [];
+
+        // 3. Process Response safely
+        if (response.ok && data.status === 'success' && Array.isArray(data.results) && data.results.length > 0) {
+            freshArticles = data.results.map(a => ({
+                title: a.title || '',
+                description: a.description || '',
+                url: a.link || '',             
+                image: a.image_url || null,      
+                source: a.source_id || 'News Source',
+                publishedAt: a.pubDate || ''
+            }));
         }
 
-        // Map data directly into your frontend interface properties
-        const articles = (data.results || []).map(a => ({
-            title: a.title || '',
-            description: a.description || '',
-            url: a.link || '',             
-            image: a.image_url || null,      
-            source: a.source_id || 'News Source',
-            publishedAt: a.pubDate || ''
-        }));
-
-        // Removed heavy local post-filtering since API Boolean rules handled the exact extraction
-        return res.status(200).json({ 
-            success: true, 
-            articles: shuffle(articles) 
-        });
+        // 4. Decisive Fallback logic (Preventing "No News Available" screens)
+        if (freshArticles.length > 0) {
+            const finalArticles = shuffle(freshArticles);
+            // Save this success batch as the fallback state
+            global.newsCache[cacheKey] = finalArticles;
+            return res.status(200).json({ success: true, articles: finalArticles });
+        } else {
+            // No new articles returned or rate limit hit. Silently return cached backup
+            if (global.newsCache[cacheKey] && global.newsCache[cacheKey].length > 0) {
+                return res.status(200).json({ success: true, articles: shuffle(global.newsCache[cacheKey]) });
+            }
+            // Absolute critical fallback array if the serverless function is fresh and has zero state
+            return res.status(200).json({ success: true, articles: [] });
+        }
 
     } catch (error) {
         clearTimeout(timeoutId);
-        console.error('News microservice exception:', error);
-        
-        let errorMessage = error.message;
-        if (error.name === 'AbortError') {
-            errorMessage = 'NewsData API response timed out after 8 seconds.';
+        console.error('API Interceptor Exception:', error);
+
+        // Fail-Safe: On timeout, network drop, or script crash, serve the fallback data instantly
+        if (global.newsCache[cacheKey] && global.newsCache[cacheKey].length > 0) {
+            return res.status(200).json({ success: true, articles: shuffle(global.newsCache[cacheKey]) });
         }
 
         return res.status(200).json({ 
             success: false, 
-            reason: `Backend Exception: ${errorMessage}`, 
+            reason: `Connection error: ${error.message}`, 
             articles: [] 
         });
     }
