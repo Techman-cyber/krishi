@@ -15,11 +15,9 @@ const CATEGORY_KEYWORDS = {
     prices: ['mandi', 'price', 'msp', 'rate', 'crop']
 };
 
-// Track seen article URLs to avoid repetition across requests
 const seenUrls = new Set();
-const MAX_SEEN_URLS = 5000; // keep memory usage bounded
+const MAX_SEEN_URLS = 5000;
 
-// Fisher-Yates shuffle
 function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -41,18 +39,11 @@ module.exports = async (req, res) => {
         const query = CATEGORY_QUERIES[category] || CATEGORY_QUERIES.agri;
 
         if (!NEWSDATA_API_KEY) {
-            res.status(200).json({
-                success: false,
-                reason: 'NEWSDATA_API_KEY not configured. Add it in Vercel -> Settings -> Environment Variables.',
-                articles: []
-            });
+            res.status(200).json({ success: false, reason: 'NEWSDATA_API_KEY not configured.', articles: [] });
             return;
         }
 
-        // Caches results on Vercel's Edge CDN for 30 minutes to protect your daily limit
-        res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=1800');
-
-        // NewsData cleanly filters by country=in and handles standard boolean queries
+        // NewsData cleanly filters by country=in and accepts standard boolean OR logic
         const url = `${NEWSDATA_BASE_URL}?apikey=${NEWSDATA_API_KEY}&q=${encodeURIComponent(query)}&language=${lang}&country=in`;
         
         const response = await fetch(url);
@@ -61,7 +52,7 @@ module.exports = async (req, res) => {
         if (!response.ok || data.status === 'error') {
             res.status(200).json({
                 success: false,
-                reason: (data.results && data.results.message) || 'Failed to fetch news from NewsData engine.',
+                reason: data.results?.message || 'Failed to fetch news from NewsData engines.',
                 articles: []
             });
             return;
@@ -70,8 +61,8 @@ module.exports = async (req, res) => {
         const rawArticles = (data.results || []).map(a => ({
             title: a.title,
             description: a.description,
-            url: a.link,             // Remapped from 'link' to fit your frontend setup
-            image: a.image_url,      // Remapped from 'image_url' to fit your frontend setup
+            url: a.link,             // NewsData wraps links in 'link'
+            image: a.image_url,      // NewsData uses 'image_url'
             source: a.source_id || 'News Source',
             publishedAt: a.pubDate
         }));
@@ -84,7 +75,6 @@ module.exports = async (req, res) => {
             })
             .filter(a => {
                 if (seenUrls.has(a.url)) return false;
-                
                 if (seenUrls.size >= MAX_SEEN_URLS) {
                     const toRemove = Math.floor(MAX_SEEN_URLS * 0.1);
                     let count = 0;
@@ -97,9 +87,9 @@ module.exports = async (req, res) => {
                 return true;
             });
 
-        res.status(200).json({ success: true, articles: shuffle(articles) });
+        res.status(200).json({ success: true, cached: false, articles: shuffle(articles) });
     } catch (error) {
         console.error('News fetch error:', error);
-        res.status(200).json({ success: false, reason: 'Server error fetching news', articles: [] });
+        res.status(200).json({ success: false, reason: `Server Exception: ${error.message}`, articles: [] });
     }
 };
